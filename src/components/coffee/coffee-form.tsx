@@ -20,7 +20,7 @@ import {
   cn,
 } from "@/lib/utils";
 import type { Coffee } from "@/types/coffee";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { RatingCups } from "./rating-cups";
 import { FlavorTag as FlavorTagChip } from "./flavor-tag";
@@ -487,11 +487,16 @@ export function CoffeeForm({
             disabled={isLoading}
             className="flex-1 bg-copper-500 hover:bg-copper-600 text-white border-0 disabled:opacity-60"
           >
-            {isLoading
-              ? "Guardando…"
-              : mode === "edit"
-                ? "Guardar cambios"
-                : "Guardar reseña"}
+            {isLoading ? (
+              <>
+                <Loader2 className="size-4 animate-spin mr-1.5" />
+                Guardando…
+              </>
+            ) : mode === "edit" ? (
+              "Guardar cambios"
+            ) : (
+              "Guardar reseña"
+            )}
           </Button>
         )}
       </div>
