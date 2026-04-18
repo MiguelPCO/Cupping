@@ -316,22 +316,24 @@ export function CoffeeForm({
             )}
           </div>
 
-          <div className="space-y-4 pt-2">
-            <p className="text-xs font-medium uppercase tracking-wider text-parchment">
+          <fieldset className="border-0 p-0 m-0 min-w-0 space-y-4 pt-2">
+            <legend className="text-xs font-medium uppercase tracking-wider text-parchment w-full">
               Desglose de notas{" "}
               <span className="normal-case">(opcional)</span>
-            </p>
-            {SUB_RATINGS.map(({ name, label, minLabel, maxLabel }) => (
-              <SubRatingInput
-                key={name}
-                name={name}
-                label={label}
-                minLabel={minLabel}
-                maxLabel={maxLabel}
-                control={control}
-              />
-            ))}
-          </div>
+            </legend>
+            <div className="space-y-4">
+              {SUB_RATINGS.map(({ name, label, minLabel, maxLabel }) => (
+                <SubRatingInput
+                  key={name}
+                  name={name}
+                  label={label}
+                  minLabel={minLabel}
+                  maxLabel={maxLabel}
+                  control={control}
+                />
+              ))}
+            </div>
+          </fieldset>
 
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-espresso">
