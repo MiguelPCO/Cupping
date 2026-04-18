@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getCollectionItems } from "@/lib/supabase/queries";
 import { COLLECTION_TYPES } from "@/types/coffee";
 import type { CollectionType } from "@/types/coffee";
 import { CollectionCoffeeList } from "./_components/collection-coffee-list";
@@ -44,32 +45,9 @@ export default async function CollectionTypePage({ params }: Props) {
     .eq("type", collectionType)
     .single();
 
-  type CoffeeRow = {
-    id: string;
-    name: string;
-    brand: string;
-    avg_rating: number | null;
-  };
-
-  type CollectionItemRow = {
-    added_at: string;
-    coffee: CoffeeRow | null;
-  };
-
-  const items: CollectionItemRow[] = collection
-    ? await supabase
-        .from("collection_items")
-        .select("added_at, coffee:coffees(id, name, brand, avg_rating)")
-        .eq("collection_id", collection.id)
-        .order("added_at", { ascending: false })
-        .then(({ data }) => (data as unknown as CollectionItemRow[]) ?? [])
+  const coffees = collection
+    ? await getCollectionItems(supabase, collection.id)
     : [];
-
-  const coffees = items
-    .map((item) =>
-      item.coffee ? { ...item.coffee, added_at: item.added_at } : null
-    )
-    .filter((c): c is NonNullable<typeof c> => c !== null);
 
   return (
     <div className="px-4 py-6 max-w-5xl mx-auto">

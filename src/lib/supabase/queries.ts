@@ -190,3 +190,40 @@ export async function getActivityFeed(
     entry: transformEntry(raw),
   }));
 }
+
+type RawCollectionItem = {
+  added_at: string;
+  coffee: {
+    id: string;
+    name: string;
+    brand: string;
+    avg_rating: number | null;
+  } | null;
+};
+
+export type CollectionCoffeeItem = {
+  id: string;
+  name: string;
+  brand: string;
+  avg_rating: number | null;
+  added_at: string;
+};
+
+export async function getCollectionItems(
+  supabase: Supabase,
+  collectionId: string
+): Promise<CollectionCoffeeItem[]> {
+  const { data, error } = await supabase
+    .from("collection_items")
+    .select("added_at, coffee:coffees(id, name, brand, avg_rating)")
+    .eq("collection_id", collectionId)
+    .order("added_at", { ascending: false });
+
+  if (error || !data) return [];
+
+  return (data as unknown as RawCollectionItem[])
+    .map((item) =>
+      item.coffee ? { ...item.coffee, added_at: item.added_at } : null
+    )
+    .filter((c): c is CollectionCoffeeItem => c !== null);
+}
