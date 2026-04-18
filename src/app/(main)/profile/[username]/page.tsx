@@ -136,11 +136,12 @@ export default async function ProfilePage({ params }: Props) {
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {entries.map((entry) => (
+            {entries.map((entry, index) => (
               <CoffeeCard
                 key={entry.id}
                 entry={entry}
                 currentUserId={currentUser?.id}
+                priority={index === 0}
               />
             ))}
           </div>
