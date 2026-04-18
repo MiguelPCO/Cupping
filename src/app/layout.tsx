@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Outfit, JetBrains_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -62,6 +63,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-cream text-espresso font-body antialiased">
         {children}
+        <Toaster position="bottom-center" richColors={false} />
       </body>
     </html>
   );

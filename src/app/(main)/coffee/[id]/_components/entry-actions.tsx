@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { deleteCoffeeEntry } from "@/lib/actions/coffee";
 
@@ -18,7 +19,11 @@ export function EntryActions({ entryId }: EntryActionsProps) {
     if (!confirm("¿Eliminar esta reseña? Esta acción no se puede deshacer.")) return;
     startTransition(async () => {
       const result = await deleteCoffeeEntry(entryId);
-      if (!result.error) router.push("/dashboard");
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      router.push("/dashboard");
     });
   };
 

@@ -21,6 +21,7 @@ import {
 } from "@/lib/utils";
 import type { Coffee } from "@/types/coffee";
 import { ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 import { RatingCups } from "./rating-cups";
 import { FlavorTag as FlavorTagChip } from "./flavor-tag";
 import { SubRatingInput } from "./sub-rating-input";
@@ -121,12 +122,24 @@ export function CoffeeForm({
 
     const payload: CoffeeFormInput = { ...data, photo_url };
 
-    if (mode === "edit" && entryId) {
-      const result = await updateMutation.mutateAsync({ entryId, data: payload });
-      if (result.data) router.push(`/coffee/${result.data.entryId}`);
-    } else {
-      const result = await createMutation.mutateAsync(payload);
-      if (result.data) router.push(`/coffee/${result.data.entryId}`);
+    try {
+      if (mode === "edit" && entryId) {
+        const result = await updateMutation.mutateAsync({ entryId, data: payload });
+        if (result.error) {
+          toast.error(result.error);
+          return;
+        }
+        if (result.data) router.push(`/coffee/${result.data.entryId}`);
+      } else {
+        const result = await createMutation.mutateAsync(payload);
+        if (result.error) {
+          toast.error(result.error);
+          return;
+        }
+        if (result.data) router.push(`/coffee/${result.data.entryId}`);
+      }
+    } catch {
+      toast.error("Error inesperado. Por favor, inténtalo de nuevo.");
     }
   };
 
