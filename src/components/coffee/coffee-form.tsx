@@ -185,10 +185,11 @@ export function CoffeeForm({
               <Input
                 {...register("name")}
                 placeholder="Ej. Ethiopian Yirgacheffe"
+                aria-describedby={errors.name ? "name-error" : undefined}
                 className={cn(errors.name && "border-destructive/50")}
               />
               {errors.name && (
-                <p className="text-xs text-destructive">{errors.name.message}</p>
+                <p id="name-error" className="text-xs text-destructive">{errors.name.message}</p>
               )}
             </div>
 
@@ -199,10 +200,11 @@ export function CoffeeForm({
               <Input
                 {...register("brand")}
                 placeholder="Ej. Stumptown, Lavazza…"
+                aria-describedby={errors.brand ? "brand-error" : undefined}
                 className={cn(errors.brand && "border-destructive/50")}
               />
               {errors.brand && (
-                <p className="text-xs text-destructive">{errors.brand.message}</p>
+                <p id="brand-error" className="text-xs text-destructive">{errors.brand.message}</p>
               )}
             </div>
 
@@ -344,8 +346,12 @@ export function CoffeeForm({
               {...register("notes")}
               placeholder="Describe lo que sientes al tomar este café…"
               rows={3}
+              aria-describedby={errors.notes ? "notes-error" : undefined}
               className="w-full px-3 py-2 rounded-lg border border-parchment bg-white text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300 resize-none"
             />
+            {errors.notes && (
+              <p id="notes-error" className="text-xs text-destructive">{errors.notes.message}</p>
+            )}
           </div>
         </div>
       )}
