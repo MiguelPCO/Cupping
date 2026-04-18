@@ -166,11 +166,19 @@ export async function updateCoffeeEntry(
   if (updateError) return { error: "Error al actualizar la reseña" };
 
   // Replace flavor tags
-  await supabase.from("entry_flavor_tags").delete().eq("entry_id", entryId);
+  const { error: deleteTagsError } = await supabase
+    .from("entry_flavor_tags")
+    .delete()
+    .eq("entry_id", entryId);
+
+  if (deleteTagsError) return { error: "Error al actualizar las notas de sabor" };
+
   if (flavor_tags.length > 0) {
-    await supabase
+    const { error: insertTagsError } = await supabase
       .from("entry_flavor_tags")
       .insert(flavor_tags.map((tag) => ({ entry_id: entryId, tag })));
+
+    if (insertTagsError) return { error: "Error al guardar las notas de sabor" };
   }
 
   revalidatePath("/dashboard");
