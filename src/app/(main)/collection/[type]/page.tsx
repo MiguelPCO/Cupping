@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { COLLECTION_TYPES } from "@/types/coffee";
@@ -35,7 +35,7 @@ export default async function CollectionTypePage({ params }: Props) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return null;
+  if (!user) redirect("/login");
 
   const { data: collection } = await supabase
     .from("collections")

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Home, Heart, BookmarkPlus, CheckCircle } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -22,7 +23,7 @@ export default async function CollectionPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return null;
+  if (!user) redirect("/login");
 
   const { data: collections } = await supabase
     .from("collections")
