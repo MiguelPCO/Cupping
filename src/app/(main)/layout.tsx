@@ -4,6 +4,7 @@ import { QueryProvider } from "./_components/query-provider";
 import { Header } from "./_components/header";
 import { Sidebar } from "./_components/sidebar";
 import { MobileBottomNav } from "./_components/mobile-bottom-nav";
+import { AddCoffeeModal } from "./_components/add-coffee-modal";
 
 export default async function MainLayout({
   children,
@@ -46,6 +47,7 @@ export default async function MainLayout({
           </main>
         </div>
         <MobileBottomNav />
+        <AddCoffeeModal />
       </div>
     </QueryProvider>
   );

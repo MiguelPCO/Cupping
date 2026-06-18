@@ -6,7 +6,6 @@ import { Pencil, Trash2 } from "lucide-react";
 import { RatingCups } from "./rating-cups";
 import { FlavorTag } from "./flavor-tag";
 import { RoastBadge } from "./roast-badge";
-import { BrewMethodIcon } from "./brew-method-icon";
 import { SteamAnimation } from "@/components/ui/steam-animation";
 import { getCoffeeTypeLabel } from "@/lib/utils";
 import type { CoffeeEntryWithCoffee } from "@/types/coffee";
@@ -28,21 +27,21 @@ export function CoffeeCard({
 }: CoffeeCardProps) {
   const { coffee } = entry;
   const isOwner = currentUserId === entry.user_id;
-  const visibleTags = entry.flavor_tags.slice(0, 3);
-  const extraTags = entry.flavor_tags.length - 3;
+  const visibleTags = entry.flavor_tags.slice(0, 2);
+  const extraTags = entry.flavor_tags.length - 2;
 
   return (
-    <div className="bg-white rounded-xl border border-parchment overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
-      {/* Photo */}
-      <Link href={`/coffee/${entry.id}`} className="block">
-        <div className="relative aspect-video overflow-hidden bg-parchment">
+    <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+      {/* Photo wrapper — action buttons sit outside <Link> so they don't navigate */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-linen">
+        <Link href={`/coffee/${entry.id}`} className="absolute inset-0 z-0">
           <SteamAnimation />
           {entry.photo_url ? (
             <Image
               src={entry.photo_url}
               alt={coffee.name}
               fill
-              className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+              className="object-cover"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={priority}
             />
@@ -51,54 +50,59 @@ export function CoffeeCard({
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--color-roast-dark), var(--color-roast-medium))",
+                  "linear-gradient(135deg, var(--color-linen), var(--color-parchment))",
               }}
             />
           )}
-          {coffee.roast_level && (
-            <RoastBadge
-              level={coffee.roast_level}
-              className="absolute bottom-2 left-2"
-            />
-          )}
-        </div>
-      </Link>
+        </Link>
 
-      {/* Content */}
-      <div className="p-4 space-y-2.5">
-        <div className="flex items-start justify-between gap-2">
-          <Link href={`/coffee/${entry.id}`} className="flex-1 min-w-0">
-            <h3 className="font-display text-lg text-espresso leading-tight truncate">
-              {coffee.name}
-            </h3>
-            <p className="text-xs text-espresso-light truncate mt-0.5">
-              {coffee.brand} · {getCoffeeTypeLabel(coffee.type)}
-            </p>
-          </Link>
+        {/* Bottom gradient for badge legibility (only with photo) */}
+        {entry.photo_url && (
+          <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/35 to-transparent pointer-events-none z-10" />
+        )}
 
-          {isOwner && (onEdit || onDelete) && (
-            <div className="flex gap-1 shrink-0">
-              {onEdit && (
-                <button
-                  onClick={() => onEdit(entry.id)}
-                  aria-label="Editar reseña"
-                  className="flex items-center justify-center size-10 rounded-md text-espresso-light hover:bg-linen hover:text-espresso transition-colors"
-                >
-                  <Pencil className="size-3.5" />
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  onClick={() => onDelete(entry.id)}
-                  aria-label="Eliminar reseña"
-                  className="flex items-center justify-center size-10 rounded-md text-espresso-light hover:bg-destructive/5 hover:text-destructive transition-colors"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+        {coffee.roast_level && (
+          <RoastBadge
+            level={coffee.roast_level}
+            className="absolute bottom-2.5 left-2.5 z-20"
+          />
+        )}
+
+        {/* Always-visible edit/delete — outside Link, no navigation on click */}
+        {isOwner && (onEdit || onDelete) && (
+          <div className="absolute bottom-2.5 right-2.5 flex gap-1 z-20">
+            {onEdit && (
+              <button
+                onClick={() => onEdit(entry.id)}
+                aria-label="Editar reseña"
+                className="flex items-center justify-center size-7 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-black/75 transition-colors"
+              >
+                <Pencil className="size-3" />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                onClick={() => onDelete(entry.id)}
+                aria-label="Eliminar reseña"
+                className="flex items-center justify-center size-7 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-destructive/80 transition-colors"
+              >
+                <Trash2 className="size-3" />
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Card body */}
+      <div className="p-3.5 space-y-2">
+        <Link href={`/coffee/${entry.id}`} className="block">
+          <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1 truncate">
+            {coffee.brand} · {getCoffeeTypeLabel(coffee.type)}
+          </p>
+          <h3 className="font-display text-xl text-espresso leading-tight truncate">
+            {coffee.name}
+          </h3>
+        </Link>
 
         <RatingCups value={entry.rating_global} readOnly size="sm" showValue />
 
@@ -113,14 +117,6 @@ export function CoffeeCard({
               </span>
             )}
           </div>
-        )}
-
-        {entry.brew_method && <BrewMethodIcon method={entry.brew_method} />}
-
-        {entry.notes && (
-          <p className="text-xs text-espresso-light line-clamp-2 leading-relaxed">
-            {entry.notes}
-          </p>
         )}
       </div>
     </div>

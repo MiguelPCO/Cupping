@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { EmptyState, RatingCups } from "@/components/coffee";
+import { useUIStore } from "@/lib/stores";
 import { Coffee } from "lucide-react";
 
 interface CoffeeItem {
@@ -22,6 +23,7 @@ export function CollectionCoffeeList({
   collectionLabel,
 }: CollectionCoffeeListProps) {
   const [search, setSearch] = useState("");
+  const { setAddCoffeeModal } = useUIStore();
 
   const filtered = search
     ? coffees.filter(
@@ -56,6 +58,11 @@ export function CollectionCoffeeList({
             coffees.length === 0
               ? `Aún no tienes cafés en "${collectionLabel}".`
               : "Prueba con otro término de búsqueda."
+          }
+          action={
+            coffees.length === 0
+              ? { label: "Añadir café", onClick: () => setAddCoffeeModal(true) }
+              : undefined
           }
         />
       ) : (

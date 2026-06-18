@@ -52,6 +52,7 @@ interface CoffeeFormProps {
   defaultValues?: Partial<CoffeeFormInput>;
   entryId?: string;
   preselectedCoffee?: Coffee | null;
+  onSuccess?: () => void;
 }
 
 export function CoffeeForm({
@@ -59,6 +60,7 @@ export function CoffeeForm({
   defaultValues,
   entryId,
   preselectedCoffee,
+  onSuccess,
 }: CoffeeFormProps) {
   const initialStep = preselectedCoffee ? 2 : 1;
   const [step, setStep] = useState(initialStep);
@@ -129,14 +131,26 @@ export function CoffeeForm({
           toast.error(result.error);
           return;
         }
-        if (result.data) router.push(`/coffee/${result.data.entryId}`);
+        if (result.data) {
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            router.push(`/coffee/${result.data.entryId}`);
+          }
+        }
       } else {
         const result = await createMutation.mutateAsync(payload);
         if (result.error) {
           toast.error(result.error);
           return;
         }
-        if (result.data) router.push(`/coffee/${result.data.entryId}`);
+        if (result.data) {
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            router.push(`/coffee/${result.data.entryId}`);
+          }
+        }
       }
     } catch {
       toast.error("Error inesperado. Por favor, inténtalo de nuevo.");

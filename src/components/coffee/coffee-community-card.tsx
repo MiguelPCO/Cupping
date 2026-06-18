@@ -10,55 +10,76 @@ interface CoffeeCommunityCardProps {
 
 export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-parchment overflow-hidden">
-      <div className="relative aspect-video bg-linen">
+    <Link
+      href={`/coffee/new?coffeeId=${coffee.id}`}
+      className="block bg-white rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
+    >
+      {/* Photo — 4:3, overlaid badges */}
+      <div className="relative aspect-[4/3] bg-linen overflow-hidden">
         {coffee.image_url ? (
           <Image
             src={coffee.image_url}
             alt={coffee.name}
             fill
             className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="size-full flex items-center justify-center">
-            <span className="text-4xl">☕</span>
+            <span className="text-4xl opacity-30">☕</span>
           </div>
         )}
-        {coffee.roast_level && (
-          <div className="absolute top-2 left-2">
-            <RoastBadge level={coffee.roast_level} />
+
+        {/* Bottom gradient for overlay legibility */}
+        {coffee.image_url && (
+          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+        )}
+
+        {/* Rating overlay — top right */}
+        {coffee.avg_rating !== null && (
+          <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm rounded-lg px-2 py-1 z-10">
+            <RatingCups
+              value={coffee.avg_rating}
+              readOnly
+              size="sm"
+              showValue={false}
+            />
+            <span className="font-mono text-[11px] font-medium text-white tabular-nums">
+              {coffee.avg_rating.toFixed(1)}
+            </span>
           </div>
+        )}
+
+        {/* Review count — bottom right */}
+        {coffee.total_reviews > 0 && (
+          <div className="absolute bottom-2 right-2 bg-black/55 backdrop-blur-sm rounded px-1.5 py-0.5 z-10">
+            <span className="text-[10.5px] text-white/85">
+              {coffee.total_reviews} reseña{coffee.total_reviews !== 1 ? "s" : ""}
+            </span>
+          </div>
+        )}
+
+        {/* Roast badge — bottom left */}
+        {coffee.roast_level && (
+          <RoastBadge
+            level={coffee.roast_level}
+            className="absolute bottom-2 left-2 z-10"
+          />
         )}
       </div>
 
-      <div className="p-3">
-        <p className="text-xs text-espresso-light font-medium uppercase tracking-wide truncate">
+      {/* Body */}
+      <div className="p-3 pb-3.5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1 truncate">
           {coffee.brand}
         </p>
         <h3 className="font-display text-base text-espresso leading-tight truncate">
           {coffee.name}
         </h3>
-
-        <div className="flex items-center gap-2 mt-2">
-          {coffee.avg_rating !== null ? (
-            <>
-              <RatingCups value={coffee.avg_rating} readOnly size="sm" />
-              <span className="text-xs text-espresso-light">
-                ({coffee.total_reviews})
-              </span>
-            </>
-          ) : (
-            <span className="text-xs text-parchment">Sin reseñas aún</span>
-          )}
-        </div>
-
-        <Link
-          href={`/coffee/new?coffeeId=${coffee.id}`}
-          className="mt-3 flex items-center justify-center w-full rounded-lg border border-copper-300 text-copper-600 text-xs font-medium py-1.5 hover:bg-copper-50 transition-colors"
-        >
-          Agregar mi reseña
-        </Link>
+        {coffee.avg_rating === null && (
+          <p className="text-xs text-parchment mt-1">Sin reseñas aún</p>
+        )}
       </div>
-    </div>
+    </Link>
   );
 }
