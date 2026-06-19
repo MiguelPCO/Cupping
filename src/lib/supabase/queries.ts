@@ -259,6 +259,73 @@ export type CollectionCoffeeItem = {
   added_at: string;
 };
 
+export type CoffeeStats = {
+  flavor_tags: { tag: FlavorTag; count: number }[];
+  brew_methods: { method: BrewMethod; count: number }[];
+  sub_ratings: {
+    aroma: number | null;
+    body: number | null;
+    acidity: number | null;
+    sweetness: number | null;
+    bitterness: number | null;
+    aftertaste: number | null;
+  } | null;
+  rating_distribution: { bucket: number; count: number }[];
+};
+
+export async function getCoffeeStats(
+  supabase: Supabase,
+  coffeeId: string
+): Promise<CoffeeStats> {
+  const [flavors, brews, subs, dist] = await Promise.all([
+    supabase
+      .from("coffee_flavor_stats")
+      .select("tag, mention_count")
+      .eq("coffee_id", coffeeId)
+      .order("mention_count", { ascending: false }),
+    supabase
+      .from("coffee_brew_stats")
+      .select("brew_method, usage_count")
+      .eq("coffee_id", coffeeId)
+      .order("usage_count", { ascending: false }),
+    supabase
+      .from("coffee_subrating_avgs")
+      .select("avg_aroma, avg_body, avg_acidity, avg_sweetness, avg_bitterness, avg_aftertaste")
+      .eq("coffee_id", coffeeId)
+      .maybeSingle(),
+    supabase
+      .from("coffee_rating_distribution")
+      .select("bucket, count")
+      .eq("coffee_id", coffeeId)
+      .order("bucket", { ascending: false }),
+  ]);
+
+  return {
+    flavor_tags: (flavors.data ?? []).map((r) => ({
+      tag: r.tag as FlavorTag,
+      count: r.mention_count,
+    })),
+    brew_methods: (brews.data ?? []).map((r) => ({
+      method: r.brew_method as BrewMethod,
+      count: r.usage_count,
+    })),
+    sub_ratings: subs.data
+      ? {
+          aroma: subs.data.avg_aroma,
+          body: subs.data.avg_body,
+          acidity: subs.data.avg_acidity,
+          sweetness: subs.data.avg_sweetness,
+          bitterness: subs.data.avg_bitterness,
+          aftertaste: subs.data.avg_aftertaste,
+        }
+      : null,
+    rating_distribution: (dist.data ?? []).map((r) => ({
+      bucket: r.bucket,
+      count: r.count,
+    })),
+  };
+}
+
 export async function getCollectionItems(
   supabase: Supabase,
   collectionId: string

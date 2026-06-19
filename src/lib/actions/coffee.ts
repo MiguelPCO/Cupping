@@ -47,8 +47,8 @@ export async function createCoffeeEntry(
   const { data: existing } = await supabase
     .from("coffees")
     .select("id")
-    .eq("name", name)
-    .eq("brand", brand)
+    .ilike("name", name)
+    .ilike("brand", brand)
     .eq("type", type)
     .maybeSingle();
 

@@ -289,7 +289,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      coffee_flavor_stats: {
+        Row: {
+          tag: string
+          coffee_id: string
+          mention_count: number
+        }
+        Relationships: []
+      }
+      coffee_brew_stats: {
+        Row: {
+          brew_method: string
+          coffee_id: string
+          usage_count: number
+        }
+        Relationships: []
+      }
+      coffee_subrating_avgs: {
+        Row: {
+          coffee_id: string
+          avg_aroma: number | null
+          avg_body: number | null
+          avg_acidity: number | null
+          avg_sweetness: number | null
+          avg_bitterness: number | null
+          avg_aftertaste: number | null
+        }
+        Relationships: []
+      }
+      coffee_rating_distribution: {
+        Row: {
+          coffee_id: string
+          bucket: number
+          count: number
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

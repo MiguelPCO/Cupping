@@ -4,7 +4,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { User, PenLine } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { getCoffeeById, getEntriesForCoffee } from "@/lib/supabase/queries";
+import { getCoffeeById, getEntriesForCoffee, getCoffeeStats } from "@/lib/supabase/queries";
+import { CoffeeCommunityStats } from "./_components/coffee-community-stats";
 import { RatingCups } from "@/components/coffee/rating-cups";
 import { FlavorTag } from "@/components/coffee/flavor-tag";
 import { RoastBadge } from "@/components/coffee/roast-badge";
@@ -30,9 +31,10 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
   const { coffeeId } = await params;
   const supabase = await createServerSupabaseClient();
 
-  const [coffee, entries] = await Promise.all([
+  const [coffee, entries, stats] = await Promise.all([
     getCoffeeById(supabase, coffeeId),
     getEntriesForCoffee(supabase, coffeeId),
+    getCoffeeStats(supabase, coffeeId),
   ]);
 
   if (!coffee) notFound();
@@ -82,6 +84,9 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
           <p className="text-sm text-parchment">Sin reseñas aún</p>
         )}
       </div>
+
+      {/* Community stats */}
+      <CoffeeCommunityStats stats={stats} totalReviews={coffee.total_reviews} />
 
       {/* CTA */}
       <Link
