@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { User } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -58,10 +59,11 @@ export default async function ProfilePage({ params }: Props) {
       <div className="flex items-start gap-4 mb-6">
         <div className="size-20 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">
           {profile.avatar_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={profile.avatar_url}
               alt={profile.display_name}
+              width={80}
+              height={80}
               className="size-full object-cover"
             />
           ) : (

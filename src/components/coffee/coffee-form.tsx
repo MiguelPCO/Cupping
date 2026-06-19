@@ -163,20 +163,25 @@ export function CoffeeForm({
       className="max-w-xl mx-auto px-4 py-6"
     >
       {/* Step progress */}
-      <div className="flex gap-2 justify-center mb-8" aria-hidden="true">
-        {[1, 2, 3, 4].map((s) => (
-          <div
-            key={s}
-            className={cn(
-              "h-1.5 rounded-full transition-all duration-300",
-              s === step
-                ? "w-8 bg-copper-500"
-                : s < step
-                  ? "w-4 bg-copper-300"
-                  : "w-4 bg-parchment"
-            )}
-          />
-        ))}
+      <div className="flex flex-col items-center gap-2 mb-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-parchment">
+          Paso {step} de 4
+        </p>
+        <div className="flex gap-2" aria-hidden="true">
+          {[1, 2, 3, 4].map((s) => (
+            <div
+              key={s}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                s === step
+                  ? "w-8 bg-copper-500"
+                  : s < step
+                    ? "w-4 bg-copper-300"
+                    : "w-4 bg-parchment"
+              )}
+            />
+          ))}
+        </div>
       </div>
 
       {/* ── Step 1: Info básica ── */}
@@ -334,7 +339,7 @@ export function CoffeeForm({
 
           <fieldset className="border-0 p-0 m-0 min-w-0 space-y-4 pt-2">
             <legend className="text-xs font-medium uppercase tracking-wider text-parchment w-full">
-              Desglose de notas{" "}
+              Puntuaciones detalladas{" "}
               <span className="normal-case">(opcional)</span>
             </legend>
             <div className="space-y-4">

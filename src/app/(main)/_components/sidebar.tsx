@@ -7,7 +7,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Inicio", icon: LayoutDashboard },
   { href: "/collection", label: "Colección", icon: Library },
   { href: "/explore", label: "Explorar", icon: Compass },
   { href: "/profile", label: "Mi perfil", icon: User },

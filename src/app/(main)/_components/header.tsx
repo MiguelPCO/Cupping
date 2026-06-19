@@ -52,9 +52,9 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
         <Menu className="size-5" />
       </button>
 
-      <span className="font-display text-xl text-espresso select-none">
+      <Link href="/dashboard" className="font-display text-xl text-espresso select-none hover:opacity-80 transition-opacity">
         CUPPING
-      </span>
+      </Link>
 
       <div className="ml-auto flex items-center gap-2">
         <Button

@@ -129,6 +129,56 @@ export async function getCoffeeCatalog(
   return data ?? [];
 }
 
+export async function getCoffeeById(
+  supabase: Supabase,
+  coffeeId: string
+) {
+  const { data, error } = await supabase
+    .from("coffees")
+    .select("*")
+    .eq("id", coffeeId)
+    .single();
+  if (error || !data) return null;
+  return data;
+}
+
+type RawPublicEntry = RawEntry & {
+  user: {
+    id: string;
+    username: string;
+    display_name: string;
+    avatar_url: string | null;
+  };
+};
+
+export type PublicEntry = CoffeeEntryWithCoffee & {
+  user: {
+    id: string;
+    username: string;
+    display_name: string;
+    avatar_url: string | null;
+  };
+};
+
+export async function getEntriesForCoffee(
+  supabase: Supabase,
+  coffeeId: string
+): Promise<PublicEntry[]> {
+  const { data, error } = await supabase
+    .from("coffee_entries")
+    .select(
+      "*, coffee:coffees(*), flavor_tags:entry_flavor_tags(tag), user:users!coffee_entries_user_id_fkey(id, username, display_name, avatar_url)"
+    )
+    .eq("coffee_id", coffeeId)
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return [];
+  return (data as unknown as RawPublicEntry[]).map((raw) => ({
+    ...transformEntry(raw),
+    user: raw.user,
+  }));
+}
+
 export async function getUserProfile(supabase: Supabase, username: string) {
   const { data, error } = await supabase
     .from("users")

@@ -47,6 +47,25 @@ export function LoginForm() {
     // browser redirects — loading state stays until navigation
   };
 
+  // ── Forgot Password ────────────────────────────────────
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setFeedback({ type: "error", text: "Introduce tu email primero." });
+      return;
+    }
+    setEmailLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
+    });
+    setEmailLoading(false);
+    if (error) {
+      setFeedback({ type: "error", text: error.message });
+    } else {
+      setFeedback({ type: "success", text: "Revisa tu email para restablecer tu contraseña." });
+    }
+  };
+
   // ── Email / Password ───────────────────────────────────
   const handleEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,7 +178,7 @@ export function LoginForm() {
             />
             <Input
               type="password"
-              placeholder="Contraseña (mínimo 6 caracteres)"
+              placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -169,6 +188,9 @@ export function LoginForm() {
               }
               disabled={isAnyLoading}
             />
+            {mode === "signup" && (
+              <p className="text-xs text-parchment">Mínimo 6 caracteres</p>
+            )}
           </div>
 
           {feedback && (
@@ -195,6 +217,17 @@ export function LoginForm() {
                 ? "Iniciar sesión"
                 : "Crear cuenta"}
           </Button>
+
+          {mode === "signin" && (
+            <button
+              type="button"
+              onClick={() => handleForgotPassword()}
+              disabled={isAnyLoading}
+              className="w-full text-center text-xs text-espresso-light hover:text-espresso transition-colors"
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          )}
         </form>
 
         {/* Toggle sign-in / sign-up */}
@@ -204,7 +237,7 @@ export function LoginForm() {
             setMode((m) => (m === "signin" ? "signup" : "signin"));
             setFeedback(null);
           }}
-          className="w-full text-center text-xs text-espresso-light hover:text-espresso transition-colors"
+          className="w-full text-center text-sm text-espresso-light hover:text-espresso transition-colors"
         >
           {mode === "signin"
             ? "¿No tienes cuenta? Crear cuenta"
@@ -212,7 +245,10 @@ export function LoginForm() {
         </button>
 
         <p className="text-center text-xs text-parchment">
-          Al continuar aceptas nuestros términos de servicio
+          Al continuar aceptas nuestros{" "}
+          <a href="/terms" className="underline hover:text-espresso transition-colors">
+            términos de servicio
+          </a>
         </p>
       </CardContent>
     </Card>

@@ -11,7 +11,7 @@ interface CoffeeCommunityCardProps {
 export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
   return (
     <Link
-      href={`/coffee/new?coffeeId=${coffee.id}`}
+      href={`/explore/${coffee.id}`}
       className="block bg-white rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
     >
       {/* Photo — 4:3, overlaid badges */}
@@ -42,11 +42,8 @@ export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
               value={coffee.avg_rating}
               readOnly
               size="sm"
-              showValue={false}
+              showValue
             />
-            <span className="font-mono text-[11px] font-medium text-white tabular-nums">
-              {coffee.avg_rating.toFixed(1)}
-            </span>
           </div>
         )}
 
@@ -73,7 +70,7 @@ export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
         <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1 truncate">
           {coffee.brand}
         </p>
-        <h3 className="font-display text-base text-espresso leading-tight truncate">
+        <h3 className="font-display text-lg text-espresso leading-tight truncate">
           {coffee.name}
         </h3>
         {coffee.avg_rating === null && (

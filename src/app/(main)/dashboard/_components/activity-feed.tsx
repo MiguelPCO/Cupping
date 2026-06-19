@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { User, ChevronDown, Loader2 } from "lucide-react";
 import { useActivityFeed } from "@/lib/hooks/use-activity-feed";
@@ -53,10 +54,11 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
           <div className="flex items-center gap-2 mb-2">
             <div className="size-7 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">
               {item.user.avatar_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={item.user.avatar_url}
                   alt={item.user.display_name}
+                  width={28}
+                  height={28}
                   className="size-full object-cover"
                 />
               ) : (
@@ -71,7 +73,11 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
                 {item.user.display_name}
               </Link>
               <span className="text-xs text-parchment ml-1">
-                reseñó un café · {timeAgo(item.created_at)}
+                reseñó{" "}
+                <span className="text-espresso-light font-medium">
+                  {item.entry.coffee.name}
+                </span>{" "}
+                · {timeAgo(item.created_at)}
               </span>
             </div>
           </div>

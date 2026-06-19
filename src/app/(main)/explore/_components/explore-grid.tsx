@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, Coffee as CoffeeIcon } from "lucide-react";
 import { CoffeeCommunityCard } from "@/components/coffee/coffee-community-card";
 import { cn, getCoffeeTypeLabel, getRoastLabel } from "@/lib/utils";
 import { COFFEE_TYPES, ROAST_LEVELS } from "@/types/coffee";
@@ -173,7 +173,7 @@ export function ExploreGrid({ coffees }: ExploreGridProps) {
 
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-4xl mb-4">☕</p>
+          <CoffeeIcon className="size-10 text-parchment mx-auto mb-4" />
           <p className="font-display text-xl text-espresso mb-1">
             {coffees.length === 0 ? "Aún no hay cafés en la comunidad" : "Sin resultados"}
           </p>

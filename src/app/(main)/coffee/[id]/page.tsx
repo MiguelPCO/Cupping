@@ -6,6 +6,7 @@ import { getEntryById } from "@/lib/supabase/queries";
 import { FlavorTag, RoastBadge, BrewMethodIcon } from "@/components/coffee";
 import { RatingCups } from "@/components/coffee";
 import { EntryActions } from "./_components/entry-actions";
+import { BackButton } from "@/components/ui/back-button";
 import { getCoffeeTypeLabel } from "@/lib/utils";
 
 interface Props {
@@ -68,8 +69,9 @@ export default async function CoffeeDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
+      <BackButton className="mb-4" />
       {/* Photo */}
-      <div className="relative aspect-video rounded-xl overflow-hidden bg-parchment mb-6">
+      <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-parchment mb-6">
         {entry.photo_url ? (
           <Image
             src={entry.photo_url}

@@ -40,7 +40,7 @@ export function MobileBottomNav() {
               aria-current={active ? "page" : undefined}
             >
               <Icon className="size-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <span className="text-[11px] font-medium">{label}</span>
             </Link>
           );
         })}
@@ -69,7 +69,7 @@ export function MobileBottomNav() {
               aria-current={active ? "page" : undefined}
             >
               <Icon className="size-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <span className="text-[11px] font-medium">{label}</span>
             </Link>
           );
         })}

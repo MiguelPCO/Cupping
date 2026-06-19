@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { useCoffeeEntries } from "@/lib/hooks";
+import { toast } from "sonner";
+import { useCoffeeEntries, useDeleteCoffeeEntry } from "@/lib/hooks";
 import { capitalize } from "@/lib/utils";
 import { useDashboardStats } from "@/lib/hooks/use-dashboard-stats";
 import { CoffeeCard, CoffeeCardSkeleton } from "@/components/coffee";
@@ -47,9 +49,20 @@ export function DashboardShell({
   collections,
   itemCounts,
 }: DashboardShellProps) {
+  const router = useRouter();
   const { data: entries = [], isLoading } = useCoffeeEntries(userId);
+  const deleteMutation = useDeleteCoffeeEntry(userId);
   const stats = useDashboardStats(entries);
   const recentEntries = entries.slice(0, RECENT_LIMIT);
+
+  const handleEdit = (entryId: string) => router.push(`/coffee/${entryId}/edit`);
+
+  const handleDelete = (entryId: string) => {
+    if (!confirm("¿Eliminar esta reseña? Esta acción no se puede deshacer.")) return;
+    deleteMutation.mutate(entryId, {
+      onError: () => toast.error("No se pudo eliminar la reseña."),
+    });
+  };
 
   return (
     <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-6 lg:items-start">
@@ -114,6 +127,8 @@ export function DashboardShell({
                   key={entry.id}
                   entry={entry}
                   currentUserId={userId}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
                   priority={i === 0}
                 />
               ))}
