@@ -3,12 +3,10 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { User } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { getUserProfile, getEntriesForUser } from "@/lib/supabase/queries";
-import { CoffeeCard } from "@/components/coffee/coffee-card";
-import { EmptyState } from "@/components/coffee/empty-state";
+import { getUserProfile, getEntriesForUser, getCollectionItems } from "@/lib/supabase/queries";
 import { FollowButton } from "./_components/follow-button";
 import { ProfileEditForm } from "./_components/profile-edit-form";
-import { Library } from "lucide-react";
+import { ProfileTabs } from "./_components/profile-tabs";
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -37,8 +35,8 @@ export default async function ProfilePage({ params }: Props) {
 
   const isOwnProfile = currentUser?.id === profile.id;
 
-  // Fetch entries + follow counts in parallel
-  const [entries, followersResult, followingResult] = await Promise.all([
+  // Fetch entries + follow counts + favorites collection in parallel
+  const [entries, followersResult, followingResult, favoritesCollection] = await Promise.all([
     getEntriesForUser(supabase, profile.id),
     supabase
       .from("follows")
@@ -48,10 +46,20 @@ export default async function ProfilePage({ params }: Props) {
       .from("follows")
       .select("following_id", { count: "exact", head: true })
       .eq("follower_id", profile.id),
+    supabase
+      .from("collections")
+      .select("id")
+      .eq("user_id", profile.id)
+      .eq("type", "favorites")
+      .maybeSingle(),
   ]);
 
   const followersCount = followersResult.count ?? 0;
   const followingCount = followingResult.count ?? 0;
+
+  const favoriteItems = favoritesCollection.data
+    ? await getCollectionItems(supabase, favoritesCollection.data.id)
+    : [];
 
   return (
     <div className="px-4 py-6 max-w-2xl mx-auto">
@@ -118,37 +126,14 @@ export default async function ProfilePage({ params }: Props) {
         )}
       </div>
 
-      {/* Reviews */}
-      <div>
-        <h2 className="font-display text-xl text-espresso mb-4">Reseñas</h2>
-        {entries.length === 0 ? (
-          <EmptyState
-            icon={Library}
-            title="Sin reseñas aún"
-            description={
-              isOwnProfile
-                ? "Comienza registrando tu primer café"
-                : `${profile.display_name} aún no tiene reseñas`
-            }
-            action={
-              isOwnProfile
-                ? { label: "Añadir reseña", href: "/coffee/new" }
-                : undefined
-            }
-          />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {entries.map((entry, index) => (
-              <CoffeeCard
-                key={entry.id}
-                entry={entry}
-                currentUserId={currentUser?.id}
-                priority={index === 0}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Reviews + Favorites */}
+      <ProfileTabs
+        entries={entries}
+        favoriteItems={favoriteItems}
+        currentUserId={currentUser?.id}
+        isOwnProfile={isOwnProfile}
+        profileDisplayName={profile.display_name}
+      />
     </div>
   );
 }
