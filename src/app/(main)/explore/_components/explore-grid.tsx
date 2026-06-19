@@ -11,14 +11,17 @@ type SortOption = "rating" | "recent";
 
 interface ExploreGridProps {
   coffees: Coffee[];
+  reviewedCoffeeIds?: string[];
 }
 
-export function ExploreGrid({ coffees }: ExploreGridProps) {
+export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProps) {
   const [search, setSearch] = useState("");
   const [type, setType] = useState<CoffeeType | null>(null);
   const [roast, setRoast] = useState<RoastLevel | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>("rating");
   const [showFilters, setShowFilters] = useState(false);
+
+  const reviewedSet = useMemo(() => new Set(reviewedCoffeeIds), [reviewedCoffeeIds]);
 
   const activeFilterCount = (type ? 1 : 0) + (roast ? 1 : 0);
 
@@ -186,7 +189,11 @@ export function ExploreGrid({ coffees }: ExploreGridProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((coffee) => (
-            <CoffeeCommunityCard key={coffee.id} coffee={coffee} />
+            <CoffeeCommunityCard
+              key={coffee.id}
+              coffee={coffee}
+              isReviewed={reviewedSet.has(coffee.id)}
+            />
           ))}
         </div>
       )}
