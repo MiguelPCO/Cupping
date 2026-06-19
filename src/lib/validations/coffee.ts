@@ -30,6 +30,9 @@ export const coffeeFormSchema = z.object({
     ])
     .optional(),
   photo_url: z.string().optional(),
+  collection_types: z
+    .array(z.enum(["at_home", "favorites", "to_try", "tried"]))
+    .optional(),
 });
 
 export type CoffeeFormInput = z.infer<typeof coffeeFormSchema>;

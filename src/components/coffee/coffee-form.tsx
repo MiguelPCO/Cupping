@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -19,8 +19,8 @@ import {
   getBrewMethodLabel,
   cn,
 } from "@/lib/utils";
-import type { Coffee } from "@/types/coffee";
-import { ChevronDown, Loader2 } from "lucide-react";
+import type { Coffee, CollectionType } from "@/types/coffee";
+import { ChevronDown, Loader2, Check, Home, Heart, BookmarkPlus, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { RatingCups } from "./rating-cups";
 import { FlavorTag as FlavorTagChip } from "./flavor-tag";
@@ -30,6 +30,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateCoffeeEntry, useUpdateCoffeeEntry, useCurrentUser } from "@/lib/hooks";
 import { uploadCoffeePhoto } from "@/lib/supabase/storage";
+
+const COLLECTION_OPTIONS: {
+  type: CollectionType;
+  label: string;
+  description: string;
+  icon: React.ElementType;
+}[] = [
+  { type: "at_home",   label: "Lo tengo en casa",   description: "Tienes este café actualmente",    icon: Home },
+  { type: "favorites", label: "Es mi favorito",      description: "Uno de los mejores que has probado", icon: Heart },
+  { type: "tried",     label: "Lo probé fuera",      description: "Lo cataste en un bar o tienda",  icon: CheckCircle },
+  { type: "to_try",    label: "Quiero probarlo",     description: "Lo tienes en tu lista de deseos", icon: BookmarkPlus },
+];
 
 const ROAST_BG: Record<string, string> = {
   light: "bg-roast-light",
@@ -102,6 +114,7 @@ export function CoffeeForm({
   const currentRoast = watch("roast_level");
   const currentBrewMethod = watch("brew_method");
   const currentFlavors = watch("flavor_tags");
+  const currentCollectionTypes = watch("collection_types") ?? [];
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   const goNext = async () => {
@@ -111,7 +124,7 @@ export function CoffeeForm({
     };
     const fields = stepFields[step];
     const valid = fields ? await trigger(fields) : true;
-    if (valid) setStep((s) => Math.min(s + 1, 4));
+    if (valid) setStep((s) => Math.min(s + 1, 5));
   };
 
   const onSubmit = async (data: CoffeeFormInput) => {
@@ -165,10 +178,10 @@ export function CoffeeForm({
       {/* Step progress */}
       <div className="flex flex-col items-center gap-2 mb-8">
         <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-parchment">
-          Paso {step} de 4
+          Paso {step} de 5
         </p>
         <div className="flex gap-2" aria-hidden="true">
-          {[1, 2, 3, 4].map((s) => (
+          {[1, 2, 3, 4, 5].map((s) => (
             <div
               key={s}
               className={cn(
@@ -488,6 +501,63 @@ export function CoffeeForm({
         </div>
       )}
 
+      {/* ── Step 5: Colección ── */}
+      {step === 5 && (
+        <div className="space-y-6">
+          <div>
+            <h2 className="font-display text-2xl text-espresso mb-1">
+              ¿Dónde guardas este café?
+            </h2>
+            <p className="text-sm text-espresso-light">
+              Añádelo a tu colección — puedes elegir varios
+            </p>
+          </div>
+          <div className="space-y-2.5">
+            {COLLECTION_OPTIONS.map(({ type, label, description, icon: Icon }) => {
+              const selected = currentCollectionTypes.includes(type);
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => {
+                    const current = currentCollectionTypes;
+                    setValue(
+                      "collection_types",
+                      selected
+                        ? current.filter((t) => t !== type)
+                        : [...current, type]
+                    );
+                  }}
+                  className={cn(
+                    "w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all",
+                    selected
+                      ? "bg-copper-50 border-copper-400"
+                      : "bg-white border-parchment hover:border-copper-300"
+                  )}
+                >
+                  <Icon
+                    className={cn(
+                      "size-5 shrink-0",
+                      selected ? "text-copper-600" : "text-parchment"
+                    )}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-espresso">{label}</p>
+                    <p className="text-xs text-espresso-light">{description}</p>
+                  </div>
+                  {selected && (
+                    <Check className="size-4 text-copper-600 shrink-0" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-xs text-parchment text-center">
+            Puedes saltarte este paso y añadirlo después desde tu colección
+          </p>
+        </div>
+      )}
+
       {/* Navigation */}
       <div className="flex gap-3 mt-8">
         {step > 1 && (
@@ -500,7 +570,7 @@ export function CoffeeForm({
             Atrás
           </Button>
         )}
-        {step < 4 ? (
+        {step < 5 ? (
           <Button
             type="button"
             onClick={goNext}

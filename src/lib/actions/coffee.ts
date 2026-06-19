@@ -104,6 +104,48 @@ export async function createCoffeeEntry(
     if (tagsError) return { error: "Error al guardar las notas de sabor" };
   }
 
+  // Add to user collections
+  const { collection_types } = parsed.data;
+  if (collection_types && collection_types.length > 0) {
+    const COLLECTION_NAMES: Record<string, string> = {
+      at_home: "En casa",
+      favorites: "Favoritos",
+      to_try: "Por probar",
+      tried: "Probados",
+    };
+    for (const colType of collection_types) {
+      let { data: col } = await supabase
+        .from("collections")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("type", colType)
+        .maybeSingle();
+
+      if (!col) {
+        const { data: newCol } = await supabase
+          .from("collections")
+          .insert({
+            user_id: user.id,
+            type: colType,
+            name: COLLECTION_NAMES[colType],
+            is_default: true,
+          })
+          .select("id")
+          .single();
+        col = newCol;
+      }
+
+      if (col) {
+        await supabase
+          .from("collection_items")
+          .upsert(
+            { collection_id: col.id, coffee_id: coffeeId },
+            { onConflict: "collection_id,coffee_id" }
+          );
+      }
+    }
+  }
+
   revalidatePath("/dashboard");
   revalidatePath("/collection");
   return { data: { entryId: entry.id } };
