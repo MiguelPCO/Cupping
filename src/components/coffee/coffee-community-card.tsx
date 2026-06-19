@@ -1,14 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Check } from "lucide-react";
 import type { Coffee } from "@/types/coffee";
 import { RatingCups } from "./rating-cups";
 import { RoastBadge } from "./roast-badge";
 
 interface CoffeeCommunityCardProps {
   coffee: Coffee;
+  isReviewed?: boolean;
 }
 
-export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
+export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommunityCardProps) {
   return (
     <Link
       href={`/explore/${coffee.id}`}
@@ -16,6 +18,13 @@ export function CoffeeCommunityCard({ coffee }: CoffeeCommunityCardProps) {
     >
       {/* Photo — 4:3, overlaid badges */}
       <div className="relative aspect-[4/3] bg-linen overflow-hidden">
+        {/* "Ya la probé" badge — top left */}
+        {isReviewed && (
+          <div className="absolute top-2 left-2 z-10 flex items-center justify-center size-6 rounded-full bg-copper-500 shadow-md">
+            <Check className="size-3.5 text-white" strokeWidth={2.5} />
+          </div>
+        )}
+
         {coffee.image_url ? (
           <Image
             src={coffee.image_url}
