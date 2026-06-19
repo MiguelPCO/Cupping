@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 import type {
   ActivityItem,
+  Coffee,
   CoffeeEntryWithCoffee,
   CoffeeType,
   BrewMethod,
@@ -324,6 +325,104 @@ export async function getCoffeeStats(
       count: r.count,
     })),
   };
+}
+
+export async function getTrendingCoffees(
+  supabase: Supabase,
+  limit = 6
+): Promise<Coffee[]> {
+  const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { data: entries } = await supabase
+    .from("coffee_entries")
+    .select("coffee_id")
+    .gte("created_at", since);
+
+  if (!entries || entries.length === 0) return [];
+
+  const counts: Record<string, number> = {};
+  for (const { coffee_id } of entries) {
+    counts[coffee_id] = (counts[coffee_id] ?? 0) + 1;
+  }
+
+  const topIds = Object.entries(counts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, limit)
+    .map(([id]) => id);
+
+  const { data } = await supabase
+    .from("coffees")
+    .select("*")
+    .in("id", topIds);
+
+  const coffees = ((data ?? []) as unknown) as Coffee[];
+  return coffees.sort((a, b) => (counts[b.id] ?? 0) - (counts[a.id] ?? 0));
+}
+
+export async function getTopRatedCoffees(
+  supabase: Supabase,
+  minReviews = 3,
+  limit = 9
+): Promise<Coffee[]> {
+  const { data } = await supabase
+    .from("coffees")
+    .select("*")
+    .gte("total_reviews", minReviews)
+    .not("avg_rating", "is", null)
+    .order("avg_rating", { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  return ((data ?? []) as unknown) as Coffee[];
+}
+
+export async function getDistinctOrigins(
+  supabase: Supabase,
+  minCoffees = 1
+): Promise<string[]> {
+  const { data } = await supabase
+    .from("coffees")
+    .select("origin")
+    .not("origin", "is", null);
+
+  if (!data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    if (row.origin) counts[row.origin] = (counts[row.origin] ?? 0) + 1;
+  }
+
+  return Object.entries(counts)
+    .filter(([, count]) => count >= minCoffees)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5)
+    .map(([origin]) => origin);
+}
+
+export async function getCoffeesByOrigin(
+  supabase: Supabase,
+  origin: string,
+  limit = 6
+): Promise<Coffee[]> {
+  const { data } = await supabase
+    .from("coffees")
+    .select("*")
+    .eq("origin", origin)
+    .order("avg_rating", { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  return ((data ?? []) as unknown) as Coffee[];
+}
+
+export async function getUserReviewedCoffeeIds(
+  supabase: Supabase,
+  userId: string
+): Promise<string[]> {
+  const { data } = await supabase
+    .from("coffee_entries")
+    .select("coffee_id")
+    .eq("user_id", userId);
+
+  return (data ?? []).map((r) => r.coffee_id);
 }
 
 export async function getCollectionItems(
