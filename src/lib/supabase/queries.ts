@@ -333,12 +333,13 @@ export async function getTrendingCoffees(
 ): Promise<Coffee[]> {
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const { data: entries } = await supabase
+  const { data: entries, error: entriesError } = await supabase
     .from("coffee_entries")
     .select("coffee_id")
-    .gte("created_at", since);
+    .gte("created_at", since)
+    .limit(500);
 
-  if (!entries || entries.length === 0) return [];
+  if (entriesError || !entries || entries.length === 0) return [];
 
   const counts: Record<string, number> = {};
   for (const { coffee_id } of entries) {
@@ -379,12 +380,13 @@ export async function getDistinctOrigins(
   supabase: Supabase,
   minCoffees = 1
 ): Promise<string[]> {
-  const { data } = await supabase
+  const { data, error: originsError } = await supabase
     .from("coffees")
     .select("origin")
-    .not("origin", "is", null);
+    .not("origin", "is", null)
+    .limit(1000);
 
-  if (!data) return [];
+  if (originsError || !data) return [];
 
   const counts: Record<string, number> = {};
   for (const row of data) {
