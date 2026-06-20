@@ -156,7 +156,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
                     ))}
                   </div>
                 )}
-                <div className="flex justify-end mt-3 pt-2 border-t border-parchment/50">
+                <div className="flex justify-end mt-2 pt-2 border-t border-parchment/50">
                   <LikeButton entryId={entry.id} />
                 </div>
               </div>

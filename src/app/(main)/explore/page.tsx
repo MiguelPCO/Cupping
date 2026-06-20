@@ -29,7 +29,6 @@ export default async function ExplorePage({
   searchParams: Promise<SearchParams>;
 }) {
   const { tab = "cafes" } = await searchParams;
-  const supabase = await createServerSupabaseClient();
 
   // ── Personas tab: skip all heavy coffee queries ──
   if (tab === "personas") {
@@ -48,6 +47,7 @@ export default async function ExplorePage({
   }
 
   // ── Cafés tab (default) ──
+  const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

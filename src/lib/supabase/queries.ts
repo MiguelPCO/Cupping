@@ -508,7 +508,7 @@ export async function searchUsers(
 ): Promise<FollowUser[]> {
   if (!query.trim()) return [];
 
-  const safe = query.replace(/[%_,()]/g, " ").trim();
+  const safe = query.replace(/[%_]/g, "").trim();
   if (!safe) return [];
 
   const { data } = await supabase
