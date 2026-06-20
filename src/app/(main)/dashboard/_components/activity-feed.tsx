@@ -73,9 +73,9 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
               >
                 {item.user.display_name}
               </Link>
-              <span className="text-xs text-parchment ml-1">
+              <span className="text-xs text-espresso-light ml-1">
                 reseñó{" "}
-                <span className="text-espresso-light font-medium">
+                <span className="font-medium">
                   {item.entry.coffee.name}
                 </span>{" "}
                 · {timeAgo(item.created_at)}

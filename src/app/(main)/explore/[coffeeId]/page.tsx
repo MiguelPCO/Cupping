@@ -55,8 +55,8 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
             priority
           />
         ) : (
-          <div className="size-full flex items-center justify-center">
-            <span className="text-6xl opacity-20">☕</span>
+          <div className="size-full flex items-center justify-center bg-gradient-to-br from-copper-50 to-linen">
+            <span className="text-7xl opacity-40">☕</span>
           </div>
         )}
         {coffee.roast_level && (
@@ -131,7 +131,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
                     >
                       {entry.user.display_name}
                     </Link>
-                    <p className="text-xs text-parchment">
+                    <p className="text-xs text-espresso-light">
                       {new Date(entry.created_at).toLocaleDateString("es-ES", {
                         day: "numeric",
                         month: "short",

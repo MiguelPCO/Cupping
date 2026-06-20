@@ -69,7 +69,7 @@ export function CoffeeCommunityStats({
             {stats.flavor_tags.slice(0, 8).map(({ tag, count }) => (
               <div key={tag} className="flex items-center gap-1">
                 <FlavorTag flavor={tag as FlavorTagType} size="sm" />
-                <span className="text-[10px] font-mono text-parchment">×{count}</span>
+                <span className="text-[10px] font-mono text-espresso-light">×{count}</span>
               </div>
             ))}
           </div>

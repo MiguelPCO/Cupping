@@ -34,8 +34,8 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="size-full flex items-center justify-center">
-            <span className="text-4xl opacity-30">☕</span>
+          <div className="size-full flex items-center justify-center bg-gradient-to-br from-copper-50 to-linen">
+            <span className="text-5xl opacity-40">☕</span>
           </div>
         )}
 
