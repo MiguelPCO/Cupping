@@ -11,6 +11,7 @@ import { FlavorTag } from "@/components/coffee/flavor-tag";
 import { RoastBadge } from "@/components/coffee/roast-badge";
 import { BackButton } from "@/components/ui/back-button";
 import { getCoffeeTypeLabel } from "@/lib/utils";
+import { LikeButton } from "@/components/social/like-button";
 
 interface Props {
   params: Promise<{ coffeeId: string }>;
@@ -155,6 +156,9 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
                     ))}
                   </div>
                 )}
+                <div className="flex justify-end mt-3 pt-2 border-t border-parchment/50">
+                  <LikeButton entryId={entry.id} />
+                </div>
               </div>
             ))}
           </div>

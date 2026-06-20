@@ -287,6 +287,39 @@ export type Database = {
           }
         ]
       }
+      entry_likes: {
+        Row: {
+          entry_id: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          entry_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          entry_id?: string
+          user_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entry_likes_entry_id_fkey"
+            columns: ["entry_id"]
+            isOneToOne: false
+            referencedRelation: "coffee_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entry_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       coffee_flavor_stats: {

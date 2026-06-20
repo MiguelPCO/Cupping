@@ -7,6 +7,7 @@ import { useActivityFeed } from "@/lib/hooks/use-activity-feed";
 import { RatingCups } from "@/components/coffee/rating-cups";
 import { FlavorTag } from "@/components/coffee/flavor-tag";
 import { timeAgo } from "@/lib/utils";
+import { LikeButton } from "@/components/social/like-button";
 
 interface ActivityFeedProps {
   userId: string;
@@ -106,6 +107,9 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
               </div>
             </div>
           </Link>
+          <div className="flex justify-end mt-2 pt-2 border-t border-parchment/50">
+            <LikeButton entryId={item.entry.id} />
+          </div>
         </div>
       ))}
 

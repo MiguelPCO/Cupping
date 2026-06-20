@@ -91,3 +91,35 @@ export async function updateProfile(data: {
   revalidatePath("/profile", "layout");
   return { data: undefined };
 }
+
+export async function likeEntry(entryId: string): Promise<ActionResult> {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  const { error } = await supabase
+    .from("entry_likes")
+    .insert({ entry_id: entryId, user_id: user.id });
+
+  if (error) return { error: error.message };
+  return { data: undefined };
+}
+
+export async function unlikeEntry(entryId: string): Promise<ActionResult> {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  const { error } = await supabase
+    .from("entry_likes")
+    .delete()
+    .eq("entry_id", entryId)
+    .eq("user_id", user.id);
+
+  if (error) return { error: error.message };
+  return { data: undefined };
+}

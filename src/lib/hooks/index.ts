@@ -16,3 +16,4 @@ export { useDashboardStats } from "./use-dashboard-stats";
 export type { DashboardStats } from "./use-dashboard-stats";
 export { useIsFollowing, useFollowCounts, useFollowToggle } from "./use-follow";
 export { useActivityFeed } from "./use-activity-feed";
+export { useEntryLike } from "./use-like";
