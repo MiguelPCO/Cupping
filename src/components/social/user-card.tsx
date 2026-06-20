@@ -35,7 +35,7 @@ export function UserCard({ user }: UserCardProps) {
         >
           {user.display_name}
         </Link>
-        <p className="text-xs text-parchment">@{user.username}</p>
+        <p className="text-xs text-espresso-light">@{user.username}</p>
       </div>
       {/* FollowButton internally returns null for own profile via useCurrentUser() */}
       <FollowButton targetId={user.id} targetUsername={user.username} />
