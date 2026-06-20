@@ -10,21 +10,48 @@ import {
 } from "@/lib/supabase/queries";
 import { ExploreGrid } from "./_components/explore-grid";
 import { ExploreSection } from "./_components/explore-section";
+import { ExploreTabBar } from "./_components/explore-tab-bar";
+import { PeopleGrid } from "./_components/people-grid";
 import type { Coffee } from "@/types/coffee";
 
 export const metadata: Metadata = {
   title: "Explorar — CUPPING",
-  description: "Descubre los cafés mejor valorados de la comunidad",
+  description: "Descubre cafés y personas de la comunidad",
 };
 
-export default async function ExplorePage() {
+interface SearchParams {
+  tab?: string;
+}
+
+export default async function ExplorePage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const { tab = "cafes" } = await searchParams;
   const supabase = await createServerSupabaseClient();
 
+  // ── Personas tab: skip all heavy coffee queries ──
+  if (tab === "personas") {
+    return (
+      <div className="px-4 py-6 max-w-5xl mx-auto">
+        <div className="mb-6">
+          <h1 className="font-display text-3xl text-espresso">Explorar</h1>
+          <p className="text-espresso-light text-sm mt-1">
+            Cafés y personas de la comunidad
+          </p>
+        </div>
+        <ExploreTabBar activeTab="personas" />
+        <PeopleGrid />
+      </div>
+    );
+  }
+
+  // ── Cafés tab (default) ──
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Parallel fetch: editorial data + user's reviewed IDs + full catalog
   const [coffees, trending, topRated, origins, reviewedIds] = await Promise.all([
     getCoffeeCatalog(supabase, { pageSize: 100 }),
     getTrendingCoffees(supabase, 6),
@@ -35,7 +62,6 @@ export default async function ExplorePage() {
       : Promise.resolve<string[]>([]),
   ]);
 
-  // Fetch by-origin sections for top 3 origins (sequential is fine — 3 requests)
   const originSections = await Promise.all(
     origins.slice(0, 3).map(async (origin) => ({
       origin,
@@ -53,9 +79,11 @@ export default async function ExplorePage() {
       <div className="mb-6">
         <h1 className="font-display text-3xl text-espresso">Explorar</h1>
         <p className="text-espresso-light text-sm mt-1">
-          Cafés de la comunidad
+          Cafés y personas de la comunidad
         </p>
       </div>
+
+      <ExploreTabBar activeTab="cafes" />
 
       {/* Editorial sections */}
       {hasEditorial && (

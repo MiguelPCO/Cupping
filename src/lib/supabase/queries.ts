@@ -500,3 +500,19 @@ export async function getFollowingList(
   const map = new Map((users ?? []).map((u) => [u.id, u]));
   return ids.map((id) => map.get(id)).filter((u): u is FollowUser => !!u);
 }
+
+export async function searchUsers(
+  supabase: Supabase,
+  query: string,
+  limit = 20
+): Promise<FollowUser[]> {
+  if (!query.trim()) return [];
+
+  const { data } = await supabase
+    .from("users")
+    .select("id, username, display_name, avatar_url")
+    .or(`username.ilike.%${query}%,display_name.ilike.%${query}%`)
+    .limit(limit);
+
+  return (data ?? []) as FollowUser[];
+}
