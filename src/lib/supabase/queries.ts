@@ -508,10 +508,13 @@ export async function searchUsers(
 ): Promise<FollowUser[]> {
   if (!query.trim()) return [];
 
+  const safe = query.replace(/[%_,()]/g, " ").trim();
+  if (!safe) return [];
+
   const { data } = await supabase
     .from("users")
     .select("id, username, display_name, avatar_url")
-    .or(`username.ilike.%${query}%,display_name.ilike.%${query}%`)
+    .or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`)
     .limit(limit);
 
   return (data ?? []) as FollowUser[];

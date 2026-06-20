@@ -19,12 +19,22 @@ export function PeopleGrid() {
       setLoading(false);
       return;
     }
+    let ignore = false;
     setLoading(true);
     const supabase = createClient();
-    searchUsers(supabase, debouncedQuery).then((users) => {
-      setResults(users);
-      setLoading(false);
-    });
+    searchUsers(supabase, debouncedQuery)
+      .then((users) => {
+        if (!ignore) {
+          setResults(users);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!ignore) setLoading(false);
+      });
+    return () => {
+      ignore = true;
+    };
   }, [debouncedQuery]);
 
   return (
