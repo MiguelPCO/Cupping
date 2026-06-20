@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Github } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type OAuthProvider = "google" | "github";
+type OAuthProvider = "google";
 type AuthMode = "signin" | "signup";
 
 export function LoginForm() {
@@ -144,17 +143,6 @@ export function LoginForm() {
               : "Continuar con Google"}
           </Button>
 
-          <Button
-            variant="outline"
-            className="w-full gap-2"
-            onClick={() => handleOAuth("github")}
-            disabled={isAnyLoading}
-          >
-            <Github className="size-4" />
-            {oauthLoading === "github"
-              ? "Conectando…"
-              : "Continuar con GitHub"}
-          </Button>
         </div>
 
         {/* Divider */}
