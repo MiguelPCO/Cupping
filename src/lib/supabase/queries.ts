@@ -445,3 +445,58 @@ export async function getCollectionItems(
     )
     .filter((c): c is CollectionCoffeeItem => c !== null);
 }
+
+// ── Social: Follow Lists ──────────────────────────────────────────────────
+
+export type FollowUser = {
+  id: string;
+  username: string;
+  display_name: string;
+  avatar_url: string | null;
+};
+
+export async function getFollowersList(
+  supabase: Supabase,
+  userId: string
+): Promise<FollowUser[]> {
+  // People who follow userId: following_id = userId → get their follower_id values
+  const { data: follows } = await supabase
+    .from("follows")
+    .select("follower_id")
+    .eq("following_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (!follows || follows.length === 0) return [];
+
+  const ids = follows.map((f) => f.follower_id);
+  const { data: users } = await supabase
+    .from("users")
+    .select("id, username, display_name, avatar_url")
+    .in("id", ids);
+
+  const map = new Map((users ?? []).map((u) => [u.id, u]));
+  return ids.map((id) => map.get(id)).filter((u): u is FollowUser => !!u);
+}
+
+export async function getFollowingList(
+  supabase: Supabase,
+  userId: string
+): Promise<FollowUser[]> {
+  // People userId follows: follower_id = userId → get their following_id values
+  const { data: follows } = await supabase
+    .from("follows")
+    .select("following_id")
+    .eq("follower_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (!follows || follows.length === 0) return [];
+
+  const ids = follows.map((f) => f.following_id);
+  const { data: users } = await supabase
+    .from("users")
+    .select("id, username, display_name, avatar_url")
+    .in("id", ids);
+
+  const map = new Map((users ?? []).map((u) => [u.id, u]));
+  return ids.map((id) => map.get(id)).filter((u): u is FollowUser => !!u);
+}

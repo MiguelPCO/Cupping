@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { User } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -99,18 +100,24 @@ export default async function ProfilePage({ params }: Props) {
           </p>
           <p className="text-xs text-espresso-light">Reseñas</p>
         </div>
-        <div className="text-center">
+        <Link
+          href={`/profile/${profile.username}/followers`}
+          className="text-center hover:opacity-70 transition-opacity"
+        >
           <p className="font-mono text-xl font-medium text-espresso">
             {followersCount}
           </p>
           <p className="text-xs text-espresso-light">Seguidores</p>
-        </div>
-        <div className="text-center">
+        </Link>
+        <Link
+          href={`/profile/${profile.username}/following`}
+          className="text-center hover:opacity-70 transition-opacity"
+        >
           <p className="font-mono text-xl font-medium text-espresso">
             {followingCount}
           </p>
           <p className="text-xs text-espresso-light">Siguiendo</p>
-        </div>
+        </Link>
       </div>
 
       {/* Actions */}

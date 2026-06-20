@@ -1,0 +1,46 @@
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getUserProfile, getFollowersList } from "@/lib/supabase/queries";
+import { BackButton } from "@/components/ui/back-button";
+import { UserCard } from "@/components/social/user-card";
+
+interface Props {
+  params: Promise<{ username: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { username } = await params;
+  return { title: `Seguidores de @${username} — CUPPING` };
+}
+
+export default async function FollowersPage({ params }: Props) {
+  const { username } = await params;
+  const supabase = await createServerSupabaseClient();
+  const profile = await getUserProfile(supabase, username);
+  if (!profile) notFound();
+
+  const followers = await getFollowersList(supabase, profile.id);
+
+  return (
+    <div className="px-4 py-6 max-w-2xl mx-auto">
+      <BackButton className="mb-4" />
+      <h1 className="font-display text-2xl text-espresso mb-1">
+        Seguidores
+      </h1>
+      <p className="text-xs text-espresso-light mb-6">@{username}</p>
+
+      {followers.length === 0 ? (
+        <p className="text-espresso-light text-sm text-center py-10">
+          Aún sin seguidores.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {followers.map((user) => (
+            <UserCard key={user.id} user={user} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
