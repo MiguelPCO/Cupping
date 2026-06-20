@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +17,6 @@ type OAuthProvider = "google";
 type AuthMode = "signin" | "signup";
 
 export function LoginForm() {
-  const router = useRouter();
-
   // OAuth
   const [oauthLoading, setOauthLoading] = useState<OAuthProvider | null>(null);
 
@@ -112,9 +109,8 @@ export function LoginForm() {
       return;
     }
 
-    // Full reload so server components pick up the new session
-    router.refresh();
-    router.push("/dashboard");
+    // Full page navigation — lets middleware read the new Supabase cookie cleanly
+    window.location.href = "/dashboard";
   };
 
   return (
