@@ -31,7 +31,7 @@ export function CoffeeCard({
   const extraTags = entry.flavor_tags.length - 2;
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+    <div className="group bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
       {/* Photo wrapper — action buttons sit outside <Link> so they don't navigate */}
       <div className="relative aspect-[4/3] overflow-hidden bg-linen">
         <Link href={`/coffee/${entry.id}`} className="absolute inset-0 z-0">

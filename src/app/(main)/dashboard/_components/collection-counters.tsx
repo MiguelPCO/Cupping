@@ -42,7 +42,7 @@ export function CollectionCounters({
             <Link
               key={type}
               href={`/collection/${type}`}
-              className="flex-shrink-0 flex flex-col items-center gap-1 px-5 py-3 bg-white rounded-xl border border-parchment hover:border-copper-300 hover:shadow-sm transition-all min-w-[80px] sm:min-w-0"
+              className="flex-shrink-0 flex flex-col items-center gap-1 px-5 py-3 bg-card rounded-xl border border-parchment hover:border-copper-300 hover:shadow-sm transition-all min-w-[80px] sm:min-w-0"
             >
               <span className="font-mono text-xl font-semibold text-espresso tabular-nums leading-none">
                 {count}

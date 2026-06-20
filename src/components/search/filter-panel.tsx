@@ -80,7 +80,7 @@ function FilterContent({ compact = false }: { compact?: boolean }) {
               "px-2.5 py-1 rounded-full text-xs font-medium border transition-colors",
               coffeeType === null
                 ? "bg-copper-500 text-white border-copper-500"
-                : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+                : "bg-card text-espresso-light border-parchment hover:border-copper-300"
             )}
           >
             Todos
@@ -94,7 +94,7 @@ function FilterContent({ compact = false }: { compact?: boolean }) {
                 "px-2.5 py-1 rounded-full text-xs font-medium border transition-colors",
                 coffeeType === type
                   ? "bg-copper-500 text-white border-copper-500"
-                  : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+                  : "bg-card text-espresso-light border-parchment hover:border-copper-300"
               )}
             >
               {getCoffeeTypeLabel(type)}
@@ -116,7 +116,7 @@ function FilterContent({ compact = false }: { compact?: boolean }) {
               "px-2.5 py-1 rounded-full text-xs font-medium border transition-colors",
               roastLevel === null
                 ? "bg-espresso text-white border-espresso"
-                : "bg-white text-espresso-light border-parchment hover:border-espresso/30"
+                : "bg-card text-espresso-light border-parchment hover:border-espresso/30"
             )}
           >
             Todos
@@ -194,7 +194,7 @@ function FilterContent({ compact = false }: { compact?: boolean }) {
                   "px-2.5 py-1 rounded-full text-xs font-medium border transition-colors",
                   sortBy === value
                     ? "bg-copper-500 text-white border-copper-500"
-                    : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+                    : "bg-card text-espresso-light border-parchment hover:border-copper-300"
                 )}
               >
                 {label}

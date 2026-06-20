@@ -170,6 +170,20 @@ html {
 }
 
 .dark {
+  /* CUPPING primitive overrides — "Evening Cupping Session" */
+  --color-cream: oklch(0.14 0.02 45);
+  --color-linen: oklch(0.18 0.03 48);
+  --color-espresso: oklch(0.95 0.02 80);
+  --color-espresso-light: oklch(0.72 0.08 60);
+  --color-parchment: oklch(0.30 0.04 48);
+  --color-copper-50: oklch(0.22 0.03 50);
+  --color-copper-100: oklch(0.26 0.04 50);
+  --color-copper-500: oklch(0.72 0.08 60);
+  --color-copper-600: oklch(0.64 0.10 58);
+  --color-cup-empty: oklch(0.28 0.03 50);
+  --color-cup-filled: oklch(0.72 0.08 60);
+  --color-cup-hover: oklch(0.72 0.08 60);
+
   --background: oklch(0.15 0.02 50);          /* espresso */
   --foreground: oklch(0.96 0.02 80);          /* cream */
   --card: oklch(0.22 0.04 50);

@@ -19,7 +19,7 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
         "rounded-xl border p-4 flex flex-col",
         accent
           ? "bg-espresso border-espresso text-white"
-          : "bg-white border-parchment"
+          : "bg-card border-parchment"
       )}
     >
       <div

@@ -3,6 +3,8 @@ import { Instrument_Serif, Outfit, JetBrains_Mono, Geist } from "next/font/googl
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -59,11 +61,15 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      suppressHydrationWarning
       className={cn(instrumentSerif.variable, outfit.variable, jetbrainsMono.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-screen bg-cream text-espresso font-body antialiased">
-        {children}
-        <Toaster position="bottom-center" richColors={false} />
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          {children}
+          <Toaster position="bottom-center" richColors={false} />
+        </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

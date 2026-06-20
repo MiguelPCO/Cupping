@@ -17,7 +17,7 @@ export function TopItemsList({
   const max = Math.max(...items.map((i) => i.count), 1);
 
   return (
-    <div className="bg-white rounded-xl border border-parchment p-4">
+    <div className="bg-card rounded-xl border border-parchment p-4">
       <h3 className="text-sm font-medium text-espresso mb-4">{title}</h3>
       {items.length === 0 ? (
         <p className="text-xs text-parchment text-center py-4">{emptyText}</p>

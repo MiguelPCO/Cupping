@@ -70,7 +70,7 @@ export function ProfileEditForm({
     return (
       <Button
         onClick={() => setOpen(true)}
-        className="border border-parchment text-espresso bg-white hover:bg-linen text-sm"
+        className="border border-parchment text-espresso bg-card hover:bg-linen text-sm"
       >
         <Pencil className="size-4 mr-1.5" />
         Editar perfil
@@ -81,7 +81,7 @@ export function ProfileEditForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full bg-white border border-parchment rounded-xl p-4 space-y-3"
+      className="w-full bg-card border border-parchment rounded-xl p-4 space-y-3"
     >
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-medium text-espresso">Editar perfil</h3>
@@ -148,7 +148,7 @@ export function ProfileEditForm({
         <Button
           type="button"
           onClick={onCancel}
-          className="border border-parchment text-espresso bg-white hover:bg-linen"
+          className="border border-parchment text-espresso bg-card hover:bg-linen"
         >
           Cancelar
         </Button>

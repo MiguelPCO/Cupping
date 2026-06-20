@@ -121,7 +121,7 @@ export function ProfileTabs({
                 <Link
                   key={coffee.id}
                   href={`/explore/${coffee.id}`}
-                  className="block bg-white rounded-xl border border-parchment p-4 hover:border-copper-300 hover:shadow-sm transition-all group"
+                  className="block bg-card rounded-xl border border-parchment p-4 hover:border-copper-300 hover:shadow-sm transition-all group"
                 >
                   <div className="flex items-center gap-1.5 mb-1">
                     <Star className="size-3 text-copper-500 fill-copper-500" />

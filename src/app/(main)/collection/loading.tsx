@@ -6,7 +6,7 @@ export default function CollectionLoading() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="flex items-center gap-4 p-5 bg-white rounded-xl border border-parchment animate-pulse"
+            className="flex items-center gap-4 p-5 bg-card rounded-xl border border-parchment animate-pulse"
           >
             <div className="size-12 rounded-full bg-parchment shrink-0" />
             <div className="flex-1 space-y-2">

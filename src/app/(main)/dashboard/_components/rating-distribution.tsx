@@ -19,7 +19,7 @@ export function RatingDistribution({ data }: RatingDistributionProps) {
   const maxCount = Math.max(...data.map((d) => d.count), 1);
 
   return (
-    <div className="bg-white rounded-xl border border-parchment p-4">
+    <div className="bg-card rounded-xl border border-parchment p-4">
       <h3 className="text-sm font-medium text-espresso mb-4">
         Distribución de ratings
       </h3>

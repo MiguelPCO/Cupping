@@ -19,7 +19,7 @@ export function FlavorWheel({ data, className }: FlavorWheelProps) {
 
   return (
     <div
-      className={`bg-white rounded-xl border border-parchment p-4 ${className ?? ""}`}
+      className={`bg-card rounded-xl border border-parchment p-4 ${className ?? ""}`}
     >
       <h3 className="text-sm font-medium text-espresso mb-2">
         Rueda de sabores

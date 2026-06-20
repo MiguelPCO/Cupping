@@ -21,7 +21,7 @@ export default function ProfileLoading() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="bg-white rounded-xl border border-parchment overflow-hidden animate-pulse"
+            className="bg-card rounded-xl border border-parchment overflow-hidden animate-pulse"
           >
             <div className="aspect-video bg-parchment" />
             <div className="p-4 space-y-2">

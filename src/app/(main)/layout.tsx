@@ -5,6 +5,7 @@ import { Header } from "./_components/header";
 import { Sidebar } from "./_components/sidebar";
 import { MobileBottomNav } from "./_components/mobile-bottom-nav";
 import { AddCoffeeModal } from "./_components/add-coffee-modal";
+import { GrainTexture } from "@/components/ui/grain-texture";
 
 export default async function MainLayout({
   children,
@@ -26,6 +27,7 @@ export default async function MainLayout({
 
   return (
     <QueryProvider>
+      <GrainTexture />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-copper-500 focus:text-white focus:text-sm"

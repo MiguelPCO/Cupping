@@ -129,7 +129,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
 
       {/* Sub-ratings */}
       {hasSubRatings && (
-        <div className="mb-6 bg-white rounded-xl border border-parchment p-4 space-y-3">
+        <div className="mb-6 bg-card rounded-xl border border-parchment p-4 space-y-3">
           <p className="text-xs font-medium uppercase tracking-wider text-parchment">
             Desglose
           </p>

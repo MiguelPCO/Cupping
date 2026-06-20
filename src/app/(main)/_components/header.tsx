@@ -5,6 +5,7 @@ import { useUIStore } from "@/lib/stores";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Menu, Plus, User, LogOut } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
 
 interface HeaderProps {
@@ -57,6 +58,7 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
       </Link>
 
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <Button
           size="sm"
           className="hidden sm:flex gap-1.5 bg-copper-500 hover:bg-copper-600 text-white border-0"
@@ -91,7 +93,7 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-11 w-48 bg-white rounded-xl border border-parchment shadow-lg py-1 z-50"
+              className="absolute right-0 top-11 w-48 bg-card rounded-xl border border-parchment shadow-lg py-1 z-50"
             >
               <div className="px-3 py-2 border-b border-parchment">
                 <p className="text-sm font-medium text-espresso truncate">

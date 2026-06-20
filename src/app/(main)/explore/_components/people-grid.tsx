@@ -50,7 +50,7 @@ export function PeopleGrid() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar personas…"
           aria-label="Buscar personas"
-          className="w-full h-9 pl-9 pr-4 rounded-lg border border-parchment bg-white text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
+          className="w-full h-9 pl-9 pr-4 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
         />
       </div>
 

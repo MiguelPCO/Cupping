@@ -108,7 +108,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className="bg-white rounded-xl border border-parchment p-4"
+                className="bg-card rounded-xl border border-parchment p-4"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div className="size-8 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">

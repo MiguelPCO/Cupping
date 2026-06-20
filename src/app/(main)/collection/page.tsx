@@ -61,7 +61,7 @@ export default async function CollectionPage() {
             <Link
               key={type}
               href={`/collection/${type}`}
-              className="flex items-center gap-4 p-5 bg-white rounded-xl border border-parchment hover:border-copper-300 hover:shadow-sm transition-all group"
+              className="flex items-center gap-4 p-5 bg-card rounded-xl border border-parchment hover:border-copper-300 hover:shadow-sm transition-all group"
             >
               <div className={`flex items-center justify-center size-12 rounded-full shrink-0 ${color}`}>
                 <Icon className="size-6" />

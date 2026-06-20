@@ -70,7 +70,7 @@ export function CollectionCoffeeList({
           {filtered.map((coffee) => (
             <div
               key={coffee.id}
-              className="bg-white rounded-xl border border-parchment p-4 hover:shadow-sm transition-shadow"
+              className="bg-card rounded-xl border border-parchment p-4 hover:shadow-sm transition-shadow"
             >
               <h3 className="font-display text-lg text-espresso truncate">
                 {coffee.name}

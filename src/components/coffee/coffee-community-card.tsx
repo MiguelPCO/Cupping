@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import type { Coffee } from "@/types/coffee";
 import { RatingCups } from "./rating-cups";
 import { RoastBadge } from "./roast-badge";
+import { SteamAnimation } from "@/components/ui/steam-animation";
 
 interface CoffeeCommunityCardProps {
   coffee: Coffee;
@@ -14,10 +15,11 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
   return (
     <Link
       href={`/explore/${coffee.id}`}
-      className="block bg-white rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
+      className="group block bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
     >
       {/* Photo — 4:3, overlaid badges */}
       <div className="relative aspect-[4/3] bg-linen overflow-hidden">
+        <SteamAnimation />
         {/* "Ya la probé" badge — top left */}
         {isReviewed && (
           <div className="absolute top-2 left-2 z-10 flex items-center justify-center size-6 rounded-full bg-copper-500 shadow-md">

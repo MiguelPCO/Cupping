@@ -1,4 +1,5 @@
 import { GrainTexture } from "@/components/ui/grain-texture";
+import { Spotlight } from "@/components/ui/spotlight";
 
 export default function AuthLayout({
   children,
@@ -8,7 +9,8 @@ export default function AuthLayout({
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-cream px-4">
       <GrainTexture />
-      <div className="relative z-10 w-full">{children}</div>
+      <Spotlight />
+      <div className="relative z-20 w-full">{children}</div>
     </div>
   );
 }

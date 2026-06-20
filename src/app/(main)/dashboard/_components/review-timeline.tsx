@@ -18,7 +18,7 @@ export function ReviewTimeline({ data }: ReviewTimelineProps) {
   const total = data.reduce((s, d) => s + d.count, 0);
 
   return (
-    <div className="bg-white rounded-xl border border-parchment p-4">
+    <div className="bg-card rounded-xl border border-parchment p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-espresso">
           Actividad — últimos 12 meses

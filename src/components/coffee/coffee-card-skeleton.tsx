@@ -3,7 +3,7 @@ export function CoffeeCardSkeleton() {
     <div
       role="status"
       aria-label="Cargando café"
-      className="bg-white rounded-xl overflow-hidden animate-pulse"
+      className="bg-card rounded-xl overflow-hidden animate-pulse"
     >
       <div className="aspect-[4/3] bg-parchment" />
       <div className="p-3.5 space-y-2.5">

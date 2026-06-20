@@ -12,7 +12,7 @@ interface UserCardProps {
 
 export function UserCard({ user }: UserCardProps) {
   return (
-    <div className="flex items-center gap-3 bg-white rounded-xl border border-parchment p-3">
+    <div className="flex items-center gap-3 bg-card rounded-xl border border-parchment p-3">
       <Link href={`/profile/${user.username}`} aria-label={`Ver perfil de ${user.display_name}`}>
         <div className="size-10 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">
           {user.avatar_url ? (

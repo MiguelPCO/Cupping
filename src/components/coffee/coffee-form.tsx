@@ -254,7 +254,7 @@ export function CoffeeForm({
                       "px-3 py-1.5 rounded-full text-sm font-medium border transition-colors",
                       currentType === type
                         ? "bg-copper-500 text-white border-copper-500"
-                        : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+                        : "bg-card text-espresso-light border-parchment hover:border-copper-300"
                     )}
                   >
                     {getCoffeeTypeLabel(type)}
@@ -379,7 +379,7 @@ export function CoffeeForm({
               placeholder="Describe lo que sientes al tomar este café…"
               rows={3}
               aria-describedby={errors.notes ? "notes-error" : undefined}
-              className="w-full px-3 py-2 rounded-lg border border-parchment bg-white text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300 resize-none"
+              className="w-full px-3 py-2 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300 resize-none"
             />
             {errors.notes && (
               <p id="notes-error" className="text-xs text-destructive">{errors.notes.message}</p>
@@ -475,7 +475,7 @@ export function CoffeeForm({
                     "px-3 py-1.5 rounded-full text-sm font-medium border transition-colors",
                     currentBrewMethod === method
                       ? "bg-copper-500 text-white border-copper-500"
-                      : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+                      : "bg-card text-espresso-light border-parchment hover:border-copper-300"
                   )}
                 >
                   {getBrewMethodLabel(method)}
@@ -532,7 +532,7 @@ export function CoffeeForm({
                     "w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all",
                     selected
                       ? "bg-copper-50 border-copper-400"
-                      : "bg-white border-parchment hover:border-copper-300"
+                      : "bg-card border-parchment hover:border-copper-300"
                   )}
                 >
                   <Icon

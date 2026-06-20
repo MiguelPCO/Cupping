@@ -31,7 +31,7 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
 
   if (items.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-parchment p-6 text-center">
+      <div className="bg-card rounded-xl border border-parchment p-6 text-center">
         <p className="text-espresso-light text-sm">
           Sigue a otros usuarios para ver su actividad aquí.
         </p>
@@ -50,7 +50,7 @@ export function ActivityFeed({ userId }: ActivityFeedProps) {
       {items.map((item) => (
         <div
           key={item.id}
-          className="bg-white rounded-xl border border-parchment p-3"
+          className="bg-card rounded-xl border border-parchment p-3"
         >
           <div className="flex items-center gap-2 mb-2">
             <div className="size-7 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">

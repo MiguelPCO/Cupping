@@ -58,7 +58,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nombre o marca…"
-            className="w-full h-10 pl-9 pr-4 rounded-xl border border-parchment bg-white text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
+            className="w-full h-10 pl-9 pr-4 rounded-xl border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
           />
         </div>
 
@@ -69,7 +69,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
             "flex items-center gap-1.5 h-10 px-4 rounded-xl border text-sm font-medium transition-colors shrink-0",
             showFilters || activeFilterCount > 0
               ? "bg-espresso text-white border-espresso"
-              : "bg-white text-espresso-light border-parchment hover:border-copper-300"
+              : "bg-card text-espresso-light border-parchment hover:border-copper-300"
           )}
         >
           <SlidersHorizontal className="size-4" />
@@ -83,7 +83,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
         </button>
 
         {/* Sort toggle */}
-        <div className="flex rounded-xl border border-parchment overflow-hidden shrink-0 bg-white">
+        <div className="flex rounded-xl border border-parchment overflow-hidden shrink-0 bg-card">
           <button
             onClick={() => setSortBy("rating")}
             className={cn(
@@ -111,7 +111,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
 
       {/* Collapsible filter pills */}
       {showFilters && (
-        <div className="bg-white rounded-xl border border-parchment p-4 mb-4 space-y-3">
+        <div className="bg-card rounded-xl border border-parchment p-4 mb-4 space-y-3">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-2">
               Tipo

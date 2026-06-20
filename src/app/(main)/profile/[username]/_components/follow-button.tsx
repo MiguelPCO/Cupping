@@ -30,7 +30,7 @@ export function FollowButton({ targetId, targetUsername }: FollowButtonProps) {
       disabled={loading || !userId}
       className={
         isFollowing
-          ? "border border-parchment text-espresso bg-white hover:bg-linen"
+          ? "border border-parchment text-espresso bg-card hover:bg-linen"
           : "bg-copper-500 hover:bg-copper-600 text-white"
       }
     >
