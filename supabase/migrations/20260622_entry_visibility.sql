@@ -16,13 +16,22 @@ alter table public.coffee_entries
 drop policy if exists "Entries are viewable by everyone" on public.coffee_entries;
 
 -- New read policy: public entries visible to all; private entries only to owner
-create policy "Entries are viewable by owner or if public"
-  on public.coffee_entries
-  for select
-  using (
-    visibility = 'public'
-    or user_id = auth.uid()
-  );
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where tablename = 'coffee_entries'
+      and policyname = 'Entries are viewable by owner or if public'
+  ) then
+    create policy "Entries are viewable by owner or if public"
+      on public.coffee_entries
+      for select
+      using (
+        visibility = 'public'
+        or user_id = auth.uid()
+      );
+  end if;
+end $$;
 
 -- Insert policy unchanged (owner inserts own entries)
 -- Update policy unchanged (owner updates own entries)
