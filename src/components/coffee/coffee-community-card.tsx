@@ -5,6 +5,7 @@ import type { Coffee } from "@/types/coffee";
 import { RatingCups } from "./rating-cups";
 import { RoastBadge } from "./roast-badge";
 import { SteamAnimation } from "@/components/ui/steam-animation";
+import { brandToSlug } from "@/lib/brand-slug";
 
 interface CoffeeCommunityCardProps {
   coffee: Coffee;
@@ -79,7 +80,13 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
       {/* Body */}
       <div className="p-3 pb-3.5">
         <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1 truncate">
-          {coffee.brand}
+          <Link
+            href={`/explore/brand/${brandToSlug(coffee.brand)}`}
+            className="hover:text-copper-500 transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {coffee.brand}
+          </Link>
         </p>
         <h3 className="font-display text-lg text-espresso leading-tight truncate">
           {coffee.name}
