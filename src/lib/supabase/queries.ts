@@ -8,6 +8,7 @@ import type {
   BrewMethod,
   FlavorTag,
   RoastLevel,
+  Visibility,
 } from "@/types/coffee";
 
 type Supabase = SupabaseClient<Database>;
@@ -27,6 +28,7 @@ type RawEntry = {
   notes: string | null;
   photo_url: string | null;
   brew_method: string | null;
+  visibility: string;
   created_at: string;
   updated_at: string;
   coffee: {
@@ -59,6 +61,7 @@ function transformEntry(raw: RawEntry): CoffeeEntryWithCoffee {
     notes: raw.notes,
     photo_url: raw.photo_url,
     brew_method: raw.brew_method as BrewMethod | null,
+    visibility: raw.visibility as Visibility,
     created_at: raw.created_at,
     updated_at: raw.updated_at,
     flavor_tags: raw.flavor_tags.map((ft) => ft.tag as FlavorTag),

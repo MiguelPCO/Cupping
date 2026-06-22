@@ -102,6 +102,7 @@ export type Database = {
           notes: string | null
           photo_url: string | null
           brew_method: Database["public"]["Enums"]["brew_method"] | null
+          visibility: Database["public"]["Enums"]["entry_visibility"]
           created_at: string
           updated_at: string
         }
@@ -119,6 +120,7 @@ export type Database = {
           notes?: string | null
           photo_url?: string | null
           brew_method?: Database["public"]["Enums"]["brew_method"] | null
+          visibility?: Database["public"]["Enums"]["entry_visibility"] | null
           created_at?: string
           updated_at?: string
         }
@@ -136,6 +138,7 @@ export type Database = {
           notes?: string | null
           photo_url?: string | null
           brew_method?: Database["public"]["Enums"]["brew_method"] | null
+          visibility?: Database["public"]["Enums"]["entry_visibility"] | null
           updated_at?: string
         }
         Relationships: [
@@ -391,6 +394,7 @@ export type Database = {
         | "tropical"
         | "wine"
       collection_type: "at_home" | "favorites" | "to_try" | "tried"
+      entry_visibility: "public" | "private"
     }
     CompositeTypes: {
       [_ in never]: never
