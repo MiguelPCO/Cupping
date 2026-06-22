@@ -601,10 +601,16 @@ export async function getBrandStats(
     const { data: flavors } = await supabase
       .from("coffee_flavor_stats")
       .select("tag, mention_count")
-      .in("coffee_id", coffeeIds)
-      .order("mention_count", { ascending: false })
-      .limit(5);
-    top_flavor_tags = (flavors ?? []).map((f) => f.tag);
+      .in("coffee_id", coffeeIds);
+
+    const tagTotals: Record<string, number> = {};
+    for (const f of flavors ?? []) {
+      tagTotals[f.tag] = (tagTotals[f.tag] ?? 0) + (f.mention_count as number);
+    }
+    top_flavor_tags = Object.entries(tagTotals)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([tag]) => tag);
   }
 
   return { total_coffees, total_reviews, avg_rating, top_origin, top_flavor_tags };
