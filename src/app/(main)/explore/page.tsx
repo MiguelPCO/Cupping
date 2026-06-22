@@ -7,7 +7,9 @@ import {
   getDistinctOrigins,
   getCoffeesByOrigin,
   getUserReviewedCoffeeIds,
+  getActiveBrands,
 } from "@/lib/supabase/queries";
+import { BrandChips } from "./_components/brand-chips";
 import { ExploreGrid } from "./_components/explore-grid";
 import { ExploreSection } from "./_components/explore-section";
 import { ExploreTabBar } from "./_components/explore-tab-bar";
@@ -52,11 +54,12 @@ export default async function ExplorePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [coffees, trending, topRated, origins, reviewedIds] = await Promise.all([
+  const [coffees, trending, topRated, origins, activeBrands, reviewedIds] = await Promise.all([
     getCoffeeCatalog(supabase, { pageSize: 100 }),
     getTrendingCoffees(supabase, 6),
     getTopRatedCoffees(supabase, 3, 9),
     getDistinctOrigins(supabase, 1),
+    getActiveBrands(supabase, 1, 12),
     user
       ? getUserReviewedCoffeeIds(supabase, user.id)
       : Promise.resolve<string[]>([]),
@@ -112,6 +115,9 @@ export default async function ExplorePage({
           <hr className="border-parchment mb-6" />
         </div>
       )}
+
+      {/* Brand chips */}
+      <BrandChips brands={activeBrands} />
 
       {/* Full searchable + filterable grid */}
       <h2 className="font-display text-xl text-espresso mb-4">Todos los cafés</h2>
