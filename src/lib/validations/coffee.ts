@@ -33,6 +33,7 @@ export const coffeeFormSchema = z.object({
   collection_types: z
     .array(z.enum(["at_home", "favorites", "to_try", "tried"]))
     .optional(),
+  visibility: z.enum(["public", "private"]).default("public"),
 });
 
 export type CoffeeFormInput = z.infer<typeof coffeeFormSchema>;

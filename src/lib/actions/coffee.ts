@@ -40,6 +40,7 @@ export async function createCoffeeEntry(
     notes,
     brew_method,
     photo_url,
+    visibility,
   } = parsed.data;
 
   // Find existing coffee or create new one
@@ -90,6 +91,7 @@ export async function createCoffeeEntry(
       notes: notes ?? null,
       brew_method: brew_method ?? null,
       photo_url: photo_url ?? null,
+      visibility: visibility ?? "public",
     })
     .select("id")
     .single();
@@ -187,6 +189,7 @@ export async function updateCoffeeEntry(
     notes,
     brew_method,
     photo_url,
+    visibility,
   } = parsed.data;
 
   const { error: updateError } = await supabase
@@ -202,6 +205,7 @@ export async function updateCoffeeEntry(
       notes: notes ?? null,
       brew_method: brew_method ?? null,
       photo_url: photo_url ?? null,
+      visibility: visibility ?? "public",
     })
     .eq("id", entryId);
 
