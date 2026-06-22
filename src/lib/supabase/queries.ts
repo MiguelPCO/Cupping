@@ -10,6 +10,7 @@ import type {
   RoastLevel,
   Visibility,
 } from "@/types/coffee";
+import { brandToSlug, slugToSearchTerm } from "@/lib/brand-slug";
 
 type Supabase = SupabaseClient<Database>;
 
@@ -529,4 +530,119 @@ export async function searchUsers(
     .limit(limit);
 
   return (data ?? []) as FollowUser[];
+}
+
+// ── Brand Hub ─────────────────────────────────────────────────────────────
+
+export type BrandStats = {
+  total_coffees: number;
+  total_reviews: number;
+  avg_rating: number | null;
+  top_origin: string | null;
+  top_flavor_tags: string[];
+};
+
+export async function getBrandCoffees(
+  supabase: Supabase,
+  brandSlug: string,
+  limit = 50
+): Promise<Coffee[]> {
+  const searchTerm = slugToSearchTerm(brandSlug);
+  const { data, error } = await supabase
+    .from("coffees")
+    .select("*")
+    .ilike("brand", searchTerm)
+    .order("avg_rating", { ascending: false, nullsFirst: false })
+    .limit(limit);
+  if (error) {
+    console.error("getBrandCoffees error:", error);
+    return [];
+  }
+  return ((data ?? []) as unknown) as Coffee[];
+}
+
+export async function getBrandStats(
+  supabase: Supabase,
+  brandSlug: string
+): Promise<BrandStats> {
+  const searchTerm = slugToSearchTerm(brandSlug);
+
+  const { data: coffees } = await supabase
+    .from("coffees")
+    .select("id, avg_rating, total_reviews, origin")
+    .ilike("brand", searchTerm);
+
+  const rows = coffees ?? [];
+  const total_coffees = rows.length;
+  const total_reviews = rows.reduce((sum, c) => sum + (c.total_reviews ?? 0), 0);
+
+  const ratingsWithValues = rows
+    .map((c) => c.avg_rating)
+    .filter((r): r is number => r !== null);
+  const avg_rating =
+    ratingsWithValues.length > 0
+      ? Math.round(
+          (ratingsWithValues.reduce((s, r) => s + r, 0) / ratingsWithValues.length) * 10
+        ) / 10
+      : null;
+
+  // Most common origin
+  const originCounts: Record<string, number> = {};
+  for (const c of rows) {
+    if (c.origin) originCounts[c.origin] = (originCounts[c.origin] ?? 0) + 1;
+  }
+  const top_origin =
+    Object.entries(originCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+  // Top flavor tags across all coffees of this brand
+  const coffeeIds = rows.map((c) => c.id);
+  let top_flavor_tags: string[] = [];
+  if (coffeeIds.length > 0) {
+    const { data: flavors } = await supabase
+      .from("coffee_flavor_stats")
+      .select("tag, mention_count")
+      .in("coffee_id", coffeeIds)
+      .order("mention_count", { ascending: false })
+      .limit(5);
+    top_flavor_tags = (flavors ?? []).map((f) => f.tag);
+  }
+
+  return { total_coffees, total_reviews, avg_rating, top_origin, top_flavor_tags };
+}
+
+export async function getActiveBrands(
+  supabase: Supabase,
+  minReviews = 1,
+  limit = 12
+): Promise<{ brand: string; slug: string; coffee_count: number; total_reviews: number }[]> {
+  const { data, error } = await supabase
+    .from("coffees")
+    .select("brand, total_reviews")
+    .gte("total_reviews", minReviews);
+
+  if (error || !data) return [];
+
+  const brandMap: Record<string, { coffee_count: number; total_reviews: number }> = {};
+  for (const row of data) {
+    if (!row.brand) continue;
+    const existing = brandMap[row.brand];
+    if (existing) {
+      existing.coffee_count += 1;
+      existing.total_reviews += row.total_reviews ?? 0;
+    } else {
+      brandMap[row.brand] = {
+        coffee_count: 1,
+        total_reviews: row.total_reviews ?? 0,
+      };
+    }
+  }
+
+  return Object.entries(brandMap)
+    .map(([brand, stats]) => ({
+      brand,
+      slug: brandToSlug(brand),
+      ...stats,
+    }))
+    .sort((a, b) => b.total_reviews - a.total_reviews)
+    .slice(0, limit);
 }
