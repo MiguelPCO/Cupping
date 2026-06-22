@@ -43,6 +43,7 @@ export type Database = {
           id: string
           name: string
           brand: string
+          brand_slug: string
           type: Database["public"]["Enums"]["coffee_type"]
           origin: string | null
           roast_level: Database["public"]["Enums"]["roast_level"] | null

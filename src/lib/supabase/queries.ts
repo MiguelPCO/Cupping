@@ -10,7 +10,7 @@ import type {
   RoastLevel,
   Visibility,
 } from "@/types/coffee";
-import { brandToSlug, slugToSearchTerm } from "@/lib/brand-slug";
+import { brandToSlug } from "@/lib/brand-slug";
 
 type Supabase = SupabaseClient<Database>;
 
@@ -601,11 +601,10 @@ export async function getBrandCoffees(
   brandSlug: string,
   limit = 50
 ): Promise<Coffee[]> {
-  const searchTerm = slugToSearchTerm(brandSlug);
   const { data, error } = await supabase
     .from("coffees")
     .select("*")
-    .ilike("brand", searchTerm)
+    .eq("brand_slug", brandSlug)
     .order("avg_rating", { ascending: false, nullsFirst: false })
     .limit(limit);
   if (error) {
@@ -619,12 +618,10 @@ export async function getBrandStats(
   supabase: Supabase,
   brandSlug: string
 ): Promise<BrandStats> {
-  const searchTerm = slugToSearchTerm(brandSlug);
-
   const { data: coffees } = await supabase
     .from("coffees")
     .select("id, avg_rating, total_reviews, origin")
-    .ilike("brand", searchTerm);
+    .eq("brand_slug", brandSlug);
 
   const rows = coffees ?? [];
   const total_coffees = rows.length;
