@@ -86,13 +86,19 @@ const ENTRY_SELECT =
 export async function getEntriesForUser(
   supabase: Supabase,
   userId: string,
+  onlyPublic = false,
   limit?: number
 ): Promise<CoffeeEntryWithCoffee[]> {
   let query = supabase
     .from("coffee_entries")
     .select(ENTRY_SELECT)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq("user_id", userId);
+
+  if (onlyPublic) {
+    query = query.eq("visibility", "public");
+  }
+
+  query = query.order("created_at", { ascending: false });
 
   if (limit) query = query.limit(limit);
 
@@ -174,6 +180,7 @@ export async function getEntriesForCoffee(
       "*, coffee:coffees(*), flavor_tags:entry_flavor_tags(tag), user:users!coffee_entries_user_id_fkey(id, username, display_name, avatar_url)"
     )
     .eq("coffee_id", coffeeId)
+    .eq("visibility", "public")
     .order("created_at", { ascending: false });
 
   if (error || !data) return [];
@@ -232,6 +239,7 @@ export async function getActivityFeed(
       "*, coffee:coffees(*), flavor_tags:entry_flavor_tags(tag), user:users!coffee_entries_user_id_fkey(id, username, display_name, avatar_url)"
     )
     .in("user_id", followingIds)
+    .eq("visibility", "public")
     .order("created_at", { ascending: false })
     .range(from, to);
 

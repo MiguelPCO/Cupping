@@ -38,7 +38,7 @@ export default async function ProfilePage({ params }: Props) {
 
   // Fetch entries + follow counts + favorites collection in parallel
   const [entries, followersResult, followingResult, favoritesCollection] = await Promise.all([
-    getEntriesForUser(supabase, profile.id),
+    getEntriesForUser(supabase, profile.id, !isOwnProfile),
     supabase
       .from("follows")
       .select("follower_id", { count: "exact", head: true })
