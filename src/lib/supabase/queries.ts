@@ -532,6 +532,60 @@ export async function searchUsers(
   return (data ?? []) as FollowUser[];
 }
 
+export async function getSuggestedUsers(
+  supabase: Supabase,
+  currentUserId: string,
+  limit = 6
+): Promise<FollowUser[]> {
+  // Get coffee IDs the current user has reviewed
+  const { data: myEntries } = await supabase
+    .from("coffee_entries")
+    .select("coffee_id")
+    .eq("user_id", currentUserId);
+
+  const myCoffeeIds = (myEntries ?? []).map((e) => e.coffee_id);
+
+  // Get IDs of users already followed
+  const { data: following } = await supabase
+    .from("follows")
+    .select("following_id")
+    .eq("follower_id", currentUserId);
+
+  const followingIds = (following ?? []).map((f) => f.following_id);
+  // Always exclude self
+  const excludeIds = [...followingIds, currentUserId];
+
+  let query = supabase
+    .from("users")
+    .select("id, username, display_name, avatar_url")
+    .not("id", "in", `(${excludeIds.join(",")})`)
+    .limit(limit);
+
+  if (myCoffeeIds.length > 0) {
+    // Users who share at least one coffee in common
+    const { data: commonReviewers } = await supabase
+      .from("coffee_entries")
+      .select("user_id")
+      .in("coffee_id", myCoffeeIds)
+      .not("user_id", "in", `(${excludeIds.join(",")})`);
+
+    const candidateIds = [
+      ...new Set((commonReviewers ?? []).map((r) => r.user_id)),
+    ].slice(0, limit * 3);
+
+    if (candidateIds.length > 0) {
+      query = supabase
+        .from("users")
+        .select("id, username, display_name, avatar_url")
+        .in("id", candidateIds)
+        .limit(limit);
+    }
+  }
+
+  const { data } = await query;
+  return (data ?? []) as FollowUser[];
+}
+
 // ── Brand Hub ─────────────────────────────────────────────────────────────
 
 export type BrandStats = {
