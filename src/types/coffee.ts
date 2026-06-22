@@ -71,6 +71,12 @@ export const COLLECTION_TYPES = [
 ] as const;
 export type CollectionType = (typeof COLLECTION_TYPES)[number];
 
+export const VISIBILITIES = [
+  "public",
+  "private",
+] as const;
+export type Visibility = (typeof VISIBILITIES)[number];
+
 // ══════ ENTITIES ══════
 
 export interface User {
@@ -110,6 +116,7 @@ export interface CoffeeEntry {
   notes: string | null;
   photo_url: string | null;
   brew_method: BrewMethod | null;
+  visibility: Visibility;
   created_at: string;
   updated_at: string;
 }

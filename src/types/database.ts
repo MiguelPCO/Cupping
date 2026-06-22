@@ -43,6 +43,7 @@ export type Database = {
           id: string
           name: string
           brand: string
+          brand_slug: string
           type: Database["public"]["Enums"]["coffee_type"]
           origin: string | null
           roast_level: Database["public"]["Enums"]["roast_level"] | null
@@ -102,6 +103,7 @@ export type Database = {
           notes: string | null
           photo_url: string | null
           brew_method: Database["public"]["Enums"]["brew_method"] | null
+          visibility: Database["public"]["Enums"]["entry_visibility"]
           created_at: string
           updated_at: string
         }
@@ -119,6 +121,7 @@ export type Database = {
           notes?: string | null
           photo_url?: string | null
           brew_method?: Database["public"]["Enums"]["brew_method"] | null
+          visibility?: Database["public"]["Enums"]["entry_visibility"] | null
           created_at?: string
           updated_at?: string
         }
@@ -136,6 +139,7 @@ export type Database = {
           notes?: string | null
           photo_url?: string | null
           brew_method?: Database["public"]["Enums"]["brew_method"] | null
+          visibility?: Database["public"]["Enums"]["entry_visibility"] | null
           updated_at?: string
         }
         Relationships: [
@@ -358,6 +362,25 @@ export type Database = {
         }
         Relationships: []
       }
+      coffee_trending_score: {
+        Row: {
+          id: string;
+          name: string;
+          brand: string;
+          type: Database["public"]["Enums"]["coffee_type"];
+          origin: string | null;
+          roast_level: Database["public"]["Enums"]["roast_level"] | null;
+          image_url: string | null;
+          avg_rating: number | null;
+          total_reviews: number;
+          created_at: string;
+          recent_reviews_7d: number;
+          score: number;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      }
     }
     Functions: {
       [_ in never]: never
@@ -391,6 +414,7 @@ export type Database = {
         | "tropical"
         | "wine"
       collection_type: "at_home" | "favorites" | "to_try" | "tried"
+      entry_visibility: "public" | "private"
     }
     CompositeTypes: {
       [_ in never]: never

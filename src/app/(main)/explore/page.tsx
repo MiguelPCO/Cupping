@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import {
   getCoffeeCatalog,
-  getTrendingCoffees,
+  getTrendingWithScore,
   getTopRatedCoffees,
-  getDistinctOrigins,
-  getCoffeesByOrigin,
+  getCoffeeCountByOrigin,
   getUserReviewedCoffeeIds,
+  getActiveBrands,
 } from "@/lib/supabase/queries";
+import { BrandChips } from "./_components/brand-chips";
+import { OriginChips } from "./_components/origin-chips";
 import { ExploreGrid } from "./_components/explore-grid";
 import { ExploreSection } from "./_components/explore-section";
 import { ExploreTabBar } from "./_components/explore-tab-bar";
@@ -52,27 +54,18 @@ export default async function ExplorePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [coffees, trending, topRated, origins, reviewedIds] = await Promise.all([
+  const [coffees, trending, topRated, originCounts, activeBrands, reviewedIds] = await Promise.all([
     getCoffeeCatalog(supabase, { pageSize: 100 }),
-    getTrendingCoffees(supabase, 6),
+    getTrendingWithScore(supabase, 6),
     getTopRatedCoffees(supabase, 3, 9),
-    getDistinctOrigins(supabase, 1),
+    getCoffeeCountByOrigin(supabase),
+    getActiveBrands(supabase, 1, 12),
     user
       ? getUserReviewedCoffeeIds(supabase, user.id)
       : Promise.resolve<string[]>([]),
   ]);
 
-  const originSections = await Promise.all(
-    origins.slice(0, 3).map(async (origin) => ({
-      origin,
-      coffees: await getCoffeesByOrigin(supabase, origin, 6),
-    }))
-  );
-
-  const hasEditorial =
-    trending.length > 0 ||
-    topRated.length > 0 ||
-    originSections.some((s) => s.coffees.length > 0);
+  const hasEditorial = trending.length > 0 || topRated.length > 0;
 
   return (
     <div className="px-4 py-6 max-w-5xl mx-auto">
@@ -89,8 +82,8 @@ export default async function ExplorePage({
       {hasEditorial && (
         <div className="mb-6">
           <ExploreSection
-            title="En tendencia"
-            coffees={trending}
+            title="Tendencias esta semana"
+            coffees={trending as Coffee[]}
             reviewedIds={reviewedIds}
           />
           <ExploreSection
@@ -98,20 +91,15 @@ export default async function ExplorePage({
             coffees={topRated}
             reviewedIds={reviewedIds}
           />
-          {originSections.map(
-            ({ origin, coffees: ocs }) =>
-              ocs.length > 0 && (
-                <ExploreSection
-                  key={origin}
-                  title={`De ${origin}`}
-                  coffees={ocs}
-                  reviewedIds={reviewedIds}
-                />
-              )
-          )}
           <hr className="border-parchment mb-6" />
         </div>
       )}
+
+      {/* Origin chips */}
+      <OriginChips origins={originCounts} />
+
+      {/* Brand chips */}
+      <BrandChips brands={activeBrands} />
 
       {/* Full searchable + filterable grid */}
       <h2 className="font-display text-xl text-espresso mb-4">Todos los cafés</h2>

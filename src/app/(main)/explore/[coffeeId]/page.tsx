@@ -11,6 +11,7 @@ import { FlavorTag } from "@/components/coffee/flavor-tag";
 import { RoastBadge } from "@/components/coffee/roast-badge";
 import { BackButton } from "@/components/ui/back-button";
 import { getCoffeeTypeLabel } from "@/lib/utils";
+import { brandToSlug } from "@/lib/brand-slug";
 import { LikeButton } from "@/components/social/like-button";
 
 interface Props {
@@ -67,7 +68,13 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
       {/* Header */}
       <div className="mb-6">
         <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1">
-          {coffee.brand} · {getCoffeeTypeLabel(coffee.type)}
+          <Link
+            href={`/explore/brand/${brandToSlug(coffee.brand)}`}
+            className="hover:text-copper-500 transition-colors"
+          >
+            {coffee.brand}
+          </Link>
+          {" · "}{getCoffeeTypeLabel(coffee.type)}
           {coffee.origin && ` · ${coffee.origin}`}
         </p>
         <h1 className="font-display text-3xl text-espresso leading-tight mb-3">

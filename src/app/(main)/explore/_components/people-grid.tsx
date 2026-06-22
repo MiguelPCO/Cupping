@@ -6,12 +6,16 @@ import { createClient } from "@/lib/supabase/client";
 import { searchUsers, type FollowUser } from "@/lib/supabase/queries";
 import { useDebounce } from "@/lib/hooks";
 import { UserCard } from "@/components/social/user-card";
+import { useSuggestedUsers } from "@/lib/hooks/use-suggested-users";
 
 export function PeopleGrid() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<FollowUser[]>([]);
   const [loading, setLoading] = useState(false);
   const debouncedQuery = useDebounce(query, 400);
+
+  const { data: suggested, isLoading: loadingSuggestions } = useSuggestedUsers(6);
+  const showSuggestions = !query && (loadingSuggestions || (suggested && suggested.length > 0));
 
   useEffect(() => {
     if (!debouncedQuery.trim()) {
@@ -39,6 +43,27 @@ export function PeopleGrid() {
 
   return (
     <div>
+      {showSuggestions && (
+        <div className="mb-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-3">
+            Quizás te interese
+          </p>
+          {loadingSuggestions ? (
+            <div className="space-y-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-14 bg-linen rounded-xl animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {(suggested ?? []).map((user) => (
+                <UserCard key={user.id} user={user} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="relative mb-4">
         <Search
           className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-parchment pointer-events-none"

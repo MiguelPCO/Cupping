@@ -43,6 +43,7 @@ export default async function EditCoffeePage({ params }: Props) {
     notes: entry.notes ?? undefined,
     brew_method: entry.brew_method ?? undefined,
     photo_url: entry.photo_url ?? undefined,
+    visibility: entry.visibility,
   };
 
   return (

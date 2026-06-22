@@ -5,6 +5,7 @@ import { useUIStore } from "@/lib/stores";
 import { LayoutDashboard, Library, Plus, Compass, User } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useUnreadActivityCount } from "@/lib/hooks/use-activity-feed";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Inicio", icon: LayoutDashboard },
@@ -19,6 +20,7 @@ const NAV_LINKS_RIGHT = [
 export function MobileBottomNav() {
   const { setAddCoffeeModal } = useUIStore();
   const pathname = usePathname();
+  const unread = useUnreadActivityCount();
 
   return (
     <nav
@@ -29,6 +31,7 @@ export function MobileBottomNav() {
       <div className="flex items-center">
         {NAV_LINKS.map(({ href, label, icon: Icon }) => {
           const active = pathname.startsWith(href);
+          const showBadge = href === "/dashboard" && unread > 0;
           return (
             <Link
               key={href}
@@ -39,7 +42,12 @@ export function MobileBottomNav() {
               )}
               aria-current={active ? "page" : undefined}
             >
-              <Icon className="size-5" />
+              <div className="relative">
+                <Icon className="size-5" />
+                {showBadge && (
+                  <span className="absolute -top-1 -right-1 size-2 rounded-full bg-copper-500" />
+                )}
+              </div>
               <span className="text-[11px] font-medium">{label}</span>
             </Link>
           );
