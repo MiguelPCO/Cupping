@@ -59,7 +59,7 @@ export function ReviewTimeline({ data }: ReviewTimelineProps) {
             />
             <Tooltip
               contentStyle={{
-                background: "white",
+                background: "var(--color-linen)",
                 border: "1px solid var(--color-parchment)",
                 borderRadius: "8px",
                 fontSize: "12px",

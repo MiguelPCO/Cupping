@@ -41,7 +41,7 @@ export function RatingDistribution({ data }: RatingDistributionProps) {
             <Tooltip
               cursor={{ fill: "var(--color-linen)" }}
               contentStyle={{
-                background: "white",
+                background: "var(--color-linen)",
                 border: "1px solid var(--color-parchment)",
                 borderRadius: "8px",
                 fontSize: "12px",
