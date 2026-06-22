@@ -20,7 +20,7 @@ import {
   cn,
 } from "@/lib/utils";
 import type { Coffee, CollectionType } from "@/types/coffee";
-import { ChevronDown, Loader2, Check, Home, Heart, BookmarkPlus, CheckCircle } from "lucide-react";
+import { ChevronDown, Loader2, Check, Home, Heart, BookmarkPlus, CheckCircle, Globe, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { RatingCups } from "./rating-cups";
 import { FlavorTag as FlavorTagChip } from "./flavor-tag";
@@ -96,6 +96,7 @@ export function CoffeeForm({
       type: "bean",
       rating_global: 3,
       flavor_tags: [],
+      visibility: "public",
       // Pre-fill from community coffee if provided
       ...(preselectedCoffee
         ? {
@@ -115,6 +116,7 @@ export function CoffeeForm({
   const currentBrewMethod = watch("brew_method");
   const currentFlavors = watch("flavor_tags");
   const currentCollectionTypes = watch("collection_types") ?? [];
+  const currentVisibility = watch("visibility");
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   const goNext = async () => {
@@ -384,6 +386,34 @@ export function CoffeeForm({
             {errors.notes && (
               <p id="notes-error" className="text-xs text-destructive">{errors.notes.message}</p>
             )}
+          </div>
+
+          {/* Visibility */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setValue("visibility", "public")}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                currentVisibility === "public"
+                  ? "bg-copper-500 text-white"
+                  : "bg-linen text-espresso-light"
+              }`}
+            >
+              <Globe className="size-4" />
+              Público
+            </button>
+            <button
+              type="button"
+              onClick={() => setValue("visibility", "private")}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                currentVisibility === "private"
+                  ? "bg-espresso text-white"
+                  : "bg-linen text-espresso-light"
+              }`}
+            >
+              <Lock className="size-4" />
+              Solo tú
+            </button>
           </div>
         </div>
       )}
