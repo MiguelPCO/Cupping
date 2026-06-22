@@ -361,6 +361,24 @@ export type Database = {
         }
         Relationships: []
       }
+      coffee_trending_score: {
+        Row: {
+          id: string;
+          name: string;
+          brand: string;
+          type: Database["public"]["Enums"]["coffee_type"];
+          origin: string | null;
+          roast_level: Database["public"]["Enums"]["roast_level"] | null;
+          image_url: string | null;
+          avg_rating: number | null;
+          total_reviews: number;
+          recent_reviews_7d: number;
+          score: number;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      }
     }
     Functions: {
       [_ in never]: never

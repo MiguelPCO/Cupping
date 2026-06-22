@@ -652,3 +652,57 @@ export async function getActiveBrands(
     .sort((a, b) => b.total_reviews - a.total_reviews)
     .slice(0, limit);
 }
+
+// ── Explore: Editorial ────────────────────────────────────────────────────
+
+export type TrendingCoffee = {
+  id: string;
+  name: string;
+  brand: string;
+  type: CoffeeType;
+  origin: string | null;
+  roast_level: RoastLevel | null;
+  image_url: string | null;
+  avg_rating: number | null;
+  total_reviews: number;
+  recent_reviews_7d: number;
+  score: number;
+};
+
+export async function getTrendingWithScore(
+  supabase: Supabase,
+  limit = 6
+): Promise<TrendingCoffee[]> {
+  const { data, error } = await supabase
+    .from("coffee_trending_score")
+    .select("*")
+    .order("score", { ascending: false })
+    .limit(limit);
+  if (error) {
+    console.error("getTrendingWithScore error:", error);
+    return [];
+  }
+  return (data ?? []) as TrendingCoffee[];
+}
+
+export async function getCoffeeCountByOrigin(
+  supabase: Supabase
+): Promise<{ origin: string; count: number }[]> {
+  const { data, error } = await supabase
+    .from("coffees")
+    .select("origin")
+    .not("origin", "is", null);
+
+  if (error || !data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    if (row.origin) {
+      counts[row.origin] = (counts[row.origin] ?? 0) + 1;
+    }
+  }
+
+  return Object.entries(counts)
+    .map(([origin, count]) => ({ origin, count }))
+    .sort((a, b) => b.count - a.count);
+}
