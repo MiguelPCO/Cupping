@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { DashboardShell } from "./_components/dashboard-shell";
+import { VisitTracker } from "./_components/visit-tracker";
 
 export const metadata: Metadata = {
   title: "Dashboard — CUPPING",
@@ -49,6 +50,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="px-4 py-6 max-w-5xl mx-auto">
+      <VisitTracker />
       <DashboardShell
         userId={user.id}
         firstName={firstName}
