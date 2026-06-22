@@ -83,7 +83,7 @@ export default async function ExplorePage({
         <div className="mb-6">
           <ExploreSection
             title="Tendencias esta semana"
-            coffees={trending as unknown as Coffee[]}
+            coffees={trending as Coffee[]}
             reviewedIds={reviewedIds}
           />
           <ExploreSection

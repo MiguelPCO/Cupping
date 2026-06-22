@@ -665,6 +665,7 @@ export type TrendingCoffee = {
   image_url: string | null;
   avg_rating: number | null;
   total_reviews: number;
+  created_at: string;
   recent_reviews_7d: number;
   score: number;
 };

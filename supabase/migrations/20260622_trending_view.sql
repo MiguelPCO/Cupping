@@ -18,6 +18,7 @@ select
   c.image_url,
   c.avg_rating,
   c.total_reviews,
+  c.created_at,
   coalesce(recent.count, 0) as recent_reviews_7d,
   case
     when c.total_reviews = 0 then 0
