@@ -37,14 +37,7 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
     .toUpperCase();
 
   return (
-    <header className="h-14 border-b border-parchment bg-cream/95 backdrop-blur-sm flex items-center px-4 gap-3 sticky top-0 z-30">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1 focus:bg-copper-500 focus:text-white focus:rounded text-sm"
-      >
-        Saltar al contenido
-      </a>
-
+    <header className="h-14 border-b border-border bg-cream/95 backdrop-blur-sm flex items-center px-4 gap-3 sticky top-0 z-30">
       <button
         onClick={toggleSidebar}
         className="hidden sm:flex items-center justify-center size-9 rounded-md hover:bg-linen text-espresso-light transition-colors"
@@ -116,7 +109,7 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
                   setMenuOpen(false);
                   startTransition(() => signOut());
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-500/10 transition-colors disabled:opacity-50"
               >
                 <LogOut className="size-4" />
                 {isPending ? "Cerrando…" : "Cerrar sesión"}

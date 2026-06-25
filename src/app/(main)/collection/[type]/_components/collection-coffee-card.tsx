@@ -101,13 +101,13 @@ export function CollectionCoffeeCard({
           type="button"
           onClick={() => { setOpen((v) => !v); setMoveOpen(false); }}
           aria-label="Opciones"
-          className="flex items-center justify-center size-7 rounded-lg text-parchment hover:text-espresso hover:bg-linen transition-colors"
+          className="flex items-center justify-center size-8 rounded-lg text-parchment hover:text-espresso hover:bg-linen transition-colors"
         >
           <MoreHorizontal className="size-4" />
         </button>
 
         {open && (
-          <div className="absolute right-0 top-8 z-50 w-52 bg-white rounded-xl border border-parchment shadow-lg py-1 text-sm">
+          <div className="absolute right-0 top-8 z-50 w-52 bg-card rounded-xl border border-border shadow-lg py-1 text-sm">
             {/* Ver detalle */}
             <Link
               href={`/explore/${id}`}
@@ -148,7 +148,7 @@ export function CollectionCoffeeCard({
                   <Check className={cn("size-3 text-copper-500 shrink-0", !moveOpen && "invisible")} />
                 </button>
                 {moveOpen && (
-                  <div className="absolute left-full top-0 ml-1 w-44 bg-white rounded-xl border border-parchment shadow-lg py-1 text-sm">
+                  <div className="absolute left-full top-0 ml-1 w-44 bg-card rounded-xl border border-border shadow-lg py-1 text-sm">
                     {otherCollections.map((col) => (
                       <button
                         key={col.id}
@@ -170,7 +170,7 @@ export function CollectionCoffeeCard({
             <button
               type="button"
               onClick={handleRemove}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-red-500 hover:bg-red-50 transition-colors"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-red-500 hover:bg-red-500/10 transition-colors"
             >
               <Trash2 className="size-3.5 shrink-0" />
               Eliminar de colección

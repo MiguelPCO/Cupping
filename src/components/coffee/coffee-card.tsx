@@ -75,7 +75,7 @@ export function CoffeeCard({
               <button
                 onClick={() => onEdit(entry.id)}
                 aria-label="Editar reseña"
-                className="flex items-center justify-center size-7 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-black/75 transition-colors"
+                className="flex items-center justify-center size-8 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-black/75 transition-colors"
               >
                 <Pencil className="size-3" />
               </button>
@@ -84,7 +84,7 @@ export function CoffeeCard({
               <button
                 onClick={() => onDelete(entry.id)}
                 aria-label="Eliminar reseña"
-                className="flex items-center justify-center size-7 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-destructive/80 transition-colors"
+                className="flex items-center justify-center size-8 rounded-lg bg-black/55 backdrop-blur-sm text-white hover:bg-destructive/80 transition-colors"
               >
                 <Trash2 className="size-3" />
               </button>

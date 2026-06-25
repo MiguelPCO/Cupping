@@ -174,10 +174,11 @@ html {
   --color-cream: oklch(0.14 0.02 45);
   --color-linen: oklch(0.18 0.03 48);
   --color-espresso: oklch(0.95 0.02 80);
-  --color-espresso-light: oklch(0.72 0.08 60);
-  --color-parchment: oklch(0.30 0.04 48);
-  --color-copper-50: oklch(0.22 0.03 50);
+  --color-espresso-light: oklch(0.68 0.03 55);   /* neutral secondary — not copper */
+  --color-parchment: oklch(0.52 0.04 52);        /* readable muted text on dark bg */
+  --color-copper-50: oklch(0.29 0.05 52);        /* visible subtle tint */
   --color-copper-100: oklch(0.26 0.04 50);
+  --color-copper-400: oklch(0.72 0.08 58);       /* explicit — prevents light-mode fallback */
   --color-copper-500: oklch(0.72 0.08 60);
   --color-copper-600: oklch(0.64 0.10 58);
   --color-cup-empty: oklch(0.28 0.03 50);
