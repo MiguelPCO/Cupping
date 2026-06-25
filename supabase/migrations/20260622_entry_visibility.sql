@@ -38,7 +38,12 @@ end $$;
 -- Delete policy unchanged (owner deletes own entries)
 
 -- Update the community stats views to only count public entries
--- (views are replaced — no DROP needed for OR REPLACE)
+-- Drop first to allow column renames / type changes
+drop view if exists public.coffee_rating_distribution;
+drop view if exists public.coffee_subrating_avgs;
+drop view if exists public.coffee_brew_stats;
+drop view if exists public.coffee_flavor_stats;
+
 create or replace view public.coffee_flavor_stats as
   select ef.tag, ce.coffee_id, count(*)::integer as mention_count
   from public.entry_flavor_tags ef
