@@ -40,14 +40,14 @@ end $$;
 -- Update the community stats views to only count public entries
 -- (views are replaced — no DROP needed for OR REPLACE)
 create or replace view public.coffee_flavor_stats as
-  select ef.tag, ce.coffee_id, count(*) as mention_count
+  select ef.tag, ce.coffee_id, count(*)::integer as mention_count
   from public.entry_flavor_tags ef
   join public.coffee_entries ce on ce.id = ef.entry_id
   where ce.visibility = 'public'
   group by ef.tag, ce.coffee_id;
 
 create or replace view public.coffee_brew_stats as
-  select brew_method, coffee_id, count(*) as usage_count
+  select brew_method, coffee_id, count(*)::integer as usage_count
   from public.coffee_entries
   where brew_method is not null
     and visibility = 'public'
@@ -67,7 +67,7 @@ create or replace view public.coffee_subrating_avgs as
   group by coffee_id;
 
 create or replace view public.coffee_rating_distribution as
-  select coffee_id, rating_global as rating, count(*) as count
+  select coffee_id, rating_global as rating, count(*)::integer as count
   from public.coffee_entries
   where visibility = 'public'
   group by coffee_id, rating_global
