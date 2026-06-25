@@ -38,21 +38,45 @@ export default async function CollectionTypePage({ params }: Props) {
 
   if (!user) redirect("/login");
 
-  const { data: collection } = await supabase
+  // Fetch all user collections
+  const { data: allCollections } = await supabase
     .from("collections")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("type", collectionType)
-    .single();
+    .select("id, type")
+    .eq("user_id", user.id);
 
-  const coffees = collection
-    ? await getCollectionItems(supabase, collection.id)
+  const currentCollection = (allCollections ?? []).find((c) => c.type === collectionType);
+  const otherCollections = (allCollections ?? []).filter((c) => c.type !== collectionType);
+
+  const coffees = currentCollection
+    ? await getCollectionItems(supabase, currentCollection.id)
     : [];
+
+  // Build entryId map: coffeeId → user's most recent entry id
+  let entryIdMap: Record<string, string> = {};
+  if (coffees.length > 0) {
+    const coffeeIds = coffees.map((c) => c.id);
+    const { data: entries } = await supabase
+      .from("coffee_entries")
+      .select("id, coffee_id")
+      .eq("user_id", user.id)
+      .in("coffee_id", coffeeIds)
+      .order("created_at", { ascending: false });
+
+    (entries ?? []).forEach((e) => {
+      if (!entryIdMap[e.coffee_id]) entryIdMap[e.coffee_id] = e.id;
+    });
+  }
 
   return (
     <div className="px-4 py-6 max-w-5xl mx-auto">
       <h1 className="font-display text-3xl text-espresso mb-6">{label}</h1>
-      <CollectionCoffeeList coffees={coffees} collectionLabel={label} />
+      <CollectionCoffeeList
+        coffees={coffees}
+        collectionLabel={label}
+        collectionId={currentCollection?.id ?? ""}
+        entryIdMap={entryIdMap}
+        otherCollections={otherCollections}
+      />
     </div>
   );
 }
