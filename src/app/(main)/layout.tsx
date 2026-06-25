@@ -37,6 +37,7 @@ export default async function MainLayout({
         <Header
           displayName={profile?.display_name ?? ""}
           avatarUrl={profile?.avatar_url ?? null}
+          userId={user.id}
         />
         <main
           id="main-content"
