@@ -1,6 +1,6 @@
 export default function BrandLoading() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <div className="h-8 w-24 bg-linen rounded-lg animate-pulse mb-4" />
       <div className="h-4 w-16 bg-linen rounded animate-pulse mb-1" />
       <div className="h-9 w-56 bg-linen rounded animate-pulse mb-4" />

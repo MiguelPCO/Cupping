@@ -1,6 +1,6 @@
-export default function ExploreLoading() {
+﻿export default function ExploreLoading() {
   return (
-    <div className="px-4 py-6 max-w-5xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-5xl mx-auto">
       <div className="mb-6 space-y-1">
         <div className="h-9 w-32 bg-parchment rounded-lg animate-pulse" />
         <div className="h-4 w-64 bg-parchment rounded animate-pulse" />

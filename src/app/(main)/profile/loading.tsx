@@ -1,6 +1,6 @@
-export default function ProfileLoading() {
+﻿export default function ProfileLoading() {
   return (
-    <div className="px-4 py-6 max-w-2xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-2xl mx-auto">
       <div className="flex items-start gap-4 mb-6">
         <div className="size-20 rounded-full bg-parchment animate-pulse shrink-0" />
         <div className="flex-1 space-y-2 pt-1">

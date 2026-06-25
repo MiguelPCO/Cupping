@@ -68,7 +68,7 @@ export default async function CollectionTypePage({ params }: Props) {
   }
 
   return (
-    <div className="px-4 py-6 max-w-5xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-5xl mx-auto">
       <h1 className="font-display text-3xl text-espresso mb-6">{label}</h1>
       <CollectionCoffeeList
         coffees={coffees}

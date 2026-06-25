@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import {
   getCoffeeCatalog,
@@ -35,7 +35,7 @@ export default async function ExplorePage({
   // ── Personas tab: skip all heavy coffee queries ──
   if (tab === "personas") {
     return (
-      <div className="px-4 py-6 max-w-5xl mx-auto">
+      <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-5xl mx-auto">
         <div className="mb-6">
           <h1 className="font-display text-3xl text-espresso">Explorar</h1>
           <p className="text-espresso-light text-sm mt-1">
@@ -68,7 +68,7 @@ export default async function ExplorePage({
   const hasEditorial = trending.length > 0 || topRated.length > 0;
 
   return (
-    <div className="px-4 py-6 max-w-5xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-5xl mx-auto">
       <div className="mb-6">
         <h1 className="font-display text-3xl text-espresso">Explorar</h1>
         <p className="text-espresso-light text-sm mt-1">

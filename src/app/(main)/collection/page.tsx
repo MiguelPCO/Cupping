@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Home, Heart, BookmarkPlus, CheckCircle } from "lucide-react";
@@ -49,7 +49,7 @@ export default async function CollectionPage() {
   );
 
   return (
-    <div className="px-4 py-6 max-w-2xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-2xl mx-auto">
       <h1 className="font-display text-3xl text-espresso mb-6">Mi colección</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {(Object.keys(COLLECTION_META) as CollectionType[]).map((type) => {

@@ -1,6 +1,6 @@
-export default function CollectionLoading() {
+﻿export default function CollectionLoading() {
   return (
-    <div className="px-4 py-6 max-w-2xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-2xl mx-auto">
       <div className="h-9 w-44 bg-parchment rounded-lg animate-pulse mb-6" />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (

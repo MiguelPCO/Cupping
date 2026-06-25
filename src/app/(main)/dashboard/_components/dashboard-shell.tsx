@@ -65,9 +65,9 @@ export function DashboardShell({
   };
 
   return (
-    <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-6 lg:items-start">
+    <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-8 lg:items-start">
       {/* ── LEFT COLUMN ── */}
-      <div className="space-y-6 min-w-0">
+      <div className="space-y-8 min-w-0">
         {/* Greeting */}
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-copper-400 mb-1 capitalize">
@@ -148,7 +148,7 @@ export function DashboardShell({
       </div>
 
       {/* ── RIGHT COLUMN ── */}
-      <div className="space-y-4 mt-6 lg:mt-0 lg:sticky lg:top-6">
+      <div className="space-y-6 mt-8 lg:mt-0 lg:sticky lg:top-6">
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-copper-400 mb-3">
             Comunidad

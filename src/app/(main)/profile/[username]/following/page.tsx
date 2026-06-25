@@ -23,7 +23,7 @@ export default async function FollowingPage({ params }: Props) {
   const following = await getFollowingList(supabase, profile.id);
 
   return (
-    <div className="px-4 py-6 max-w-2xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-2xl mx-auto">
       <BackButton className="mb-4" />
       <h1 className="font-display text-2xl text-espresso mb-1">
         Siguiendo
