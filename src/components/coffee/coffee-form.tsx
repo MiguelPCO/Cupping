@@ -589,7 +589,7 @@ export function CoffeeForm({
       )}
 
       {/* Navigation */}
-      <div className="flex gap-3 mt-8">
+      <div key={step} className="flex gap-3 mt-8">
         {step > 1 && (
           <Button
             type="button"
