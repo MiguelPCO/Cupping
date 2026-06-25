@@ -1,12 +1,20 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
+import { usePathname } from "next/navigation";
 import { useUIStore } from "@/lib/stores";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
-import { Menu, Plus, User, LogOut } from "lucide-react";
+import { Plus, User, LogOut, LayoutDashboard, Library, Compass } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+const NAV_ITEMS = [
+  { href: "/dashboard", label: "Inicio", icon: LayoutDashboard },
+  { href: "/collection", label: "Colección", icon: Library },
+  { href: "/explore", label: "Explorar", icon: Compass },
+];
 
 interface HeaderProps {
   displayName: string;
@@ -14,10 +22,11 @@ interface HeaderProps {
 }
 
 export function Header({ displayName, avatarUrl }: HeaderProps) {
-  const { toggleSidebar, setAddCoffeeModal } = useUIStore();
+  const { setAddCoffeeModal } = useUIStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -37,28 +46,47 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
     .toUpperCase();
 
   return (
-    <header className="h-14 border-b border-border bg-cream/95 backdrop-blur-sm flex items-center px-4 gap-3 sticky top-0 z-30">
-      <button
-        onClick={toggleSidebar}
-        className="hidden sm:flex items-center justify-center size-9 rounded-md hover:bg-linen text-espresso-light transition-colors"
-        aria-label="Alternar menú lateral"
+    <header className="h-14 border-b border-border bg-cream/95 backdrop-blur-sm flex items-center px-4 sm:px-6 gap-3 sticky top-0 z-30">
+      {/* Logo */}
+      <Link
+        href="/dashboard"
+        className="font-display text-xl text-espresso select-none hover:opacity-80 transition-opacity shrink-0"
       >
-        <Menu className="size-5" />
-      </button>
-
-      <Link href="/dashboard" className="font-display text-xl text-espresso select-none hover:opacity-80 transition-opacity">
         CUPPING
       </Link>
 
+      {/* Desktop nav */}
+      <nav className="hidden sm:flex items-center gap-1 ml-4" aria-label="Navegación principal">
+        {NAV_ITEMS.map(({ href, label }) => {
+          const active = pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                active
+                  ? "text-espresso bg-linen"
+                  : "text-espresso-light hover:text-espresso hover:bg-linen"
+              )}
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
       <div className="ml-auto flex items-center gap-2">
         <ThemeToggle />
+
         <Button
           size="sm"
           className="hidden sm:flex gap-1.5 bg-copper-500 hover:bg-copper-600 text-white border-0"
           onClick={() => setAddCoffeeModal(true)}
         >
           <Plus className="size-4" />
-          Nuevo café
+          Añadir café
         </Button>
 
         <div ref={menuRef} className="relative">
