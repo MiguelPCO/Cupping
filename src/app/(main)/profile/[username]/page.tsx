@@ -63,7 +63,7 @@ export default async function ProfilePage({ params }: Props) {
     : [];
 
   return (
-    <div className="px-4 py-6 max-w-2xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-2xl mx-auto">
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
         <div className="size-20 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">

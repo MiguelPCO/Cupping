@@ -37,7 +37,7 @@ export default async function OriginPage({ params }: Props) {
   const reviewedSet = new Set(reviewedIds);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <BackButton className="mb-4" />
       <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1">
         Origen

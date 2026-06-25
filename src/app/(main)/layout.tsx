@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { QueryProvider } from "./_components/query-provider";
 import { Header } from "./_components/header";
-import { Sidebar } from "./_components/sidebar";
 import { MobileBottomNav } from "./_components/mobile-bottom-nav";
 import { AddCoffeeModal } from "./_components/add-coffee-modal";
 import { GrainTexture } from "@/components/ui/grain-texture";
@@ -38,16 +37,14 @@ export default async function MainLayout({
         <Header
           displayName={profile?.display_name ?? ""}
           avatarUrl={profile?.avatar_url ?? null}
+          userId={user.id}
         />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar />
-          <main
-            id="main-content"
-            className="flex-1 overflow-y-auto min-w-0 pb-24 sm:pb-0"
-          >
-            {children}
-          </main>
-        </div>
+        <main
+          id="main-content"
+          className="flex-1 overflow-y-auto min-w-0 pb-24 sm:pb-0"
+        >
+          {children}
+        </main>
         <MobileBottomNav />
         <AddCoffeeModal />
       </div>

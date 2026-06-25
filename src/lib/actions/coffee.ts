@@ -261,3 +261,71 @@ export async function deleteCoffeeEntry(
   revalidatePath("/collection");
   return { data: undefined };
 }
+
+export async function removeFromCollection(
+  collectionId: string,
+  coffeeId: string
+): Promise<ActionResult> {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  const { data: col } = await supabase
+    .from("collections")
+    .select("id")
+    .eq("id", collectionId)
+    .eq("user_id", user.id)
+    .single();
+  if (!col) return { error: "No autorizado" };
+
+  const { error } = await supabase
+    .from("collection_items")
+    .delete()
+    .eq("collection_id", collectionId)
+    .eq("coffee_id", coffeeId);
+
+  if (error) return { error: "Error al eliminar de la colección" };
+
+  revalidatePath("/collection");
+  return { data: undefined };
+}
+
+export async function moveToCollection(
+  fromCollectionId: string,
+  toCollectionId: string,
+  coffeeId: string
+): Promise<ActionResult> {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  const { data: cols } = await supabase
+    .from("collections")
+    .select("id")
+    .in("id", [fromCollectionId, toCollectionId])
+    .eq("user_id", user.id);
+  if (!cols || cols.length < 2) return { error: "No autorizado" };
+
+  const [del, ins] = await Promise.all([
+    supabase
+      .from("collection_items")
+      .delete()
+      .eq("collection_id", fromCollectionId)
+      .eq("coffee_id", coffeeId),
+    supabase
+      .from("collection_items")
+      .upsert(
+        { collection_id: toCollectionId, coffee_id: coffeeId },
+        { onConflict: "collection_id,coffee_id" }
+      ),
+  ]);
+
+  if (del.error || ins.error) return { error: "Error al mover la colección" };
+
+  revalidatePath("/collection");
+  return { data: undefined };
+}

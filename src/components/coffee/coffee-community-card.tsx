@@ -16,10 +16,13 @@ interface CoffeeCommunityCardProps {
 
 export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommunityCardProps) {
   return (
-    <Link
-      href={`/explore/${coffee.id}`}
-      className="group block bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
-    >
+    <div className="group relative bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+      {/* Full-card link sits behind all content */}
+      <Link
+        href={`/explore/${coffee.id}`}
+        className="absolute inset-0 z-0"
+        aria-label={`Ver ${coffee.name}`}
+      />
       {/* Photo — 4:3, overlaid badges */}
       <div className="relative aspect-[4/3] bg-linen overflow-hidden">
         <SteamAnimation />
@@ -80,12 +83,11 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
       </div>
 
       {/* Body */}
-      <div className="p-3 pb-3.5">
+      <div className="relative z-10 p-3 pb-3.5">
         <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-copper-400 mb-1 truncate">
           <Link
             href={`/explore/brand/${brandToSlug(coffee.brand)}`}
-            className="hover:text-copper-500 transition-colors"
-            onClick={(e) => e.stopPropagation()}
+            className="relative z-10 hover:text-copper-500 transition-colors"
           >
             {coffee.brand}
           </Link>
@@ -97,6 +99,6 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
           <p className="text-xs text-parchment mt-1">Sin reseñas aún</p>
         )}
       </div>
-    </Link>
+    </div>
   );
 }

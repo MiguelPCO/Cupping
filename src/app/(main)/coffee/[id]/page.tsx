@@ -68,7 +68,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
   );
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <BackButton className="mb-4" />
       {/* Photo */}
       <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-parchment mb-6">

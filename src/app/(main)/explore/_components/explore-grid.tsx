@@ -65,6 +65,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
         {/* Filter toggle button */}
         <button
           onClick={() => setShowFilters((v) => !v)}
+          aria-expanded={showFilters}
           className={cn(
             "flex items-center gap-1.5 h-10 px-4 rounded-xl border text-sm font-medium transition-colors shrink-0",
             showFilters || activeFilterCount > 0

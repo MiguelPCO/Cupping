@@ -42,7 +42,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
   if (!coffee) notFound();
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <BackButton className="mb-4" />
 
       {/* Photo */}
