@@ -63,7 +63,7 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
   return (
     <>
       <header className="border-b border-border bg-cream/95 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-5xl mx-auto h-14 px-4 sm:px-6 flex items-stretch">
+        <div className="max-w-6xl mx-auto h-14 px-4 sm:px-6 flex items-stretch">
           {/* Logo */}
           <div className="flex items-center mr-6 shrink-0">
             <Link

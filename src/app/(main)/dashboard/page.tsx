@@ -49,7 +49,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-5xl mx-auto">
+    <div className="px-4 sm:px-6 py-8 sm:py-10 max-w-6xl mx-auto">
       <VisitTracker />
       <DashboardShell
         userId={user.id}
