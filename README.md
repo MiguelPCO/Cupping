@@ -73,8 +73,3 @@ La paleta y tokens están en `src/app/globals.css` dentro de `@theme`. Usa las c
 <span data-flavor="chocolate" style={{ color: 'var(--flavor-color)' }}>Chocolate</span>
 ```
 
-## Documentación
-
-- `CUPPING_Master_Guide_v2.md` — Guía maestra del proyecto (8 fases)
-- `CUPPING_Visual_Identity_v1.md` — Identidad visual completa
-- `cupping-tokens.json` — W3C Design Tokens
