@@ -5,3 +5,15 @@ node_modules/
 .env.production.local
 *.tsbuildinfo
 next-env.d.ts
+
+# AI tool configs & internal docs
+.agents/
+.claude/
+.kiro/
+.trae/
+.windsurf/
+design-refs/
+designsystemcupping/
+supabase/
+CUPPING_Master_Guide_v2.md
+CUPPING_Visual_Identity_v1.md
