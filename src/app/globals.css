@@ -181,6 +181,7 @@ html {
   --color-copper-400: oklch(0.72 0.08 58);       /* explicit — prevents light-mode fallback */
   --color-copper-500: oklch(0.72 0.08 60);
   --color-copper-600: oklch(0.64 0.10 58);
+  --color-copper-700: oklch(0.80 0.06 60);  /* avatar initials legible on dark bg */
   --color-cup-empty: oklch(0.28 0.03 50);
   --color-cup-filled: oklch(0.72 0.08 60);
   --color-cup-hover: oklch(0.72 0.08 60);
@@ -221,9 +222,6 @@ html {
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
 

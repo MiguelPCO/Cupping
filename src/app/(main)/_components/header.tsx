@@ -86,9 +86,9 @@ export function Header({ displayName, avatarUrl }: HeaderProps) {
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-11 w-48 bg-card rounded-xl border border-parchment shadow-lg py-1 z-50"
+              className="absolute right-0 top-11 w-48 bg-card rounded-xl border border-border shadow-lg py-1 z-50"
             >
-              <div className="px-3 py-2 border-b border-parchment">
+              <div className="px-3 py-2 border-b border-border">
                 <p className="text-sm font-medium text-espresso truncate">
                   {displayName}
                 </p>
