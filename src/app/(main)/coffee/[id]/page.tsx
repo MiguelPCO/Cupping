@@ -38,7 +38,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const SUB_RATING_LABELS: { key: keyof typeof RATING_FIELDS; label: string }[] = [
+type RatingFields = {
+  rating_aroma: number;
+  rating_body: number;
+  rating_acidity: number;
+  rating_sweetness: number;
+  rating_bitterness: number;
+  rating_aftertaste: number;
+};
+
+const SUB_RATING_LABELS: { key: keyof RatingFields; label: string }[] = [
   { key: "rating_aroma", label: "Aroma" },
   { key: "rating_body", label: "Cuerpo" },
   { key: "rating_acidity", label: "Acidez" },
@@ -46,16 +55,6 @@ const SUB_RATING_LABELS: { key: keyof typeof RATING_FIELDS; label: string }[] = 
   { key: "rating_bitterness", label: "Amargor" },
   { key: "rating_aftertaste", label: "Retrogusto" },
 ];
-
-// Needed for TypeScript keyof
-const RATING_FIELDS = {
-  rating_aroma: 0,
-  rating_body: 0,
-  rating_acidity: 0,
-  rating_sweetness: 0,
-  rating_bitterness: 0,
-  rating_aftertaste: 0,
-};
 
 export default async function CoffeeDetailPage({ params }: Props) {
   const { id } = await params;

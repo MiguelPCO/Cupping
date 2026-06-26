@@ -52,7 +52,7 @@ export default async function CollectionTypePage({ params }: Props) {
     : [];
 
   // Build entryId map: coffeeId → user's most recent entry id
-  let entryIdMap: Record<string, string> = {};
+  const entryIdMap: Record<string, string> = {};
   if (coffees.length > 0) {
     const coffeeIds = coffees.map((c) => c.id);
     const { data: entries } = await supabase
