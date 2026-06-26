@@ -10,7 +10,7 @@ export default function AuthLayout({
     <div className="relative min-h-screen flex items-center justify-center bg-cream px-4">
       <GrainTexture />
       <Spotlight />
-      <div className="relative z-20 w-full">{children}</div>
+      <div className="relative z-20 w-full flex justify-center">{children}</div>
     </div>
   );
 }
