@@ -141,34 +141,22 @@ export function CoffeeForm({
 
     try {
       if (mode === "edit" && entryId) {
-        const result = await updateMutation.mutateAsync({ entryId, data: payload });
-        if (result.error) {
-          toast.error(result.error);
-          return;
-        }
-        if (result.data) {
-          if (onSuccess) {
-            onSuccess();
-          } else {
-            router.push(`/coffee/${result.data.entryId}`);
-          }
+        const data = await updateMutation.mutateAsync({ entryId, data: payload });
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push(`/coffee/${data.entryId}`);
         }
       } else {
-        const result = await createMutation.mutateAsync(payload);
-        if (result.error) {
-          toast.error(result.error);
-          return;
-        }
-        if (result.data) {
-          if (onSuccess) {
-            onSuccess();
-          } else {
-            router.push(`/coffee/${result.data.entryId}`);
-          }
+        const data = await createMutation.mutateAsync(payload);
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push(`/coffee/${data.entryId}`);
         }
       }
-    } catch {
-      toast.error("Error inesperado. Por favor, inténtalo de nuevo.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Error inesperado. Por favor, inténtalo de nuevo.");
     }
   };
 

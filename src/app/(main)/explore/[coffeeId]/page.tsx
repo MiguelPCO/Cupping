@@ -119,10 +119,10 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div className="size-8 rounded-full overflow-hidden bg-copper-100 flex items-center justify-center shrink-0">
-                    {entry.user.avatar_url ? (
+                    {entry.user?.avatar_url ? (
                       <Image
                         src={entry.user.avatar_url}
-                        alt={entry.user.display_name}
+                        alt={entry.user.display_name ?? ""}
                         width={32}
                         height={32}
                         className="object-cover"
@@ -132,12 +132,18 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
                     )}
                   </div>
                   <div>
-                    <Link
-                      href={`/profile/${entry.user.username}`}
-                      className="text-sm font-medium text-espresso hover:underline"
-                    >
-                      {entry.user.display_name}
-                    </Link>
+                    {entry.user ? (
+                      <Link
+                        href={`/profile/${entry.user.username}`}
+                        className="text-sm font-medium text-espresso hover:underline"
+                      >
+                        {entry.user.display_name}
+                      </Link>
+                    ) : (
+                      <span className="text-sm font-medium text-espresso-light">
+                        Usuario eliminado
+                      </span>
+                    )}
                     <p className="text-xs text-espresso-light">
                       {new Date(entry.created_at).toLocaleDateString("es-ES", {
                         day: "numeric",

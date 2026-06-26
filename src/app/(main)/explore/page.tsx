@@ -16,6 +16,8 @@ import { ExploreTabBar } from "./_components/explore-tab-bar";
 import { PeopleGrid } from "./_components/people-grid";
 import type { Coffee } from "@/types/coffee";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Explorar — CUPPING",
   description: "Descubre cafés y personas de la comunidad",

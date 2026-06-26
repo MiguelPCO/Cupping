@@ -1,8 +1,14 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getEntryById } from "@/lib/supabase/queries";
+
+const getCachedEntry = cache(async (id: string) => {
+  const supabase = await createServerSupabaseClient();
+  return getEntryById(supabase, id);
+});
 import { FlavorTag, RoastBadge, BrewMethodIcon } from "@/components/coffee";
 import { RatingCups } from "@/components/coffee";
 import { EntryActions } from "./_components/entry-actions";
@@ -15,17 +21,18 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const supabase = await createServerSupabaseClient();
-  const entry = await getEntryById(supabase, id);
+  const entry = await getCachedEntry(id);
   if (!entry) return { title: "Reseña — CUPPING" };
+  const coffeeName = entry.coffee?.name ?? "Café";
+  const coffeeBrand = entry.coffee?.brand ?? "";
   return {
-    title: `${entry.coffee.name} — CUPPING`,
+    title: `${coffeeName} — CUPPING`,
     description: entry.notes
       ? entry.notes.slice(0, 155)
-      : `Reseña de ${entry.coffee.brand} ${entry.coffee.name} en CUPPING`,
+      : `Reseña de ${coffeeBrand} ${coffeeName} en CUPPING`,
     openGraph: {
-      title: entry.coffee.name,
-      description: `${entry.coffee.brand} · ${entry.rating_global}★`,
+      title: coffeeName,
+      description: `${coffeeBrand} · ${entry.rating_global}★`,
       images: entry.photo_url ? [{ url: entry.photo_url }] : [],
     },
   };
@@ -57,7 +64,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const entry = await getEntryById(supabase, id);
+  const entry = await getCachedEntry(id);
   if (!entry) notFound();
 
   const { coffee } = entry;
@@ -205,7 +212,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
             },
             ...(entry.notes && { reviewBody: entry.notes }),
             datePublished: entry.created_at,
-          }),
+          }).replace(/<\//g, "<\\/"),
         }}
       />
     </div>

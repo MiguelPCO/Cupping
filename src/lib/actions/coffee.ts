@@ -124,7 +124,7 @@ export async function createCoffeeEntry(
         .maybeSingle();
 
       if (!col) {
-        const { data: newCol } = await supabase
+        const { data: newCol, error: colInsertError } = await supabase
           .from("collections")
           .insert({
             user_id: user.id,
@@ -134,6 +134,7 @@ export async function createCoffeeEntry(
           })
           .select("id")
           .single();
+        if (colInsertError) return { error: "Error al crear la colección" };
         col = newCol;
       }
 

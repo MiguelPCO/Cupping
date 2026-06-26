@@ -24,8 +24,8 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     ? entries.filter((e) => {
         const q = query.toLowerCase();
         return (
-          e.coffee.name.toLowerCase().includes(q) ||
-          e.coffee.brand.toLowerCase().includes(q)
+          e.coffee?.name?.toLowerCase().includes(q) ||
+          e.coffee?.brand?.toLowerCase().includes(q)
         );
       }).slice(0, 8)
     : entries.slice(0, 8);

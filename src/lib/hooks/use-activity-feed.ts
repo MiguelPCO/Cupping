@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 import { getActivityFeed } from "@/lib/supabase/queries";
@@ -33,14 +34,16 @@ export function markDashboardVisited(): void {
 }
 
 export function useUnreadActivityCount(): number {
+  const [mounted, setMounted] = useState(false);
   const { data: currentUser } = useCurrentUser();
   const userId = currentUser?.user?.id ?? "";
   const { data } = useActivityFeed(userId);
 
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted || !currentUser?.user?.id) return 0;
+
   const allItems = data?.pages.flatMap((p) => p) ?? [];
-
-  if (typeof window === "undefined" || !currentUser?.user?.id) return 0;
-
   const lastVisit = localStorage.getItem(LAST_DASHBOARD_VISIT_KEY);
   if (!lastVisit) return allItems.length;
 

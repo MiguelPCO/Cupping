@@ -69,7 +69,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
           className={cn(
             "flex items-center gap-1.5 h-10 px-4 rounded-xl border text-sm font-medium transition-colors shrink-0",
             showFilters || activeFilterCount > 0
-              ? "bg-espresso text-white border-espresso"
+              ? "bg-foreground text-background border-foreground"
               : "bg-card text-espresso-light border-parchment hover:border-copper-300"
           )}
         >
@@ -90,7 +90,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
             className={cn(
               "px-3.5 h-10 text-sm font-medium transition-colors",
               sortBy === "rating"
-                ? "bg-espresso text-white"
+                ? "bg-foreground text-background"
                 : "text-espresso-light hover:text-espresso"
             )}
           >
@@ -101,7 +101,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
             className={cn(
               "px-3.5 h-10 text-sm font-medium border-l border-parchment transition-colors",
               sortBy === "recent"
-                ? "bg-espresso text-white"
+                ? "bg-foreground text-background"
                 : "text-espresso-light hover:text-espresso"
             )}
           >
@@ -146,7 +146,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
                   className={cn(
                     "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                     roast === r
-                      ? "bg-espresso text-white border-espresso"
+                      ? "bg-foreground text-background border-foreground"
                       : "bg-cream text-espresso-light border-parchment hover:border-copper-300"
                   )}
                 >

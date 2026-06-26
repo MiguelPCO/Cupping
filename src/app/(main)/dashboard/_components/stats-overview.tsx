@@ -18,14 +18,14 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
       className={cn(
         "rounded-xl border p-4 flex flex-col",
         accent
-          ? "bg-espresso border-espresso text-white"
+          ? "bg-foreground border-foreground text-background"
           : "bg-card border-parchment"
       )}
     >
       <div
         className={cn(
           "flex items-center justify-center size-8 rounded-lg shrink-0 mb-3",
-          accent ? "bg-white/10" : "bg-linen"
+          accent ? "bg-background/10" : "bg-linen"
         )}
       >
         {icon}
@@ -33,7 +33,7 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
       <p
         className={cn(
           "text-[10px] font-medium uppercase tracking-[0.08em] leading-tight",
-          accent ? "text-white/50" : "text-copper-400"
+          accent ? "text-background/60" : "text-copper-400"
         )}
       >
         {label}
@@ -41,7 +41,7 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
       <p
         className={cn(
           "font-mono text-[1.6rem] font-semibold leading-none mt-1 tabular-nums",
-          accent ? "text-white" : "text-espresso"
+          accent ? "text-background" : "text-espresso"
         )}
       >
         {value}
@@ -50,7 +50,7 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
         <p
           className={cn(
             "text-[11px] mt-1.5 flex items-center gap-1",
-            accent ? "text-white/60" : "text-parchment"
+            accent ? "text-background/60" : "text-parchment"
           )}
         >
           {accent && (

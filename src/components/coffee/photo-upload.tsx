@@ -75,7 +75,7 @@ export function PhotoUpload({ onFileSelect, className }: PhotoUploadProps) {
             type="button"
             onClick={handleRemove}
             aria-label="Quitar foto"
-            className="absolute top-2 right-2 flex items-center justify-center size-7 rounded-full bg-espresso/70 text-white hover:bg-espresso transition-colors"
+            className="absolute top-2 right-2 flex items-center justify-center size-7 rounded-full bg-foreground/70 text-background hover:bg-foreground transition-colors"
           >
             <X className="size-4" />
           </button>

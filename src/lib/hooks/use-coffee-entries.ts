@@ -34,7 +34,11 @@ export function useCoffeeEntries(userId: string) {
 export function useCreateCoffeeEntry() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CoffeeFormInput) => createCoffeeEntry(data),
+    mutationFn: async (data: CoffeeFormInput) => {
+      const result = await createCoffeeEntry(data);
+      if (result.error) throw new Error(result.error);
+      return result.data!;
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["coffee_entries"] });
     },
@@ -44,13 +48,17 @@ export function useCreateCoffeeEntry() {
 export function useUpdateCoffeeEntry() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       entryId,
       data,
     }: {
       entryId: string;
       data: CoffeeFormInput;
-    }) => updateCoffeeEntry(entryId, data),
+    }) => {
+      const result = await updateCoffeeEntry(entryId, data);
+      if (result.error) throw new Error(result.error);
+      return result.data!;
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["coffee_entries"] });
     },
@@ -60,7 +68,10 @@ export function useUpdateCoffeeEntry() {
 export function useDeleteCoffeeEntry(userId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (entryId: string) => deleteCoffeeEntry(entryId),
+    mutationFn: async (entryId: string) => {
+      const result = await deleteCoffeeEntry(entryId);
+      if (result.error) throw new Error(result.error);
+    },
     onMutate: async (entryId) => {
       await qc.cancelQueries(FILTER);
       const previous = qc.getQueryData<CoffeeEntryWithCoffee[]>(

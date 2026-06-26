@@ -33,10 +33,13 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // getUser() is the secure way — never trust the cached session alone
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Supabase unavailable — treat as unauthenticated
+  }
 
   const { pathname } = request.nextUrl;
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
