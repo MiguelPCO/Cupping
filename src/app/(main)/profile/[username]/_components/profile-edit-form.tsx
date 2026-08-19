@@ -85,28 +85,28 @@ export function ProfileEditForm({
     >
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-medium text-espresso">Editar perfil</h3>
-        <button type="button" onClick={onCancel}>
+        <button type="button" onClick={onCancel} aria-label="Cancelar edición">
           <X className="size-4 text-espresso-light" />
         </button>
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-espresso-light">
+        <label htmlFor="display_name" className="text-xs font-medium text-espresso-light">
           Nombre visible
         </label>
-        <Input {...register("display_name")} placeholder="Tu nombre" />
+        <Input id="display_name" {...register("display_name")} placeholder="Tu nombre" />
         {errors.display_name && (
           <p className="text-xs text-destructive">{errors.display_name.message}</p>
         )}
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-espresso-light">
+        <label htmlFor="username" className="text-xs font-medium text-espresso-light">
           Nombre de usuario
         </label>
         <div className="flex items-center gap-1">
           <span className="text-espresso-light text-sm">@</span>
-          <Input {...register("username")} placeholder="usuario" />
+          <Input id="username" {...register("username")} placeholder="usuario" />
         </div>
         {errors.username && (
           <p className="text-xs text-destructive">{errors.username.message}</p>
@@ -114,8 +114,9 @@ export function ProfileEditForm({
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-espresso-light">Bio</label>
+        <label htmlFor="bio" className="text-xs font-medium text-espresso-light">Bio</label>
         <textarea
+          id="bio"
           {...register("bio")}
           placeholder="Cuéntanos algo sobre ti..."
           rows={3}

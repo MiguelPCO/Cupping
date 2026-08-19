@@ -151,8 +151,9 @@ function computeStats(entries: CoffeeEntryWithCoffee[]): DashboardStats {
       const validTags = tags.filter((t) =>
         (FLAVOR_TAGS as readonly string[]).includes(t)
       ) as FlavorTag[];
+      const validTagsSet = new Set(validTags);
       const count = entries.filter((e) =>
-        e.flavor_tags.some((t) => validTags.includes(t))
+        e.flavor_tags.some((t) => validTagsSet.has(t))
       ).length;
       return {
         subject: FAMILY_SHORT[family] ?? family,

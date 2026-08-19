@@ -57,13 +57,13 @@ const SUB_RATING_LABELS: { key: keyof RatingFields; label: string }[] = [
 ];
 
 export default async function CoffeeDetailPage({ params }: Props) {
-  const { id } = await params;
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const entry = await getCachedEntry(id);
+  const [{ id }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
+  const [
+    {
+      data: { user },
+    },
+    entry,
+  ] = await Promise.all([supabase.auth.getUser(), getCachedEntry(id)]);
   if (!entry) notFound();
 
   const { coffee } = entry;
@@ -83,6 +83,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
             src={entry.photo_url}
             alt={coffee.name}
             fill
+            sizes="(min-width: 672px) 672px, 100vw"
             className="object-cover"
             priority
           />

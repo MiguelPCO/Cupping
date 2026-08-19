@@ -20,7 +20,7 @@ export default async function HomePage() {
       </p>
       <Link
         href="/login"
-        className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all bg-copper-500 hover:bg-copper-600 text-white px-8 h-11"
+        className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors bg-copper-500 hover:bg-copper-600 text-white px-8 h-11"
       >
         Comenzar
       </Link>

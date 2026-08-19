@@ -5,10 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatRating(rating: number): string {
-  return rating.toFixed(1);
-}
-
 export function getRoastLabel(level: string): string {
   const labels: Record<string, string> = {
     light: "Ligero",

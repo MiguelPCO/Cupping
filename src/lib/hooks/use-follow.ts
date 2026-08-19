@@ -25,31 +25,6 @@ export function useIsFollowing(
   });
 }
 
-export function useFollowCounts(userId: string) {
-  return useQuery({
-    queryKey: ["follow_counts", userId],
-    queryFn: async () => {
-      const supabase = createClient();
-      const [followers, following] = await Promise.all([
-        supabase
-          .from("follows")
-          .select("follower_id", { count: "exact", head: true })
-          .eq("following_id", userId),
-        supabase
-          .from("follows")
-          .select("following_id", { count: "exact", head: true })
-          .eq("follower_id", userId),
-      ]);
-      return {
-        followers: followers.count ?? 0,
-        following: following.count ?? 0,
-      };
-    },
-    enabled: !!userId,
-    staleTime: 5 * 60_000,
-  });
-}
-
 export function useFollowToggle(
   targetId: string,
   targetUsername: string,

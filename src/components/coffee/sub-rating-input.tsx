@@ -42,7 +42,7 @@ export function SubRatingInput({
         return (
           <div className={cn("space-y-1.5", className)}>
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-espresso">{label}</label>
+              <label htmlFor={name} className="text-sm font-medium text-espresso">{label}</label>
               <span
                 className={cn(
                   "font-mono text-sm tabular-nums w-6 text-right",
@@ -53,6 +53,7 @@ export function SubRatingInput({
               </span>
             </div>
             <input
+              id={name}
               type="range"
               min={0}
               max={10}

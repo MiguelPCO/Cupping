@@ -19,8 +19,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { coffeeId } = await params;
-  const supabase = await createServerSupabaseClient();
+  const [{ coffeeId }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
   const coffee = await getCoffeeById(supabase, coffeeId);
   if (!coffee) return { title: "Café — CUPPING" };
   return {
@@ -30,8 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ExploreCoffeeDetailPage({ params }: Props) {
-  const { coffeeId } = await params;
-  const supabase = await createServerSupabaseClient();
+  const [{ coffeeId }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
 
   const [coffee, entries, stats] = await Promise.all([
     getCoffeeById(supabase, coffeeId),
@@ -52,6 +50,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
             src={coffee.image_url}
             alt={coffee.name}
             fill
+            sizes="(min-width: 672px) 672px, 100vw"
             className="object-cover"
             priority
           />

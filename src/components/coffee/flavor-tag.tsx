@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import type { FlavorTag as FlavorTagType } from "@/types/coffee";
 
@@ -45,59 +44,5 @@ export function FlavorTag({ flavor, selected = false, onToggle, size = "md", cla
         style={{ backgroundColor: "var(--flavor-color)" }} aria-hidden="true" />
       {FLAVOR_LABELS[flavor] ?? flavor}
     </button>
-  );
-}
-
-interface FlavorTagGroupProps {
-  selected: FlavorTagType[];
-  onChange: (tags: FlavorTagType[]) => void;
-  flavors?: FlavorTagType[];
-  size?: "sm" | "md";
-  className?: string;
-}
-
-export function FlavorTagGroup({ selected, onChange, flavors, size = "md", className }: FlavorTagGroupProps) {
-  const displayFlavors: FlavorTagType[] = flavors ?? [
-    "chocolate", "nutty", "fruity", "floral", "citrus",
-    "spicy", "herbal", "sweet", "earthy", "smoky",
-  ];
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleToggle = (flavor: FlavorTagType) => {
-    onChange(selected.includes(flavor)
-      ? selected.filter((f) => f !== flavor)
-      : [...selected, flavor]);
-  };
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) return;
-    e.preventDefault();
-    const container = containerRef.current;
-    if (!container) return;
-    const buttons = Array.from(
-      container.querySelectorAll<HTMLButtonElement>("button:not([disabled])")
-    );
-    const focused = document.activeElement as HTMLButtonElement;
-    const currentIndex = buttons.indexOf(focused);
-    if (currentIndex === -1) return;
-    const delta = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : -1;
-    const nextIndex = (currentIndex + delta + buttons.length) % buttons.length;
-    buttons[nextIndex]?.focus();
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      className={cn("flex flex-wrap gap-2", className)}
-      role="group"
-      aria-label="Notas de sabor"
-      onKeyDown={handleKeyDown}
-    >
-      {displayFlavors.map((flavor) => (
-        <FlavorTag key={flavor} flavor={flavor}
-          selected={selected.includes(flavor)} onToggle={handleToggle} size={size} />
-      ))}
-    </div>
   );
 }

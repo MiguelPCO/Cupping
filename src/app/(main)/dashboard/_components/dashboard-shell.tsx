@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
@@ -10,8 +12,12 @@ import { useDashboardStats } from "@/lib/hooks/use-dashboard-stats";
 import { CoffeeCard, CoffeeCardSkeleton } from "@/components/coffee";
 import { StatsOverview } from "./stats-overview";
 import { CollectionCounters } from "./collection-counters";
-import { FlavorWheel } from "@/components/coffee/flavor-wheel";
 import { ActivityFeed } from "./activity-feed";
+
+const FlavorWheel = dynamic(
+  () => import("@/components/coffee/flavor-wheel").then((m) => m.FlavorWheel),
+  { ssr: false }
+);
 
 interface CollectionRow {
   id: string;
@@ -54,6 +60,11 @@ export function DashboardShell({
   const deleteMutation = useDeleteCoffeeEntry(userId);
   const stats = useDashboardStats(entries);
   const recentEntries = entries.slice(0, RECENT_LIMIT);
+  const [dateLabel, setDateLabel] = useState("");
+
+  useEffect(() => {
+    setDateLabel(getDateLabel());
+  }, []);
 
   const handleEdit = (entryId: string) => router.push(`/coffee/${entryId}/edit`);
 
@@ -71,7 +82,7 @@ export function DashboardShell({
         {/* Greeting */}
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-copper-400 mb-1 capitalize">
-            {getDateLabel()}
+            {dateLabel}
           </p>
           <h1 className="font-display text-3xl text-espresso leading-tight">
             {getGreeting()}, {capitalize(firstName)}
@@ -138,7 +149,7 @@ export function DashboardShell({
           {!isLoading && entries.length > RECENT_LIMIT && (
             <Link
               href="/collection"
-              className="mt-4 flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl border border-parchment text-sm font-medium text-espresso-light hover:border-copper-300 hover:text-espresso transition-all"
+              className="mt-4 flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl border border-parchment text-sm font-medium text-espresso-light hover:border-copper-300 hover:text-espresso transition-colors"
             >
               Ver colección completa ({entries.length} entradas)
               <ArrowRight className="size-3.5" />

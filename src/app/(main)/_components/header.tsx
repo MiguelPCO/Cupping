@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useUIStore } from "@/lib/stores";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -136,10 +137,11 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
                 className="flex items-center justify-center size-9 rounded-full bg-copper-100 text-copper-700 font-medium text-sm hover:bg-copper-200 transition-colors overflow-hidden"
               >
                 {avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={avatarUrl}
                     alt={displayName}
+                    width={36}
+                    height={36}
                     className="size-full object-cover"
                   />
                 ) : initials ? (

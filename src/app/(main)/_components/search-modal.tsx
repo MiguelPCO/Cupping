@@ -46,7 +46,8 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     if (open) {
       setQuery("");
       setActiveIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const id = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(id);
     }
   }, [open]);
 
@@ -77,19 +78,25 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-espresso/40 backdrop-blur-sm" onClick={onClose} />
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Cerrar búsqueda"
+        className="absolute inset-0 bg-espresso/40 backdrop-blur-sm cursor-default"
+      />
 
       {/* Modal */}
       <div className="relative w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
         {/* Search input */}
         <div className="flex items-center gap-3 px-4 h-14 border-b border-border">
           <Search className="size-4 text-parchment shrink-0" />
+          <label htmlFor="search-modal-query" className="sr-only">
+            Buscar por café o marca
+          </label>
           <input
+            id="search-modal-query"
             ref={inputRef}
             type="text"
             value={query}
@@ -115,35 +122,37 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
             </li>
           ) : (
             results.map((entry, i) => (
-              <li key={entry.id} role="option" aria-selected={i === activeIndex}>
-                <button
-                  onClick={() => navigate(entry.id)}
-                  onMouseEnter={() => setActiveIndex(i)}
-                  className={cn(
-                    "w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors",
-                    i === activeIndex ? "bg-linen" : "hover:bg-linen/50"
-                  )}
-                >
-                  <div className="flex items-center justify-center size-8 rounded-lg bg-copper-50 shrink-0">
-                    <Coffee className="size-4 text-copper-400" />
+              <li
+                key={entry.id}
+                role="option"
+                aria-selected={i === activeIndex}
+                tabIndex={-1}
+                onClick={() => navigate(entry.id)}
+                onMouseEnter={() => setActiveIndex(i)}
+                className={cn(
+                  "flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors",
+                  i === activeIndex ? "bg-linen" : "hover:bg-linen/50"
+                )}
+              >
+                <div className="flex items-center justify-center size-8 rounded-lg bg-copper-50 shrink-0">
+                  <Coffee className="size-4 text-copper-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-espresso truncate">
+                    {entry.coffee.name}
+                  </p>
+                  <p className="text-xs text-espresso-light truncate">
+                    {entry.coffee.brand}
+                  </p>
+                </div>
+                {entry.rating_global > 0 && (
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Star className="size-3 text-copper-400 fill-copper-400" />
+                    <span className="text-xs text-espresso-light font-medium">
+                      {entry.rating_global.toFixed(1)}
+                    </span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-espresso truncate">
-                      {entry.coffee.name}
-                    </p>
-                    <p className="text-xs text-espresso-light truncate">
-                      {entry.coffee.brand}
-                    </p>
-                  </div>
-                  {entry.rating_global > 0 && (
-                    <div className="flex items-center gap-1 shrink-0">
-                      <Star className="size-3 text-copper-400 fill-copper-400" />
-                      <span className="text-xs text-espresso-light font-medium">
-                        {entry.rating_global.toFixed(1)}
-                      </span>
-                    </div>
-                  )}
-                </button>
+                )}
               </li>
             ))
           )}

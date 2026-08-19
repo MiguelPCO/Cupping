@@ -45,7 +45,7 @@ export function CoffeeCommunityStats({
                   </span>
                   <div className="flex-1 h-2 bg-parchment/60 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-copper-400 rounded-full transition-all"
+                      className="h-full bg-copper-400 rounded-full transition-[width]"
                       style={{ width: `${pct}%` }}
                     />
                   </div>

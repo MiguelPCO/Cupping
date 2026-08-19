@@ -25,7 +25,7 @@ export function EmptyState({ icon: Icon, title, description, action }: EmptyStat
         action.href ? (
           <Link
             href={action.href}
-            className="inline-flex items-center justify-center rounded-lg border text-sm font-medium transition-all h-8 px-2.5 border-copper-300 text-copper-600 hover:bg-copper-50"
+            className="inline-flex items-center justify-center rounded-lg border text-sm font-medium transition-colors h-8 px-2.5 border-copper-300 text-copper-600 hover:bg-copper-50"
           >
             {action.label}
           </Link>

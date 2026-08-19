@@ -9,12 +9,14 @@ import type { Coffee, CoffeeType, RoastLevel } from "@/types/coffee";
 
 type SortOption = "rating" | "recent";
 
+const EMPTY_REVIEWED_IDS: string[] = [];
+
 interface ExploreGridProps {
   coffees: Coffee[];
   reviewedCoffeeIds?: string[];
 }
 
-export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProps) {
+export function ExploreGrid({ coffees, reviewedCoffeeIds = EMPTY_REVIEWED_IDS }: ExploreGridProps) {
   const [search, setSearch] = useState("");
   const [type, setType] = useState<CoffeeType | null>(null);
   const [roast, setRoast] = useState<RoastLevel | null>(null);
@@ -53,7 +55,11 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = [] }: ExploreGridProp
         {/* Search */}
         <div className="relative flex-1 min-w-[160px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-parchment pointer-events-none" />
+          <label htmlFor="explore-search" className="sr-only">
+            Buscar por nombre o marca
+          </label>
           <input
+            id="explore-search"
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}

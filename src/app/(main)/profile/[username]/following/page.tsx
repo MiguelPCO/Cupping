@@ -15,8 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function FollowingPage({ params }: Props) {
-  const { username } = await params;
-  const supabase = await createServerSupabaseClient();
+  const [{ username }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
   const profile = await getUserProfile(supabase, username);
   if (!profile) notFound();
 

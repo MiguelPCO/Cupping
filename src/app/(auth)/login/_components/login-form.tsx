@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,15 +51,18 @@ export function LoginForm() {
       return;
     }
     setEmailLoading(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
-    });
-    setEmailLoading(false);
-    if (error) {
-      setFeedback({ type: "error", text: error.message });
-    } else {
-      setFeedback({ type: "success", text: "Revisa tu email para restablecer tu contraseña." });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
+      });
+      if (error) {
+        setFeedback({ type: "error", text: error.message });
+      } else {
+        setFeedback({ type: "success", text: "Revisa tu email para restablecer tu contraseña." });
+      }
+    } finally {
+      setEmailLoading(false);
     }
   };
 
@@ -70,47 +74,49 @@ export function LoginForm() {
 
     const supabase = createClient();
 
-    if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({
+    try {
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
+        });
+
+        if (error) {
+          setFeedback({ type: "error", text: error.message });
+        } else {
+          setFeedback({
+            type: "success",
+            text: "Revisa tu email para confirmar tu cuenta.",
+          });
+        }
+        return;
+      }
+
+      // Sign in
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
       });
 
       if (error) {
-        setFeedback({ type: "error", text: error.message });
-      } else {
         setFeedback({
-          type: "success",
-          text: "Revisa tu email para confirmar tu cuenta.",
+          type: "error",
+          text:
+            error.message === "Invalid login credentials"
+              ? "Email o contraseña incorrectos."
+              : error.message,
         });
+        return;
       }
+
+      // Full page navigation — lets middleware read the new Supabase cookie cleanly
+      window.location.href = "/dashboard";
+    } finally {
       setEmailLoading(false);
-      return;
     }
-
-    // Sign in
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setFeedback({
-        type: "error",
-        text:
-          error.message === "Invalid login credentials"
-            ? "Email o contraseña incorrectos."
-            : error.message,
-      });
-      setEmailLoading(false);
-      return;
-    }
-
-    // Full page navigation — lets middleware read the new Supabase cookie cleanly
-    window.location.href = "/dashboard";
   };
 
   return (
@@ -230,9 +236,9 @@ export function LoginForm() {
 
         <p className="text-center text-xs text-parchment">
           Al continuar aceptas nuestros{" "}
-          <a href="/terms" className="underline hover:text-espresso transition-colors">
+          <Link href="/terms" className="underline hover:text-espresso transition-colors">
             términos de servicio
-          </a>
+          </Link>
         </p>
       </CardContent>
     </Card>

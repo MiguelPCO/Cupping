@@ -115,6 +115,7 @@ export function CoffeeForm({
   const currentRoast = watch("roast_level");
   const currentBrewMethod = watch("brew_method");
   const currentFlavors = watch("flavor_tags");
+  const currentFlavorsSet = new Set(currentFlavors);
   const currentCollectionTypes = watch("collection_types") ?? [];
   const currentVisibility = watch("visibility");
   const isLoading = createMutation.isPending || updateMutation.isPending;
@@ -201,10 +202,11 @@ export function CoffeeForm({
 
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-espresso">
+              <label htmlFor="name" className="text-sm font-medium text-espresso">
                 Nombre del café *
               </label>
               <Input
+                id="name"
                 {...register("name")}
                 placeholder="Ej. Ethiopian Yirgacheffe"
                 aria-describedby={errors.name ? "name-error" : undefined}
@@ -216,10 +218,11 @@ export function CoffeeForm({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-espresso">
+              <label htmlFor="brand" className="text-sm font-medium text-espresso">
                 Marca *
               </label>
               <Input
+                id="brand"
                 {...register("brand")}
                 placeholder="Ej. Stumptown, Lavazza…"
                 aria-describedby={errors.brand ? "brand-error" : undefined}
@@ -230,10 +233,10 @@ export function CoffeeForm({
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-espresso">
+            <fieldset className="space-y-2 border-0 p-0 m-0 min-w-0">
+              <legend className="text-sm font-medium text-espresso">
                 Tipo *
-              </label>
+              </legend>
               <div className="flex flex-wrap gap-2">
                 {COFFEE_TYPES.map((type) => (
                   <button
@@ -251,24 +254,25 @@ export function CoffeeForm({
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-espresso">
+              <label htmlFor="origin" className="text-sm font-medium text-espresso">
                 Origen{" "}
                 <span className="font-normal text-parchment">(opcional)</span>
               </label>
               <Input
+                id="origin"
                 {...register("origin")}
                 placeholder="Ej. Etiopía, Colombia…"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-espresso">
+            <fieldset className="space-y-2 border-0 p-0 m-0 min-w-0">
+              <legend className="text-sm font-medium text-espresso">
                 Tueste{" "}
                 <span className="font-normal text-parchment">(opcional)</span>
-              </label>
+              </legend>
               <div className="flex flex-wrap gap-2">
                 {ROAST_LEVELS.map((level) => (
                   <button
@@ -292,7 +296,7 @@ export function CoffeeForm({
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
           </div>
         </div>
       )}
@@ -318,10 +322,10 @@ export function CoffeeForm({
             </div>
           )}
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-espresso">
+          <fieldset className="space-y-2 border-0 p-0 m-0 min-w-0">
+            <legend className="text-sm font-medium text-espresso">
               Puntuación global *
-            </label>
+            </legend>
             <Controller
               control={control}
               name="rating_global"
@@ -338,7 +342,7 @@ export function CoffeeForm({
                 {errors.rating_global.message}
               </p>
             )}
-          </div>
+          </fieldset>
 
           <fieldset className="border-0 p-0 m-0 min-w-0 space-y-4 pt-2">
             <legend className="text-xs font-medium uppercase tracking-wider text-parchment w-full">
@@ -360,11 +364,12 @@ export function CoffeeForm({
           </fieldset>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-espresso">
+            <label htmlFor="notes" className="text-sm font-medium text-espresso">
               Notas de cata{" "}
               <span className="font-normal text-parchment">(opcional)</span>
             </label>
             <textarea
+              id="notes"
               {...register("notes")}
               placeholder="Describe lo que sientes al tomar este café…"
               rows={3}
@@ -427,7 +432,7 @@ export function CoffeeForm({
               if (validTags.length === 0) return null;
 
               const selectedInFamily = validTags.filter((t) =>
-                currentFlavors.includes(t)
+                currentFlavorsSet.has(t)
               );
 
               return (
@@ -454,7 +459,7 @@ export function CoffeeForm({
                       <FlavorTagChip
                         key={tag}
                         flavor={tag}
-                        selected={currentFlavors.includes(tag)}
+                        selected={currentFlavorsSet.has(tag)}
                         onToggle={(t) => {
                           const current = currentFlavors;
                           setValue(
@@ -473,11 +478,11 @@ export function CoffeeForm({
             })}
           </div>
 
-          <div className="space-y-2 pt-2">
-            <label className="text-sm font-medium text-espresso">
+          <fieldset className="space-y-2 pt-2 border-0 p-0 m-0 min-w-0">
+            <legend className="text-sm font-medium text-espresso">
               Método de preparación{" "}
               <span className="font-normal text-parchment">(opcional)</span>
-            </label>
+            </legend>
             <div className="flex flex-wrap gap-2">
               {BREW_METHODS.map((method) => (
                 <button
@@ -500,7 +505,7 @@ export function CoffeeForm({
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
         </div>
       )}
 
