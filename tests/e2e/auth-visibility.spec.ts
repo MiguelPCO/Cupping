@@ -91,20 +91,35 @@ test.describe("Entry visibility (RLS)", () => {
   // must be removed before deleteTestUser, or the auth.users delete fails
   // with a foreign-key violation and both users leak. Delete in dependency
   // order: entries -> follows -> coffee -> users. Guard each step so a
-  // partially-failed beforeAll doesn't throw here and skip later cleanup.
+  // partially-failed beforeAll doesn't throw here and skip later cleanup;
+  // log (don't throw on) child-row delete errors so they're diagnosable
+  // instead of only surfacing as a downstream FK violation; run the two
+  // user deletes via allSettled so one throwing can't strand the other.
   test.afterAll(async () => {
     const admin = getAdminClient();
-    if (entryId) await admin.from("coffee_entries").delete().eq("id", entryId);
+    if (entryId) {
+      const { error } = await admin.from("coffee_entries").delete().eq("id", entryId);
+      if (error) console.error(`cleanup: coffee_entries delete failed: ${error.message}`);
+    }
     if (owner && viewer) {
-      await admin
+      const { error } = await admin
         .from("follows")
         .delete()
         .eq("follower_id", viewer.id)
         .eq("following_id", owner.id);
+      if (error) console.error(`cleanup: follows delete failed: ${error.message}`);
     }
-    if (coffeeId) await admin.from("coffees").delete().eq("id", coffeeId);
-    if (owner) await deleteTestUser(owner.id);
-    if (viewer) await deleteTestUser(viewer.id);
+    if (coffeeId) {
+      const { error } = await admin.from("coffees").delete().eq("id", coffeeId);
+      if (error) console.error(`cleanup: coffees delete failed: ${error.message}`);
+    }
+    const results = await Promise.allSettled([
+      owner ? deleteTestUser(owner.id) : Promise.resolve(),
+      viewer ? deleteTestUser(viewer.id) : Promise.resolve(),
+    ]);
+    for (const result of results) {
+      if (result.status === "rejected") console.error(`cleanup: ${result.reason}`);
+    }
   });
 
   test("a private entry does not appear on the owner's public profile to another user", async ({ page }) => {
