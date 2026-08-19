@@ -21,7 +21,7 @@ const validInput = {
   brand: "Stumptown",
   type: "bean" as const,
   rating_global: 4,
-  flavor_tags: [] as const,
+  flavor_tags: [],
   visibility: "public" as const,
 };
 
