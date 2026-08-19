@@ -41,5 +41,8 @@ export async function createTestUser(prefix: string): Promise<TestUser> {
 
 export async function deleteTestUser(userId: string): Promise<void> {
   const admin = getAdminClient();
-  await admin.auth.admin.deleteUser(userId);
+  const { error } = await admin.auth.admin.deleteUser(userId);
+  if (error) {
+    throw new Error(`deleteTestUser failed for ${userId}: ${error.message}`);
+  }
 }
