@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import { config as loadEnv } from "dotenv";
 import path from "node:path";
 
-loadEnv({ path: path.resolve(__dirname, ".env.test") });
+loadEnv({ path: path.resolve(__dirname, ".env.test"), override: true });
 
 const PORT = 3100;
 const BASE_URL = `http://localhost:${PORT}`;

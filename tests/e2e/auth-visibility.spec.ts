@@ -8,21 +8,26 @@ test.describe("Auth", () => {
     const suffix = crypto.randomUUID().slice(0, 8);
     const email = `signup-${suffix}@cupping-e2e.test`;
 
-    await page.goto("/login");
-    await page.getByRole("button", { name: "¿No tienes cuenta? Crear cuenta" }).click();
-    await page.getByPlaceholder("tu@email.com").fill(email);
-    await page.getByPlaceholder("Contraseña").fill("TestPassword123!");
-    await page.getByRole("button", { name: "Crear cuenta" }).click();
+    try {
+      await page.goto("/login");
+      await page.getByRole("button", { name: "¿No tienes cuenta? Crear cuenta" }).click();
+      await page.getByPlaceholder("tu@email.com").fill(email);
+      await page.getByPlaceholder("Contraseña").fill("TestPassword123!");
+      await page.getByRole("button", { name: "Crear cuenta" }).click();
 
-    await expect(
-      page.getByText("Revisa tu email para confirmar tu cuenta.")
-    ).toBeVisible();
-
-    // Clean up the auth user Supabase created even though it's unconfirmed.
-    const admin = getAdminClient();
-    const { data } = await admin.auth.admin.listUsers();
-    const created = data.users.find((u) => u.email === email);
-    if (created) await admin.auth.admin.deleteUser(created.id);
+      await expect(
+        page.getByText("Revisa tu email para confirmar tu cuenta.")
+      ).toBeVisible();
+    } finally {
+      // Clean up the auth user Supabase created even though it's unconfirmed.
+      // Always attempt this, even if the assertion above failed (e.g. the
+      // known external email-rate-limit 429), so leaked users don't
+      // accumulate across runs.
+      const admin = getAdminClient();
+      const { data } = await admin.auth.admin.listUsers({ perPage: 200 });
+      const created = data.users.find((u) => u.email === email);
+      if (created) await admin.auth.admin.deleteUser(created.id);
+    }
   });
 
   test("rejects an incorrect password with a Spanish error message", async ({ page }) => {
@@ -56,6 +61,8 @@ test.describe("Entry visibility (RLS)", () => {
   let viewer: TestUser;
   let entryId: string;
   let coffeeId: string;
+  let publicEntryId: string;
+  let publicCoffeeId: string;
 
   test.beforeAll(async () => {
     owner = await createTestUser("visowner");
@@ -83,6 +90,35 @@ test.describe("Entry visibility (RLS)", () => {
     if (entryError || !entry) throw new Error(`setup failed: ${entryError?.message}`);
     entryId = entry.id;
 
+    // A second, PUBLIC entry for the same owner. This is the positive
+    // control for the two "does not appear" tests below: without it, those
+    // tests would pass just as easily on a broken/empty page as on a
+    // correctly-filtered one.
+    const { data: publicCoffee, error: publicCoffeeError } = await admin
+      .from("coffees")
+      .insert({ name: "Public Blend", brand: "E2E Test", type: "bean", created_by: owner.id })
+      .select("id")
+      .single();
+    if (publicCoffeeError || !publicCoffee) {
+      throw new Error(`setup failed: ${publicCoffeeError?.message}`);
+    }
+    publicCoffeeId = publicCoffee.id;
+
+    const { data: publicEntry, error: publicEntryError } = await admin
+      .from("coffee_entries")
+      .insert({
+        user_id: owner.id,
+        coffee_id: publicCoffee.id,
+        rating_global: 4.0,
+        visibility: "public",
+      })
+      .select("id")
+      .single();
+    if (publicEntryError || !publicEntry) {
+      throw new Error(`setup failed: ${publicEntryError?.message}`);
+    }
+    publicEntryId = publicEntry.id;
+
     await admin.from("follows").insert({ follower_id: viewer.id, following_id: owner.id });
   });
 
@@ -101,6 +137,10 @@ test.describe("Entry visibility (RLS)", () => {
       const { error } = await admin.from("coffee_entries").delete().eq("id", entryId);
       if (error) console.error(`cleanup: coffee_entries delete failed: ${error.message}`);
     }
+    if (publicEntryId) {
+      const { error } = await admin.from("coffee_entries").delete().eq("id", publicEntryId);
+      if (error) console.error(`cleanup: coffee_entries (public) delete failed: ${error.message}`);
+    }
     if (owner && viewer) {
       const { error } = await admin
         .from("follows")
@@ -112,6 +152,10 @@ test.describe("Entry visibility (RLS)", () => {
     if (coffeeId) {
       const { error } = await admin.from("coffees").delete().eq("id", coffeeId);
       if (error) console.error(`cleanup: coffees delete failed: ${error.message}`);
+    }
+    if (publicCoffeeId) {
+      const { error } = await admin.from("coffees").delete().eq("id", publicCoffeeId);
+      if (error) console.error(`cleanup: coffees (public) delete failed: ${error.message}`);
     }
     const results = await Promise.allSettled([
       owner ? deleteTestUser(owner.id) : Promise.resolve(),
@@ -125,12 +169,20 @@ test.describe("Entry visibility (RLS)", () => {
   test("a private entry does not appear on the owner's public profile to another user", async ({ page }) => {
     await loginAs(page, viewer.email, viewer.password);
     await page.goto(`/profile/${owner.username}`);
+    // Positive control: the public entry must render, proving the page
+    // loaded the owner's entries successfully — which is what makes the
+    // absence of the private entry below actually mean something.
+    await expect(page.getByText("Public Blend")).toBeVisible();
     await expect(page.getByText("Private Blend")).toHaveCount(0);
   });
 
   test("a private entry does not appear in a follower's activity feed", async ({ page }) => {
     await loginAs(page, viewer.email, viewer.password);
     await page.goto("/dashboard");
+    // Positive control: see comment above. The activity feed card repeats
+    // the coffee name (once in the "reseñó ..." line, once as the card
+    // title), so use .first() to avoid a strict-mode multi-match error.
+    await expect(page.getByText("Public Blend").first()).toBeVisible();
     await expect(page.getByText("Private Blend")).toHaveCount(0);
   });
 

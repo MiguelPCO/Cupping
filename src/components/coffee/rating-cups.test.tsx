@@ -53,6 +53,7 @@ describe("RatingCups", () => {
     render(<RatingCups value={3} max={5} readOnly onChange={onChange} />);
     const slider = screen.getByRole("slider");
     expect(slider).toHaveAttribute("tabIndex", "-1");
+    slider.focus();
     await user.keyboard("{ArrowRight}");
     expect(onChange).not.toHaveBeenCalled();
   });

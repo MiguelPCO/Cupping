@@ -11,7 +11,8 @@ export interface TestUser {
 const PASSWORD = "TestPassword123!";
 
 // `prefix` becomes part of the username, which the DB constrains to
-// `^[a-z0-9_]+$` (see supabase/schema.sql) — use only lowercase letters,
+// `^[a-z0-9_]+$` (defined in the Supabase Cloud test project's schema,
+// not a file committed to this repo) — use only lowercase letters,
 // digits, and underscores, never hyphens.
 export async function createTestUser(prefix: string): Promise<TestUser> {
   const admin = getAdminClient();
