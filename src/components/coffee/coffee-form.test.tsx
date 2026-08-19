@@ -49,7 +49,6 @@ describe("CoffeeForm step gating", () => {
           image_url: null,
           avg_rating: 4,
           total_reviews: 1,
-          created_by: "user-1",
           created_at: new Date().toISOString(),
         }}
       />
