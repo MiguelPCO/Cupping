@@ -20,6 +20,7 @@ next-env.d.ts
 .windsurf/
 design-refs/
 designsystemcupping/
-supabase/
+supabase/*
+!supabase/schema.sql
 CUPPING_Master_Guide_v2.md
 CUPPING_Visual_Identity_v1.md
