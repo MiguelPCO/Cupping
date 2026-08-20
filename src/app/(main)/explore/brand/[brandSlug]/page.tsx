@@ -31,9 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BrandHubPage({ params }: Props) {
-  const { brandSlug } = await params;
-
-  const supabase = await createServerSupabaseClient();
+  const [{ brandSlug }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
   const {
     data: { user },
   } = await supabase.auth.getUser();

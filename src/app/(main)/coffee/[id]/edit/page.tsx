@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EditCoffeePage({ params }: Props) {
-  const { id } = await params;
-  const supabase = await createServerSupabaseClient();
+  const [{ id }, supabase] = await Promise.all([params, createServerSupabaseClient()]);
   const {
     data: { user },
   } = await supabase.auth.getUser();

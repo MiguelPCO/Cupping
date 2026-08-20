@@ -114,7 +114,8 @@ export function PhotoUpload({ onFileSelect, className }: PhotoUploadProps) {
         accept="image/*"
         onChange={handleChange}
         className="sr-only"
-        aria-hidden="true"
+        tabIndex={-1}
+        aria-label="Subir foto"
       />
 
       {error && <p className="text-xs text-destructive">{error}</p>}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, type KeyboardEvent } from "react";
+import { useState, useCallback, type KeyboardEvent, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 
 interface RatingCupsProps {
@@ -52,7 +52,7 @@ export function RatingCups({
   const { cup: cupSize, gap, fontSize } = SIZES[size];
 
   const handleClick = useCallback(
-    (cupIndex: number, event: React.MouseEvent<HTMLButtonElement>) => {
+    (cupIndex: number, event: MouseEvent<HTMLSpanElement>) => {
       if (readOnly || !onChange) return;
       const rect = event.currentTarget.getBoundingClientRect();
       const isLeftHalf = (event.clientX - rect.left) < rect.width / 2;
@@ -86,17 +86,17 @@ export function RatingCups({
         const isHalf = !isFilled && displayValue >= cv - 0.5;
         const isHovered = hoverValue !== null && cv <= Math.ceil(hoverValue);
         return (
-          <button key={i} type="button" disabled={readOnly}
+          <span key={i}
             onClick={(e) => handleClick(i, e)}
             onMouseEnter={() => !readOnly && setHoverValue(cv)}
             onMouseLeave={() => setHoverValue(null)}
-            className={cn("relative transition-transform duration-100",
+            className={cn("relative inline-block transition-transform duration-100",
               !readOnly && "cursor-pointer hover:scale-110 active:scale-95",
               readOnly && "cursor-default")}
-            style={{ lineHeight: 0 }} tabIndex={-1} aria-hidden="true">
+            style={{ lineHeight: 0 }} aria-hidden="true">
             <CuppingCup filled={isFilled} half={isHalf}
               hovered={isHovered && !isFilled} size={cupSize} />
-          </button>
+          </span>
         );
       })}
       {showValue && (

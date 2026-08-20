@@ -16,7 +16,7 @@ interface CoffeeCommunityCardProps {
 
 export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommunityCardProps) {
   return (
-    <div className="group relative bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+    <div className="group relative bg-card rounded-xl overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-[transform,box-shadow] duration-200">
       {/* Full-card link sits behind all content */}
       <Link
         href={`/explore/${coffee.id}`}

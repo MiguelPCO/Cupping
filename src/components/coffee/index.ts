@@ -1,5 +1,5 @@
 export { RatingCups } from "./rating-cups";
-export { FlavorTag, FlavorTagGroup } from "./flavor-tag";
+export { FlavorTag } from "./flavor-tag";
 export { RoastBadge } from "./roast-badge";
 export { BrewMethodIcon } from "./brew-method-icon";
 export { EmptyState } from "./empty-state";
