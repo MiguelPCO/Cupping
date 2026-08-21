@@ -50,23 +50,30 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     if (open) {
       setQuery("");
       setActiveIndex(0);
-      const id = setTimeout(() => inputRef.current?.focus(), 50);
-      return () => clearTimeout(id);
     }
   }, [open]);
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((i) => Math.min(i + 1, results.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter" && results[activeIndex]) {
-      e.preventDefault();
-      navigate(results[activeIndex].id);
+  useEffect(() => {
+    if (!open) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveIndex((i) => Math.min(i + 1, results.length - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveIndex((i) => Math.max(i - 1, 0));
+      } else if (
+        e.key === "Enter" &&
+        e.target === inputRef.current &&
+        results[activeIndex]
+      ) {
+        e.preventDefault();
+        navigate(results[activeIndex].id);
+      }
     }
-  };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, results, activeIndex, navigate]);
 
   useEffect(() => {
     const el = listRef.current?.children[activeIndex] as HTMLElement | undefined;
@@ -77,7 +84,10 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     <ModalPrimitive.Root open={open} onOpenChange={(next) => !next && onClose()}>
       <ModalPrimitive.Portal>
         <ModalPrimitive.Backdrop className="fixed inset-0 z-50 bg-espresso/40 backdrop-blur-sm transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
-        <ModalPrimitive.Popup className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 outline-none">
+        <ModalPrimitive.Popup
+          initialFocus={inputRef}
+          className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 outline-none"
+        >
           <div className="relative w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
             <ModalPrimitive.Title className="sr-only">Buscar cafés</ModalPrimitive.Title>
             <ModalPrimitive.Description className="sr-only">
@@ -102,7 +112,6 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
                 autoComplete="off"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleInputKeyDown}
                 placeholder="Buscar por café o marca…"
                 className="flex-1 bg-transparent text-sm text-espresso placeholder:text-hint-text focus:outline-none"
               />
