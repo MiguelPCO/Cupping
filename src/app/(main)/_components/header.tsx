@@ -117,6 +117,15 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
               </kbd>
             </button>
 
+            {/* Mobile search trigger */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label="Buscar cafés"
+              className="flex sm:hidden items-center justify-center size-9 rounded-lg text-espresso-light hover:text-espresso hover:bg-linen transition-colors"
+            >
+              <Search className="size-4" />
+            </button>
+
             <ThemeToggle />
 
             <Button
