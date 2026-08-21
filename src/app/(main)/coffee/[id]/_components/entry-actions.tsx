@@ -5,6 +5,17 @@ import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import { deleteCoffeeEntry } from "@/lib/actions/coffee";
 
 interface EntryActionsProps {
@@ -16,7 +27,6 @@ export function EntryActions({ entryId }: EntryActionsProps) {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
-    if (!confirm("¿Eliminar esta reseña? Esta acción no se puede deshacer.")) return;
     startTransition(async () => {
       const result = await deleteCoffeeEntry(entryId);
       if (result.error) {
@@ -38,16 +48,35 @@ export function EntryActions({ entryId }: EntryActionsProps) {
         <Pencil className="size-3.5" />
         Editar
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleDelete}
-        disabled={isPending}
-        className="gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/5 hover:border-destructive/50"
-      >
-        <Trash2 className="size-3.5" />
-        {isPending ? "Eliminando…" : "Eliminar"}
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger
+          render={
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={isPending}
+              className="gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/5 hover:border-destructive/50"
+            />
+          }
+        >
+          <Trash2 className="size-3.5" />
+          {isPending ? "Eliminando…" : "Eliminar"}
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar esta reseña?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>
+              Eliminar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

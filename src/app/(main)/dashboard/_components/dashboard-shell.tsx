@@ -10,6 +10,16 @@ import { useCoffeeEntries, useDeleteCoffeeEntry } from "@/lib/hooks";
 import { capitalize } from "@/lib/utils";
 import { useDashboardStats } from "@/lib/hooks/use-dashboard-stats";
 import { CoffeeCard, CoffeeCardSkeleton } from "@/components/coffee";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import { StatsOverview } from "./stats-overview";
 import { CollectionCounters } from "./collection-counters";
 import { ActivityFeed } from "./activity-feed";
@@ -61,6 +71,7 @@ export function DashboardShell({
   const stats = useDashboardStats(entries);
   const recentEntries = entries.slice(0, RECENT_LIMIT);
   const [dateLabel, setDateLabel] = useState("");
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     setDateLabel(getDateLabel());
@@ -68,11 +79,15 @@ export function DashboardShell({
 
   const handleEdit = (entryId: string) => router.push(`/coffee/${entryId}/edit`);
 
-  const handleDelete = (entryId: string) => {
-    if (!confirm("¿Eliminar esta reseña? Esta acción no se puede deshacer.")) return;
-    deleteMutation.mutate(entryId, {
+  const handleDelete = (entryId: string) => setDeleteTargetId(entryId);
+
+  const confirmDelete = () => {
+    const id = deleteTargetId;
+    if (!id) return;
+    deleteMutation.mutate(id, {
       onError: () => toast.error("No se pudo eliminar la reseña."),
     });
+    setDeleteTargetId(null);
   };
 
   return (
@@ -171,6 +186,24 @@ export function DashboardShell({
           <FlavorWheel data={stats.flavorFamilyData} />
         )}
       </div>
+
+      <AlertDialog
+        open={deleteTargetId !== null}
+        onOpenChange={(open) => !open && setDeleteTargetId(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar esta reseña?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>Eliminar</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
