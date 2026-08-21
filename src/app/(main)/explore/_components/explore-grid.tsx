@@ -54,7 +54,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = EMPTY_REVIEWED_IDS }:
       <div className="flex flex-wrap gap-2 mb-3">
         {/* Search */}
         <div className="relative flex-1 min-w-[160px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-parchment pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-hint-text pointer-events-none" />
           <label htmlFor="explore-search" className="sr-only">
             Buscar por nombre o marca
           </label>
@@ -64,7 +64,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = EMPTY_REVIEWED_IDS }:
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nombre o marca…"
-            className="w-full h-10 pl-9 pr-4 rounded-xl border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
+            className="w-full h-10 pl-9 pr-4 rounded-xl border border-parchment bg-card text-sm text-espresso placeholder:text-hint-text focus:outline-none focus:ring-2 focus:ring-copper-300"
           />
         </div>
 
@@ -166,7 +166,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = EMPTY_REVIEWED_IDS }:
 
       {/* Results count + clear */}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-parchment">
+        <p className="text-xs text-hint-text">
           {filtered.length} café{filtered.length !== 1 ? "s" : ""}
           {hasFilters && ` de ${coffees.length}`}
         </p>
@@ -183,7 +183,7 @@ export function ExploreGrid({ coffees, reviewedCoffeeIds = EMPTY_REVIEWED_IDS }:
 
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
-          <CoffeeIcon className="size-10 text-parchment mx-auto mb-4" />
+          <CoffeeIcon className="size-10 text-hint-text mx-auto mb-4" />
           <p className="font-display text-xl text-espresso mb-1">
             {coffees.length === 0 ? "Aún no hay cafés en la comunidad" : "Sin resultados"}
           </p>

@@ -46,7 +46,7 @@ export function SubRatingInput({
               <span
                 className={cn(
                   "font-mono text-sm tabular-nums w-6 text-right",
-                  numValue === null ? "text-parchment" : "text-copper-600"
+                  numValue === null ? "text-hint-text" : "text-copper-600"
                 )}
               >
                 {numValue === null ? "–" : numValue}
@@ -69,8 +69,8 @@ export function SubRatingInput({
             />
             {(minLabel || maxLabel) && (
               <div className="flex justify-between">
-                <span className="text-[10px] text-parchment">{minLabel}</span>
-                <span className="text-[10px] text-parchment">{maxLabel}</span>
+                <span className="text-[10px] text-hint-text">{minLabel}</span>
+                <span className="text-[10px] text-hint-text">{maxLabel}</span>
               </div>
             )}
           </div>

@@ -72,7 +72,7 @@ export default async function CollectionPage() {
               </div>
               <div className="text-right shrink-0">
                 <p className="font-mono text-lg font-medium text-copper-600">{count}</p>
-                <p className="text-xs text-parchment">cafés</p>
+                <p className="text-xs text-hint-text">cafés</p>
               </div>
             </Link>
           );

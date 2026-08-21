@@ -150,7 +150,7 @@ export function LoginForm() {
         {/* Divider */}
         <div className="flex items-center gap-3">
           <div className="flex-1 border-t border-parchment" />
-          <span className="text-xs text-parchment">o</span>
+          <span className="text-xs text-hint-text">o</span>
           <div className="flex-1 border-t border-parchment" />
         </div>
 
@@ -179,7 +179,7 @@ export function LoginForm() {
               disabled={isAnyLoading}
             />
             {mode === "signup" && (
-              <p className="text-xs text-parchment">Mínimo 6 caracteres</p>
+              <p className="text-xs text-hint-text">Mínimo 6 caracteres</p>
             )}
           </div>
 
@@ -188,8 +188,8 @@ export function LoginForm() {
               className={cn(
                 "text-xs rounded-lg px-3 py-2",
                 feedback.type === "error"
-                  ? "bg-red-50 text-red-600"
-                  : "bg-green-50 text-green-700"
+                  ? "bg-error/10 text-error"
+                  : "bg-success/10 text-success"
               )}
             >
               {feedback.text}
@@ -234,7 +234,7 @@ export function LoginForm() {
             : "¿Ya tienes cuenta? Iniciar sesión"}
         </button>
 
-        <p className="text-center text-xs text-parchment">
+        <p className="text-center text-xs text-hint-text">
           Al continuar aceptas nuestros{" "}
           <Link href="/terms" className="underline hover:text-espresso transition-colors">
             términos de servicio

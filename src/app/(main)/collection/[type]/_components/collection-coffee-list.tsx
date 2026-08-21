@@ -49,7 +49,7 @@ export function CollectionCoffeeList({
           onChange={(e) => setSearch(e.target.value)}
           placeholder={`Buscar en ${collectionLabel}…`}
           aria-label="Buscar en colección"
-          className="w-full h-10 px-0 rounded-none border-0 border-b border-parchment bg-transparent text-sm text-espresso placeholder:text-parchment focus:outline-none focus:border-copper-500 transition-colors"
+          className="w-full h-10 px-0 rounded-none border-0 border-b border-parchment bg-transparent text-sm text-espresso placeholder:text-hint-text focus:outline-none focus:border-copper-500 transition-colors"
         />
       </div>
 

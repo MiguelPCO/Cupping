@@ -123,7 +123,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
       {/* Flavor tags */}
       {entry.flavor_tags.length > 0 && (
         <div className="mb-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-parchment mb-3">
+          <p className="text-xs font-medium uppercase tracking-wider text-hint-text mb-3">
             Notas de sabor
           </p>
           <div className="flex flex-wrap gap-2">
@@ -137,7 +137,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
       {/* Sub-ratings */}
       {hasSubRatings && (
         <div className="mb-6 bg-card rounded-xl border border-parchment p-4 space-y-3">
-          <p className="text-xs font-medium uppercase tracking-wider text-parchment">
+          <p className="text-xs font-medium uppercase tracking-wider text-hint-text">
             Desglose
           </p>
           {SUB_RATING_LABELS.map(({ key, label }) => {
@@ -164,7 +164,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
       {/* Notes */}
       {entry.notes && (
         <div className="mb-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-parchment mb-2">
+          <p className="text-xs font-medium uppercase tracking-wider text-hint-text mb-2">
             Notas
           </p>
           <p className="text-espresso-light leading-relaxed">{entry.notes}</p>
@@ -174,7 +174,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
       {/* Brew method */}
       {entry.brew_method && (
         <div className="mb-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-parchment mb-2">
+          <p className="text-xs font-medium uppercase tracking-wider text-hint-text mb-2">
             Método
           </p>
           <BrewMethodIcon method={entry.brew_method} />
@@ -182,7 +182,7 @@ export default async function CoffeeDetailPage({ params }: Props) {
       )}
 
       {/* Date */}
-      <p className="text-xs text-parchment">
+      <p className="text-xs text-hint-text">
         {new Date(entry.created_at).toLocaleDateString("es-ES", {
           day: "numeric",
           month: "long",

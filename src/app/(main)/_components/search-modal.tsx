@@ -91,7 +91,7 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
       <div className="relative w-full max-w-lg bg-card rounded-2xl border border-border shadow-2xl overflow-hidden">
         {/* Search input */}
         <div className="flex items-center gap-3 px-4 h-14 border-b border-border">
-          <Search className="size-4 text-parchment shrink-0" />
+          <Search className="size-4 text-hint-text shrink-0" />
           <label htmlFor="search-modal-query" className="sr-only">
             Buscar por café o marca
           </label>
@@ -102,11 +102,11 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar por café o marca…"
-            className="flex-1 bg-transparent text-sm text-espresso placeholder:text-parchment focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-espresso placeholder:text-hint-text focus:outline-none"
           />
           <button
             onClick={onClose}
-            className="flex items-center justify-center size-6 rounded-md hover:bg-linen text-parchment hover:text-espresso transition-colors"
+            className="flex items-center justify-center size-6 rounded-md hover:bg-linen text-hint-text hover:text-espresso transition-colors"
             aria-label="Cerrar búsqueda"
           >
             <X className="size-3.5" />
@@ -117,7 +117,7 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
         <ul ref={listRef} className="max-h-[60vh] overflow-y-auto py-1.5" role="listbox">
           {results.length === 0 ? (
             <li className="px-4 py-8 text-center">
-              <Coffee className="size-8 text-parchment mx-auto mb-2" />
+              <Coffee className="size-8 text-hint-text mx-auto mb-2" />
               <p className="text-sm text-espresso-light">Sin resultados para &ldquo;{query}&rdquo;</p>
             </li>
           ) : (
@@ -161,13 +161,13 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
         {/* Footer hint */}
         {results.length > 0 && (
           <div className="flex items-center gap-3 px-4 py-2 border-t border-border">
-            <span className="text-[11px] text-parchment">
+            <span className="text-[11px] text-hint-text">
               <kbd className="font-sans">↑↓</kbd> navegar
             </span>
-            <span className="text-[11px] text-parchment">
+            <span className="text-[11px] text-hint-text">
               <kbd className="font-sans">↵</kbd> abrir
             </span>
-            <span className="text-[11px] text-parchment">
+            <span className="text-[11px] text-hint-text">
               <kbd className="font-sans">Esc</kbd> cerrar
             </span>
           </div>

@@ -93,7 +93,7 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
                 >
                   {label}
                   {href === "/dashboard" && unread > 0 && (
-                    <span className="flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-copper-500 text-white text-[10px] font-bold leading-none">
+                    <span className="flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-copper-600 text-white text-[10px] font-bold leading-none">
                       {unread > 9 ? "9+" : unread}
                     </span>
                   )}
@@ -112,7 +112,7 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
             >
               <Search className="size-3.5 shrink-0" />
               <span className="hidden lg:inline text-xs">Buscar…</span>
-              <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-linen text-parchment border border-border">
+              <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-linen text-hint-text border border-border">
                 ⌘K
               </kbd>
             </button>
@@ -177,7 +177,7 @@ export function Header({ displayName, avatarUrl, userId }: HeaderProps) {
                       setMenuOpen(false);
                       startTransition(() => signOut());
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-error hover:bg-error/10 transition-colors disabled:opacity-50"
                   >
                     <LogOut className="size-4" />
                     {isPending ? "Cerrando…" : "Cerrar sesión"}

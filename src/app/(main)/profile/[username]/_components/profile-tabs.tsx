@@ -55,7 +55,7 @@ export function ProfileTabs({
                 "text-[10px] font-mono rounded-full px-1.5",
                 activeTab === id
                   ? "bg-copper-100 text-copper-700"
-                  : "bg-parchment/60 text-parchment"
+                  : "bg-parchment/60 text-hint-text"
               )}
             >
               {count}

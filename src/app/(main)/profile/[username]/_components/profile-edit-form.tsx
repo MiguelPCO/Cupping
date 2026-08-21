@@ -120,7 +120,7 @@ export function ProfileEditForm({
           {...register("bio")}
           placeholder="Cuéntanos algo sobre ti..."
           rows={3}
-          className="w-full rounded-none border-0 border-b border-parchment px-0 py-2 text-sm text-espresso placeholder:text-parchment focus:outline-none focus:border-copper-500 bg-transparent resize-none transition-colors"
+          className="w-full rounded-none border-0 border-b border-parchment px-0 py-2 text-sm text-espresso placeholder:text-hint-text focus:outline-none focus:border-copper-500 bg-transparent resize-none transition-colors"
         />
         {errors.bio && (
           <p className="text-xs text-destructive">{errors.bio.message}</p>
