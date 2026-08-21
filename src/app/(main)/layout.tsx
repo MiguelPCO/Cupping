@@ -20,7 +20,7 @@ export default async function MainLayout({
 
   const { data: profile } = await supabase
     .from("users")
-    .select("display_name, avatar_url")
+    .select("display_name, avatar_url, username")
     .eq("id", user.id)
     .single();
 
@@ -45,7 +45,7 @@ export default async function MainLayout({
         >
           {children}
         </main>
-        <MobileBottomNav />
+        <MobileBottomNav currentUsername={profile?.username ?? user.id} />
         <AddCoffeeModal />
       </div>
     </QueryProvider>

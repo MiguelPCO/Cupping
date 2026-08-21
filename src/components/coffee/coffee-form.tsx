@@ -382,9 +382,11 @@ export function CoffeeForm({
           </div>
 
           {/* Visibility */}
-          <div className="flex items-center gap-3">
+          <fieldset className="flex items-center gap-3">
+            <legend className="sr-only">Visibilidad de la reseña</legend>
             <button
               type="button"
+              aria-pressed={currentVisibility === "public"}
               onClick={() => setValue("visibility", "public")}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                 currentVisibility === "public"
@@ -397,17 +399,18 @@ export function CoffeeForm({
             </button>
             <button
               type="button"
+              aria-pressed={currentVisibility === "private"}
               onClick={() => setValue("visibility", "private")}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                 currentVisibility === "private"
-                  ? "bg-espresso text-white"
+                  ? "bg-copper-500 text-white"
                   : "bg-linen text-espresso-light"
               }`}
             >
               <Lock className="size-4" />
               Solo tú
             </button>
-          </div>
+          </fieldset>
         </div>
       )}
 
@@ -576,7 +579,7 @@ export function CoffeeForm({
             })}
           </div>
           <p className="text-xs text-hint-text text-center">
-            Puedes saltarte este paso y añadirlo después desde tu colección
+            Este paso es opcional — puedes guardar sin elegir colección y añadirla después
           </p>
         </div>
       )}
