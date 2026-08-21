@@ -157,7 +157,11 @@ export function LoginForm() {
         {/* Email / password form */}
         <form onSubmit={handleEmail} className="space-y-3">
           <div className="space-y-2">
+            <label htmlFor="login-email" className="sr-only">
+              Email
+            </label>
             <Input
+              id="login-email"
               type="email"
               placeholder="tu@email.com"
               value={email}
@@ -166,7 +170,11 @@ export function LoginForm() {
               autoComplete="email"
               disabled={isAnyLoading}
             />
+            <label htmlFor="login-password" className="sr-only">
+              Contraseña
+            </label>
             <Input
+              id="login-password"
               type="password"
               placeholder="Contraseña"
               value={password}
@@ -185,6 +193,8 @@ export function LoginForm() {
 
           {feedback && (
             <p
+              role="status"
+              aria-live="polite"
               className={cn(
                 "text-xs rounded-lg px-3 py-2",
                 feedback.type === "error"

@@ -17,7 +17,11 @@ const NAV_LINKS_RIGHT = [
   { href: "/profile", label: "Perfil", icon: User },
 ];
 
-export function MobileBottomNav() {
+interface MobileBottomNavProps {
+  currentUsername: string;
+}
+
+export function MobileBottomNav({ currentUsername }: MobileBottomNavProps) {
   const { setAddCoffeeModal } = useUIStore();
   const pathname = usePathname();
   const unread = useUnreadActivityCount();
@@ -65,7 +69,10 @@ export function MobileBottomNav() {
         </div>
 
         {NAV_LINKS_RIGHT.map(({ href, label, icon: Icon }) => {
-          const active = pathname.startsWith(href);
+          const active =
+            href === "/profile"
+              ? pathname === "/profile" || pathname.startsWith(`/profile/${currentUsername}`)
+              : pathname.startsWith(href);
           return (
             <Link
               key={href}
