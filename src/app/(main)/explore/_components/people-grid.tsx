@@ -66,7 +66,7 @@ export function PeopleGrid() {
 
       <div className="relative mb-4">
         <Search
-          className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-parchment pointer-events-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-hint-text pointer-events-none"
           aria-hidden="true"
         />
         <input
@@ -75,7 +75,7 @@ export function PeopleGrid() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar personas…"
           aria-label="Buscar personas"
-          className="w-full h-9 pl-9 pr-4 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300"
+          className="w-full h-9 pl-9 pr-4 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-hint-text focus:outline-none focus:ring-2 focus:ring-copper-300"
         />
       </div>
 

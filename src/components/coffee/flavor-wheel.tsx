@@ -26,7 +26,7 @@ export function FlavorWheel({ data, className }: FlavorWheelProps) {
       </h3>
       {isEmpty ? (
         <div className="h-40 flex items-center justify-center">
-          <p className="text-xs text-parchment">
+          <p className="text-xs text-hint-text">
             Añade notas de sabor a tus reseñas
           </p>
         </div>

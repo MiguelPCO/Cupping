@@ -50,7 +50,7 @@ function StatCard({ icon, label, value, sub, accent }: StatCardProps) {
         <p
           className={cn(
             "text-[11px] mt-1.5 flex items-center gap-1",
-            accent ? "text-background/60" : "text-parchment"
+            accent ? "text-background/60" : "text-hint-text"
           )}
         >
           {accent && (

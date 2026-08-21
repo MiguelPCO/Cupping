@@ -49,7 +49,7 @@ export function CoffeeCommunityStats({
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <span className="w-5 text-right font-mono text-parchment shrink-0">
+                  <span className="w-5 text-right font-mono text-hint-text shrink-0">
                     {count}
                   </span>
                 </div>
@@ -122,7 +122,7 @@ export function CoffeeCommunityStats({
                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-linen border border-parchment text-xs text-espresso-light"
               >
                 {getBrewMethodLabel(method)}
-                <span className="font-mono text-parchment">{count}</span>
+                <span className="font-mono text-hint-text">{count}</span>
               </span>
             ))}
           </div>

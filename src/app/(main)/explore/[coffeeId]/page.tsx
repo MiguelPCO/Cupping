@@ -88,7 +88,7 @@ export default async function ExploreCoffeeDetailPage({ params }: Props) {
             </span>
           </div>
         ) : (
-          <p className="text-sm text-parchment">Sin reseñas aún</p>
+          <p className="text-sm text-hint-text">Sin reseñas aún</p>
         )}
       </div>
 

@@ -8,17 +8,17 @@ interface RoastBadgeProps {
 }
 
 const ROAST_CLASSES: Record<RoastLevel, string> = {
-  light: "bg-roast-light",
-  medium: "bg-roast-medium",
-  medium_dark: "bg-roast-medium-dark",
-  dark: "bg-roast-dark",
+  light: "bg-roast-light text-espresso",
+  medium: "bg-roast-medium text-white/90",
+  medium_dark: "bg-roast-medium-dark text-white/90",
+  dark: "bg-roast-dark text-white/90",
 };
 
 export function RoastBadge({ level, className }: RoastBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium text-white/90 backdrop-blur-sm",
+        "inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium backdrop-blur-sm",
         ROAST_CLASSES[level],
         className
       )}

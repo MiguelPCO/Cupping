@@ -96,7 +96,7 @@ export function CoffeeCommunityCard({ coffee, isReviewed = false }: CoffeeCommun
           {coffee.name}
         </h3>
         {coffee.avg_rating === null && (
-          <p className="text-xs text-parchment mt-1">Sin reseñas aún</p>
+          <p className="text-xs text-hint-text mt-1">Sin reseñas aún</p>
         )}
       </div>
     </div>

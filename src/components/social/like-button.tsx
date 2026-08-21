@@ -29,7 +29,7 @@ export function LikeButton({ entryId, className }: LikeButtonProps) {
         "flex items-center gap-1 text-xs transition-colors",
         isLiked
           ? "text-copper-500"
-          : "text-parchment hover:text-copper-400",
+          : "text-hint-text hover:text-copper-400",
         !currentUserId && "opacity-50 cursor-default",
         className
       )}

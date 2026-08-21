@@ -168,7 +168,7 @@ export function CoffeeForm({
     >
       {/* Step progress */}
       <div className="flex flex-col items-center gap-2 mb-8">
-        <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-parchment">
+        <p className="text-[11px] font-medium uppercase tracking-[0.09em] text-hint-text">
           Paso {step} de 5
         </p>
         <div className="flex gap-2" aria-hidden="true">
@@ -259,7 +259,7 @@ export function CoffeeForm({
             <div className="space-y-1.5">
               <label htmlFor="origin" className="text-sm font-medium text-espresso">
                 Origen{" "}
-                <span className="font-normal text-parchment">(opcional)</span>
+                <span className="font-normal text-hint-text">(opcional)</span>
               </label>
               <Input
                 id="origin"
@@ -271,7 +271,7 @@ export function CoffeeForm({
             <fieldset className="space-y-2 border-0 p-0 m-0 min-w-0">
               <legend className="text-sm font-medium text-espresso">
                 Tueste{" "}
-                <span className="font-normal text-parchment">(opcional)</span>
+                <span className="font-normal text-hint-text">(opcional)</span>
               </legend>
               <div className="flex flex-wrap gap-2">
                 {ROAST_LEVELS.map((level) => (
@@ -345,7 +345,7 @@ export function CoffeeForm({
           </fieldset>
 
           <fieldset className="border-0 p-0 m-0 min-w-0 space-y-4 pt-2">
-            <legend className="text-xs font-medium uppercase tracking-wider text-parchment w-full">
+            <legend className="text-xs font-medium uppercase tracking-wider text-hint-text w-full">
               Puntuaciones detalladas{" "}
               <span className="normal-case">(opcional)</span>
             </legend>
@@ -366,7 +366,7 @@ export function CoffeeForm({
           <div className="space-y-1.5">
             <label htmlFor="notes" className="text-sm font-medium text-espresso">
               Notas de cata{" "}
-              <span className="font-normal text-parchment">(opcional)</span>
+              <span className="font-normal text-hint-text">(opcional)</span>
             </label>
             <textarea
               id="notes"
@@ -374,7 +374,7 @@ export function CoffeeForm({
               placeholder="Describe lo que sientes al tomar este café…"
               rows={3}
               aria-describedby={errors.notes ? "notes-error" : undefined}
-              className="w-full px-3 py-2 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-parchment focus:outline-none focus:ring-2 focus:ring-copper-300 resize-none"
+              className="w-full px-3 py-2 rounded-lg border border-parchment bg-card text-sm text-espresso placeholder:text-hint-text focus:outline-none focus:ring-2 focus:ring-copper-300 resize-none"
             />
             {errors.notes && (
               <p id="notes-error" className="text-xs text-destructive">{errors.notes.message}</p>
@@ -451,7 +451,7 @@ export function CoffeeForm({
                           {selectedInFamily.length}
                         </span>
                       )}
-                      <ChevronDown className="size-4 text-parchment group-open:rotate-180 transition-transform" />
+                      <ChevronDown className="size-4 text-hint-text group-open:rotate-180 transition-transform" />
                     </div>
                   </summary>
                   <div className="flex flex-wrap gap-2 px-3 pb-3 pt-1">
@@ -481,7 +481,7 @@ export function CoffeeForm({
           <fieldset className="space-y-2 pt-2 border-0 p-0 m-0 min-w-0">
             <legend className="text-sm font-medium text-espresso">
               Método de preparación{" "}
-              <span className="font-normal text-parchment">(opcional)</span>
+              <span className="font-normal text-hint-text">(opcional)</span>
             </legend>
             <div className="flex flex-wrap gap-2">
               {BREW_METHODS.map((method) => (
@@ -561,7 +561,7 @@ export function CoffeeForm({
                   <Icon
                     className={cn(
                       "size-5 shrink-0",
-                      selected ? "text-copper-600" : "text-parchment"
+                      selected ? "text-copper-600" : "text-hint-text"
                     )}
                   />
                   <div className="flex-1 min-w-0">
@@ -575,7 +575,7 @@ export function CoffeeForm({
               );
             })}
           </div>
-          <p className="text-xs text-parchment text-center">
+          <p className="text-xs text-hint-text text-center">
             Puedes saltarte este paso y añadirlo después desde tu colección
           </p>
         </div>

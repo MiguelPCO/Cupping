@@ -101,7 +101,7 @@ export function CollectionCoffeeCard({
           type="button"
           onClick={() => { setOpen((v) => !v); setMoveOpen(false); }}
           aria-label="Opciones"
-          className="flex items-center justify-center size-8 rounded-lg text-parchment hover:text-espresso hover:bg-linen transition-colors"
+          className="flex items-center justify-center size-8 rounded-lg text-hint-text hover:text-espresso hover:bg-linen transition-colors"
         >
           <MoreHorizontal className="size-4" />
         </button>
@@ -114,7 +114,7 @@ export function CollectionCoffeeCard({
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2 text-espresso hover:bg-linen transition-colors"
             >
-              <ExternalLink className="size-3.5 text-parchment shrink-0" />
+              <ExternalLink className="size-3.5 text-hint-text shrink-0" />
               Ver detalle
             </Link>
 
@@ -125,11 +125,11 @@ export function CollectionCoffeeCard({
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2.5 px-3 py-2 text-espresso hover:bg-linen transition-colors"
               >
-                <Pencil className="size-3.5 text-parchment shrink-0" />
+                <Pencil className="size-3.5 text-hint-text shrink-0" />
                 Editar reseña
               </Link>
             ) : (
-              <span className="flex items-center gap-2.5 px-3 py-2 text-parchment cursor-default">
+              <span className="flex items-center gap-2.5 px-3 py-2 text-hint-text cursor-default">
                 <Pencil className="size-3.5 shrink-0" />
                 Sin reseña
               </span>
@@ -143,7 +143,7 @@ export function CollectionCoffeeCard({
                   onClick={() => setMoveOpen((v) => !v)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-espresso hover:bg-linen transition-colors"
                 >
-                  <ArrowRightLeft className="size-3.5 text-parchment shrink-0" />
+                  <ArrowRightLeft className="size-3.5 text-hint-text shrink-0" />
                   <span className="flex-1 text-left">Mover a…</span>
                   <Check className={cn("size-3 text-copper-500 shrink-0", !moveOpen && "invisible")} />
                 </button>
@@ -170,7 +170,7 @@ export function CollectionCoffeeCard({
             <button
               type="button"
               onClick={handleRemove}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-red-500 hover:bg-red-500/10 transition-colors"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-error hover:bg-error/10 transition-colors"
             >
               <Trash2 className="size-3.5 shrink-0" />
               Eliminar de colección

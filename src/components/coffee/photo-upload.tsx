@@ -103,7 +103,7 @@ export function PhotoUpload({ onFileSelect, className }: PhotoUploadProps) {
             <p className="text-sm font-medium text-espresso-light">
               Arrastra una foto o haz clic
             </p>
-            <p className="text-xs text-parchment mt-0.5">PNG, JPG hasta {MAX_SIZE_MB} MB</p>
+            <p className="text-xs text-hint-text mt-0.5">PNG, JPG hasta {MAX_SIZE_MB} MB</p>
           </div>
         </button>
       )}
