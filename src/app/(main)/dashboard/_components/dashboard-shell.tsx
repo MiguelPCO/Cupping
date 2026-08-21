@@ -82,8 +82,9 @@ export function DashboardShell({
   const handleDelete = (entryId: string) => setDeleteTargetId(entryId);
 
   const confirmDelete = () => {
-    if (!deleteTargetId) return;
-    deleteMutation.mutate(deleteTargetId, {
+    const id = deleteTargetId;
+    if (!id) return;
+    deleteMutation.mutate(id, {
       onError: () => toast.error("No se pudo eliminar la reseña."),
     });
     setDeleteTargetId(null);
