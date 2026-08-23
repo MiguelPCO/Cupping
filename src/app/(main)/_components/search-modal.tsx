@@ -18,8 +18,19 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
   const { data: entries = [], isLoading } = useCoffeeEntries(userId);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prevOpen, setPrevOpen] = useState(open);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+
+  // Adjust state during render instead of chaining effects off the `open`
+  // prop: https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) {
+      setQuery("");
+      setActiveIndex(0);
+    }
+  }
 
   const trimmedQuery = query.trim();
   const results = trimmedQuery
@@ -42,16 +53,10 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     [router, onClose]
   );
 
-  useEffect(() => {
+  const handleQueryChange = useCallback((value: string) => {
+    setQuery(value);
     setActiveIndex(0);
-  }, [query]);
-
-  useEffect(() => {
-    if (open) {
-      setQuery("");
-      setActiveIndex(0);
-    }
-  }, [open]);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -111,7 +116,7 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
                 aria-autocomplete="list"
                 autoComplete="off"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => handleQueryChange(e.target.value)}
                 placeholder="Buscar por café o marca…"
                 className="flex-1 bg-transparent text-sm text-espresso placeholder:text-hint-text focus:outline-none"
               />
