@@ -7,6 +7,7 @@ const PROTECTED_PATHS = [
   "/coffee",
   "/profile",
   "/explore",
+  "/update-password",
 ];
 
 export async function middleware(request: NextRequest) {

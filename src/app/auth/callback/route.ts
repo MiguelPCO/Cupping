@@ -33,8 +33,9 @@ export async function GET(request: NextRequest) {
   );
 
   let userId: string | null = null;
+  let isRecovery = type === "recovery";
 
-  // PKCE flow (OAuth + email signup confirmation)
+  // PKCE flow (OAuth + email signup confirmation + password recovery)
   if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error || !data.user) {
@@ -52,8 +53,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(`${origin}/login?error=auth`);
     }
     userId = data.user.id;
+    isRecovery = type === "recovery";
   } else {
     return NextResponse.redirect(`${origin}/login?error=auth`);
+  }
+
+  // Password recovery — send to the update-password form, skip profile bootstrap
+  if (isRecovery) {
+    return NextResponse.redirect(`${origin}/update-password`);
   }
 
   // Ensure user profile exists (first-time login for any provider)
