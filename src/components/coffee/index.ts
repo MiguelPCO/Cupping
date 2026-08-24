@@ -8,5 +8,4 @@ export { CoffeeCard } from "./coffee-card";
 export { CoffeeForm } from "./coffee-form";
 export { SubRatingInput } from "./sub-rating-input";
 export { PhotoUpload } from "./photo-upload";
-export { FlavorWheel } from "./flavor-wheel";
 export { CoffeeCommunityCard } from "./coffee-community-card";
