@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 type OAuthProvider = "google";
 type AuthMode = "signin" | "signup";
 
-export function LoginForm() {
+export function LoginForm({ initialError }: { initialError?: boolean } = {}) {
   // OAuth
   const [oauthLoading, setOauthLoading] = useState<OAuthProvider | null>(null);
 
@@ -29,19 +29,29 @@ export function LoginForm() {
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";
     text: string;
-  } | null>(null);
+  } | null>(
+    initialError
+      ? { type: "error", text: "No se pudo iniciar sesión. Intenta de nuevo." }
+      : null
+  );
 
   const isAnyLoading = oauthLoading !== null || emailLoading;
 
   // ── OAuth ──────────────────────────────────────────────
   const handleOAuth = async (provider: OAuthProvider) => {
+    setFeedback(null);
     setOauthLoading(provider);
     const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
-    // browser redirects — loading state stays until navigation
+    if (error) {
+      setFeedback({ type: "error", text: error.message });
+      setOauthLoading(null);
+      return;
+    }
+    // success redirects the browser away — loading state stays until navigation
   };
 
   // ── Forgot Password ────────────────────────────────────
@@ -54,7 +64,7 @@ export function LoginForm() {
     try {
       const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       });
       if (error) {
         setFeedback({ type: "error", text: error.message });
