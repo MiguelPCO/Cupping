@@ -58,6 +58,11 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
     setActiveIndex(0);
   }, []);
 
+  // Capture phase, not bubble: base-ui's DialogPopup calls stopPropagation()
+  // on arrow/home/end keys during the bubble phase (composite-widget
+  // support), which would otherwise stop these keys from ever reaching a
+  // normal document-level bubble listener. Capture-phase listeners run
+  // before that, so they see the key regardless.
   useEffect(() => {
     if (!open) return;
     function handleKeyDown(e: KeyboardEvent) {
@@ -76,8 +81,8 @@ export function SearchModal({ open, onClose, userId }: SearchModalProps) {
         navigate(results[activeIndex].id);
       }
     }
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => document.removeEventListener("keydown", handleKeyDown, true);
   }, [open, results, activeIndex, navigate]);
 
   useEffect(() => {
