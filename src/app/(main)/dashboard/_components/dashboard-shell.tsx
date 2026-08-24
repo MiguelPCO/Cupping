@@ -71,10 +71,12 @@ export function DashboardShell({
   const stats = useDashboardStats(entries);
   const recentEntries = entries.slice(0, RECENT_LIMIT);
   const [dateLabel, setDateLabel] = useState("");
+  const [greeting, setGreeting] = useState("Hola");
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     setDateLabel(getDateLabel());
+    setGreeting(getGreeting());
   }, []);
 
   const handleEdit = (entryId: string) => router.push(`/coffee/${entryId}/edit`);
@@ -100,7 +102,7 @@ export function DashboardShell({
             {dateLabel}
           </p>
           <h1 className="font-display text-3xl text-espresso leading-tight">
-            {getGreeting()}, {capitalize(firstName)}
+            {greeting}, {capitalize(firstName)}
           </h1>
         </div>
 
